@@ -8,6 +8,10 @@ let currentChapter = '';
 let progress = {};
 let codeBlocks = [];
 let editors = {};
+let markdownFileCache = {}; // Cache für gefundene Markdown-Dateien
+
+// Basis-Verzeichnis für Dokumentationen
+const DOCS_BASE_DIR = 'python-docs';
 
 // Lade gespeicherten Fortschritt aus dem localStorage
 function loadProgress() {
@@ -48,16 +52,236 @@ function updateProgressUI() {
     `;
 }
 
+// Initialisiere den Markdown-Datei-Cache durch rekursive Suche
+async function initializeMarkdownCache() {
+    console.log("Initialisiere Markdown-Datei-Cache...");
+    
+    // Setze den Cache zurück
+    markdownFileCache = {};
+    
+    // Starte die rekursive Suche im Basis-Verzeichnis
+    await scanDirectoryRecursively(DOCS_BASE_DIR);
+    
+    console.log("Markdown-Datei-Cache initialisiert:", markdownFileCache);
+}
+
+// Scanne ein Verzeichnis rekursiv nach Markdown-Dateien
+async function scanDirectoryRecursively(directory) {
+    console.log(`Scanne Verzeichnis: ${directory}`);
+    
+    try {
+        // Liste alle Kapitel-Verzeichnisse
+        const kapitelDirs = [
+            `${DOCS_BASE_DIR}/Kapitel_0`,
+            `${DOCS_BASE_DIR}/Kapitel_1`,
+            `${DOCS_BASE_DIR}/Kapitel_2`,
+            `${DOCS_BASE_DIR}/Kapitel_3`,
+            `${DOCS_BASE_DIR}/Kapitel_4`,
+            `${DOCS_BASE_DIR}/Kapitel_5`,
+            `${DOCS_BASE_DIR}/Kapitel_6`,
+            `${DOCS_BASE_DIR}/Kapitel_7`,
+            `${DOCS_BASE_DIR}/Kapitel_8`,
+            `${DOCS_BASE_DIR}/Kapitel_9`,
+            `${DOCS_BASE_DIR}/Kapitel_10`
+        ];
+        
+        // Durchsuche jedes Kapitel-Verzeichnis
+        for (const kapitelDir of kapitelDirs) {
+            await scanKapitelDirectory(kapitelDir);
+        }
+        
+        // Scanne auch das Hauptverzeichnis
+        await scanKapitelDirectory(DOCS_BASE_DIR);
+        
+    } catch (error) {
+        console.error(`Fehler beim Scannen des Verzeichnisses ${directory}:`, error);
+    }
+}
+
+// Scanne ein Kapitel-Verzeichnis nach Markdown-Dateien
+async function scanKapitelDirectory(directory) {
+    // Liste der bekannten Markdown-Dateien in diesem Verzeichnis
+    const knownFiles = [
+        "Anfang_Lese_Mich.md",
+        "Erste_Schritte_Mac.md",
+        "Erste_Schritte_Mobile_Replit.md",
+        "Erste_Schritte_Win_PC.md",
+        "Textausgabe_InDerKonsole.md",
+        "Variablen_und_Datentypen.md",
+        "Operatoren.md",
+        "Strings.md",
+        "Bedingte_Anweisungen.md",
+        "Schleifen.md",
+        "Listen.md",
+        "Tupel.md",
+        "Sets.md",
+        "Dictionaries.md",
+        "Funktionen.md",
+        "Parameter_und_Rueckgabewerte.md",
+        "Lambda_Funktionen.md",
+        "Module.md",
+        "Eigene_Module.md",
+        "Standardbibliotheken.md",
+        "Klassen_und_Objekte.md",
+        "Vererbung.md",
+        "Polymorphismus.md",
+        "Dateien_lesen_schreiben.md",
+        "CSV_Dateien.md",
+        "JSON_Dateien.md",
+        "Fehlerbehandlung.md",
+        "Eigene_Exceptions.md"
+    ];
+    
+    // Prüfe jede bekannte Datei
+    for (const fileName of knownFiles) {
+        const filePath = `${directory}/${fileName}`;
+        try {
+            const response = await fetch(filePath);
+            if (response.ok) {
+                console.log(`Markdown-Datei gefunden: ${filePath}`);
+                
+                // Speichere verschiedene Varianten des Pfads im Cache
+                cacheFilePath(fileName, filePath);
+            }
+        } catch (error) {
+            // Ignoriere Fehler, da wir nur prüfen, ob die Datei existiert
+        }
+    }
+}
+
+// Speichere verschiedene Varianten eines Pfads im Cache
+function cacheFilePath(fileName, fullPath) {
+    // Speichere den vollständigen Pfad
+    markdownFileCache[fullPath] = fullPath;
+    
+    // Speichere den Dateinamen
+    markdownFileCache[fileName] = fullPath;
+    
+    // Speichere den Dateinamen ohne Erweiterung
+    const fileNameWithoutExt = fileName.replace('.md', '');
+    markdownFileCache[fileNameWithoutExt] = fullPath;
+    
+    // Speichere Varianten mit verschiedenen Pfadpräfixen
+    markdownFileCache[`/${fullPath}`] = fullPath;
+    markdownFileCache[`/Projekte/${fileName}`] = fullPath;
+    
+    // Extrahiere das Kapitel aus dem Pfad (z.B. "Kapitel_1")
+    const match = fullPath.match(/Kapitel_\d+/);
+    if (match) {
+        const kapitel = match[0];
+        markdownFileCache[`/Projekte/${kapitel}/${fileName}`] = fullPath;
+        markdownFileCache[`Projekte/${kapitel}/${fileName}`] = fullPath;
+    }
+}
+
+// Korrigiere Pfade in Markdown-Links
+function correctPath(path) {
+    // Wenn der Pfad im Cache ist, verwende den gespeicherten Pfad
+    if (markdownFileCache[path]) {
+        console.log(`Pfad im Cache gefunden: ${path} -> ${markdownFileCache[path]}`);
+        return markdownFileCache[path];
+    }
+    
+    // Wenn der Pfad bereits mit dem Basis-Verzeichnis beginnt
+    if (path.startsWith(`${DOCS_BASE_DIR}/`)) {
+        return path;
+    }
+    
+    // Entferne führenden Slash, falls vorhanden
+    let correctedPath = path.startsWith('/') ? path.substring(1) : path;
+    
+    // Ersetze "Projekte/" durch das Basis-Verzeichnis
+    if (correctedPath.startsWith('Projekte/')) {
+        correctedPath = correctedPath.replace('Projekte/', `${DOCS_BASE_DIR}/`);
+    }
+    // Wenn der Pfad nicht mit dem Basis-Verzeichnis beginnt, füge es hinzu
+    else if (!correctedPath.startsWith(`${DOCS_BASE_DIR}/`)) {
+        // Extrahiere den Dateinamen
+        const fileName = correctedPath.split('/').pop();
+        
+        // Versuche, den Pfad im Cache zu finden
+        for (const [cachedPath, fullPath] of Object.entries(markdownFileCache)) {
+            if (cachedPath.endsWith(fileName)) {
+                console.log(`Datei im Cache gefunden: ${fileName} -> ${fullPath}`);
+                return fullPath;
+            }
+        }
+        
+        // Wenn nicht im Cache gefunden, füge das Basis-Verzeichnis hinzu
+        correctedPath = `${DOCS_BASE_DIR}/` + correctedPath;
+    }
+    
+    console.log(`Pfad korrigiert: ${path} -> ${correctedPath}`);
+    return correctedPath;
+}
+
 // Lade eine Markdown-Datei und wandle sie in HTML um
 async function loadMarkdownFile(filePath) {
     try {
-        const response = await fetch(filePath);
+        // Wenn der Cache leer ist, initialisiere ihn
+        if (Object.keys(markdownFileCache).length === 0) {
+            await initializeMarkdownCache();
+        }
+        
+        // Korrigiere den Pfad
+        const correctedPath = correctPath(filePath);
+        console.log(`Versuche Datei zu laden: ${correctedPath} (Original: ${filePath})`);
+        
+        const response = await fetch(correctedPath);
         if (!response.ok) {
-            throw new Error(`Fehler beim Laden der Datei: ${response.status}`);
+            // Wenn die Datei nicht gefunden wurde, versuche eine rekursive Suche
+            console.log("Datei nicht gefunden, starte rekursive Suche...");
+            
+            // Extrahiere den Dateinamen ohne Pfad
+            const fileName = filePath.split('/').pop();
+            
+            // Durchsuche alle Kapitel-Verzeichnisse nach der Datei
+            for (let i = 0; i <= 10; i++) {
+                const kapitelDir = `${DOCS_BASE_DIR}/Kapitel_${i}`;
+                const alternativePath = `${kapitelDir}/${fileName}`;
+                
+                console.log(`Versuche alternative Datei zu laden: ${alternativePath}`);
+                
+                try {
+                    const altResponse = await fetch(alternativePath);
+                    if (altResponse.ok) {
+                        console.log(`Datei gefunden unter: ${alternativePath}`);
+                        
+                        // Aktualisiere den Cache für zukünftige Anfragen
+                        cacheFilePath(fileName, alternativePath);
+                        
+                        const markdown = await altResponse.text();
+                        currentChapter = alternativePath.split('/').pop().replace('.md', '');
+                        
+                        // Wandle Markdown in HTML um und zeige es an
+                        const html = parseMarkdown(markdown);
+                        document.getElementById('content').innerHTML = html;
+                        
+                        // Initialisiere interaktive Code-Blöcke
+                        initializeCodeBlocks();
+                        
+                        // Aktualisiere aktiven Menüpunkt
+                        updateActiveMenuItem(alternativePath);
+                        
+                        // Aktualisiere Fortschrittsanzeige
+                        updateProgressUI();
+                        
+                        // Scrolle zum Anfang der Seite
+                        window.scrollTo(0, 0);
+                        
+                        return true;
+                    }
+                } catch (altError) {
+                    // Ignoriere Fehler und versuche das nächste Verzeichnis
+                }
+            }
+            
+            // Wenn die Datei nirgendwo gefunden wurde, zeige einen Fehler an
+            throw new Error(`Datei nicht gefunden: ${fileName}`);
         }
         
         const markdown = await response.text();
-        currentChapter = filePath.split('/').pop().replace('.md', '');
+        currentChapter = correctedPath.split('/').pop().replace('.md', '');
         
         // Wandle Markdown in HTML um und zeige es an
         const html = parseMarkdown(markdown);
@@ -67,7 +291,7 @@ async function loadMarkdownFile(filePath) {
         initializeCodeBlocks();
         
         // Aktualisiere aktiven Menüpunkt
-        updateActiveMenuItem(filePath);
+        updateActiveMenuItem(correctedPath);
         
         // Aktualisiere Fortschrittsanzeige
         updateProgressUI();
@@ -75,6 +299,7 @@ async function loadMarkdownFile(filePath) {
         // Scrolle zum Anfang der Seite
         window.scrollTo(0, 0);
         
+        console.log(`Datei erfolgreich geladen: ${correctedPath}`);
         return true;
     } catch (error) {
         console.error('Fehler beim Laden der Markdown-Datei:', error);
@@ -82,7 +307,11 @@ async function loadMarkdownFile(filePath) {
             <div class="error-message">
                 <h2>Fehler beim Laden des Inhalts</h2>
                 <p>${error.message}</p>
-                <button onclick="loadMarkdownFile('alte-markdown-dateien/Kapitel_0/Anfang_Lese_Mich.md')">
+                <div class="error-details">
+                    <p>Versuchter Pfad: ${correctPath(filePath)}</p>
+                    <p>Ursprünglicher Pfad: ${filePath}</p>
+                </div>
+                <button onclick="loadMarkdownFile('${DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">
                     Zurück zur Hauptseite
                 </button>
             </div>
@@ -108,11 +337,13 @@ function parseMarkdown(markdown) {
     processedMarkdown = processedMarkdown.replace(/^## (.*$)/gm, '<h2>$1</h2>');
     processedMarkdown = processedMarkdown.replace(/^### (.*$)/gm, '<h3>$1</h3>');
     
-    // Ersetze Links
+    // Ersetze Links mit korrigierten Pfaden
     processedMarkdown = processedMarkdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
         // Interne Links zu Markdown-Dateien
         if (url.endsWith('.md')) {
-            return `<a href="javascript:void(0)" onclick="loadMarkdownFile('${url}')">${text}</a>`;
+            // Korrigiere den Pfad für die verlinkte Datei
+            const correctedUrl = correctPath(url);
+            return `<a href="javascript:void(0)" onclick="loadMarkdownFile('${correctedUrl}')">${text}</a>`;
         }
         // Externe Links
         return `<a href="${url}" target="_blank">${text}</a>`;
@@ -295,17 +526,28 @@ function updateActiveMenuItem(filePath) {
 }
 
 // Initialisiere die Anwendung
-function initializeApp() {
+async function initializeApp() {
     // Lade gespeicherten Fortschritt
     loadProgress();
     
+    console.log("Initialisiere Anwendung...");
+    
+    // Initialisiere den Markdown-Datei-Cache
+    await initializeMarkdownCache();
+    
     // Erstelle Kapitelmenü aus der Inhaltsverzeichnis-Datei
-    loadMarkdownFile('alte-markdown-dateien/Kapitel_0/Anfang_Lese_Mich.md')
+    loadMarkdownFile(`${DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`)
         .then(success => {
             if (success) {
+                console.log("Hauptseite erfolgreich geladen, erstelle Sidebar-Menü...");
                 // Extrahiere Links aus dem Inhaltsverzeichnis und erstelle Sidebar-Menü
                 createSidebarMenu();
+            } else {
+                console.error("Fehler beim Laden der Hauptseite");
             }
+        })
+        .catch(error => {
+            console.error("Fehler beim Initialisieren der Anwendung:", error);
         });
 }
 
@@ -322,7 +564,7 @@ function createSidebarMenu() {
     // Füge Hauptseiten-Link hinzu
     const homeItem = document.createElement('li');
     homeItem.classList.add('active');
-    homeItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('alte-markdown-dateien/Kapitel_0/Anfang_Lese_Mich.md')">Hauptseite</a>`;
+    homeItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">Hauptseite</a>`;
     sidebarMenu.appendChild(homeItem);
     
     // Füge Links aus dem Inhaltsverzeichnis hinzu
