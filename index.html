@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive Python learning platform with in-browser code execution">
+    <meta name="description" content="Interaktive Python-Lernplattform mit Code-Ausführung im Browser">
     <meta name="theme-color" content="#2c3e50">
-    <title>Python Learning Platform</title>
+    <title>Python Lernplattform</title>
     
     <!-- Preload critical resources -->
     <link rel="preload" href="styles.css" as="style">
@@ -17,114 +17,109 @@
     
     <!-- Load Pyodide without defer to ensure it's available -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    
+    <style>
+        /* Zusätzliche Styles für Markdown-Inhalte */
+        .markdown-content h1 { margin-bottom: 1rem; color: var(--secondary-color); }
+        .markdown-content h2 { margin: 1.5rem 0 1rem; color: var(--secondary-color); }
+        .markdown-content h3 { margin: 1.2rem 0 0.8rem; color: var(--secondary-color); }
+        .markdown-content p { margin-bottom: 1rem; line-height: 1.6; }
+        .markdown-content ul, .markdown-content ol { margin-bottom: 1rem; padding-left: 2rem; }
+        .markdown-content li { margin-bottom: 0.5rem; }
+        .markdown-content code { background-color: #f5f5f5; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Courier New', monospace; }
+        .markdown-content hr { margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-color); }
+        .markdown-content a { color: var(--primary-color); text-decoration: none; }
+        .markdown-content a:hover { text-decoration: underline; }
+        
+        /* Fortschritts-Tracker */
+        #progress-tracker { padding: 1rem; background-color: var(--light-gray); border-radius: var(--border-radius-sm); margin-bottom: 1rem; }
+        .progress-bar { height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 0.5rem; }
+        .progress-fill { height: 100%; background-color: var(--primary-color); width: 0%; transition: width 0.3s ease; }
+        .progress-text { font-size: 0.9rem; color: var(--secondary-color); text-align: center; }
+        
+        /* Kapitel-Navigation */
+        .chapter-navigation { margin-top: 2rem; display: flex; justify-content: center; }
+        .mark-completed-button {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .mark-completed-button:hover { background-color: var(--success-hover); }
+        .mark-completed-button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        
+        /* Abgeschlossene Kapitel in der Sidebar */
+        .sidebar-menu li.completed a { color: #2ecc71; }
+        
+        /* Fehlermeldungen */
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
     <!-- Mobile sidebar toggle button -->
     <div class="sidebar-toggle-container" aria-hidden="true">
-        <button id="toggle-sidebar-mobile" aria-label="Toggle navigation menu">☰</button>
+        <button id="toggle-sidebar-mobile" aria-label="Navigationsmenü umschalten">☰</button>
     </div>
     
     <!-- Main container -->
     <div class="container">
         <!-- Sidebar navigation -->
-        <nav id="sidebar" aria-label="Lesson navigation">
+        <nav id="sidebar" aria-label="Kapitel-Navigation">
             <header class="sidebar-header">
-                <h1>Python Lessons</h1>
-                <button id="toggle-sidebar-desktop" aria-label="Close navigation menu">✕</button>
+                <h1>Python Lernen</h1>
+                <button id="toggle-sidebar-desktop" aria-label="Navigationsmenü schließen">✕</button>
             </header>
             
+            <!-- Fortschritts-Tracker -->
+            <div id="progress-tracker">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">0 von 0 Kapiteln abgeschlossen</div>
+            </div>
+            
+            <!-- Dynamisch generiertes Menü -->
             <ul class="sidebar-menu" role="menu">
-                <li class="active" role="menuitem"><a href="#lesson1" aria-current="page">Lesson 1: Introduction</a></li>
-                <li role="menuitem"><a href="#lesson2">Lesson 2: Variables</a></li>
-                <li role="menuitem"><a href="#lesson3">Lesson 3: Control Flow</a></li>
-                <li role="menuitem"><a href="#lesson4">Lesson 4: Functions</a></li>
-                <li role="menuitem"><a href="#lesson5">Lesson 5: Data Structures</a></li>
+                <li class="active" role="menuitem">
+                    <a href="javascript:void(0)" onclick="loadMarkdownFile('alte-markdown-dateien/Kapitel_0/Anfang_Lese_Mich.md')" aria-current="page">Hauptseite</a>
+                </li>
+                <!-- Weitere Menüpunkte werden dynamisch hinzugefügt -->
             </ul>
         </nav>
 
         <!-- Main content area -->
-        <main id="content">
-            <!-- Lesson 1 -->
-            <article class="lesson-container" id="lesson1">
-                <header>
-                    <h2>Introduction to Python</h2>
-                </header>
-                
-                <section class="task-description">
-                    <p>Let's start with a simple "Hello, World!" program. Try running the code in the editor.</p>
-                </section>
-                
-                <section class="editor-container">
-                    <div id="editor1" class="code-editor" aria-label="Python code editor"></div>
-                    <div class="editor-buttons">
-                        <button class="run-button" data-editor="editor1" aria-label="Run code">Run Code</button>
-                        <button class="reset-button" data-editor="editor1" aria-label="Reset code">Reset</button>
-                    </div>
-                </section>
-                
-                <section class="output-container" id="output1" aria-live="polite">
-                    <h3>Output:</h3>
-                    <div class="output-content" role="log" aria-label="Code execution output"></div>
-                </section>
-                
-                <nav class="navigation-buttons">
-                    <button class="next-button" data-next="lesson2" aria-label="Go to next lesson">Next Lesson</button>
-                </nav>
-            </article>
-
-            <!-- Lesson 2 -->
-            <article class="lesson-container hidden" id="lesson2">
-                <header>
-                    <h2>Variables and Data Types</h2>
-                </header>
-                
-                <section class="task-description">
-                    <p>Create variables of different types and print their values.</p>
-                </section>
-                
-                <section class="editor-container">
-                    <div id="editor2" class="code-editor" aria-label="Python code editor"></div>
-                    <div class="editor-buttons">
-                        <button class="run-button" data-editor="editor2" aria-label="Run code">Run Code</button>
-                        <button class="reset-button" data-editor="editor2" aria-label="Reset code">Reset</button>
-                    </div>
-                </section>
-                
-                <section class="output-container" id="output2" aria-live="polite">
-                    <h3>Output:</h3>
-                    <div class="output-content" role="log" aria-label="Code execution output"></div>
-                </section>
-                
-                <nav class="navigation-buttons">
-                    <button class="prev-button" data-prev="lesson1" aria-label="Go to previous lesson">Previous Lesson</button>
-                    <button class="next-button" data-next="lesson3" aria-label="Go to next lesson">Next Lesson</button>
-                </nav>
-            </article>
-
-            <!-- Additional lessons would be added here -->
+        <main id="content" class="markdown-content">
+            <!-- Markdown-Inhalte werden hier dynamisch geladen -->
+            <div class="loading">
+                <p>Inhalte werden geladen...</p>
+            </div>
         </main>
 
         <!-- Instructions sidebar -->
-        <aside id="instructions" aria-label="Instructions">
-            <h2>Instructions</h2>
+        <aside id="instructions" aria-label="Anweisungen">
+            <h2>Anleitung</h2>
             <div class="instructions-content">
-                <h3>How to use this platform:</h3>
+                <h3>So verwendest du diese Plattform:</h3>
                 <ol>
-                    <li>Read the lesson description on each page</li>
-                    <li>Write your Python code in the editor</li>
-                    <li>Click "Run Code" to execute and see the output</li>
-                    <li>Use "Reset" to clear your code and start over</li>
-                    <li>Navigate between lessons using the buttons at the bottom</li>
+                    <li>Wähle ein Kapitel aus dem Menü links</li>
+                    <li>Lies die Erklärungen und Beispiele</li>
+                    <li>Schreibe und bearbeite Python-Code in den Editoren</li>
+                    <li>Klicke auf "Code ausführen", um den Code auszuführen</li>
+                    <li>Verwende "Zurücksetzen", um den Code auf den Ausgangszustand zurückzusetzen</li>
+                    <li>Markiere Kapitel als abgeschlossen, um deinen Fortschritt zu verfolgen</li>
                 </ol>
                 <div class="tip-box" role="note">
-                    <h4>Tip:</h4>
-                    <p>You can use the sidebar on the left to jump to any lesson directly.</p>
-                </div>
-                <div class="keyboard-shortcuts" aria-label="Keyboard shortcuts">
-                    <h4>Keyboard Shortcuts:</h4>
-                    <ul>
-                        <li><kbd>Ctrl</kbd> + <kbd>Enter</kbd>: Run code</li>
-                    </ul>
+                    <h4>Tipp:</h4>
+                    <p>Du kannst die Tastenkombination <kbd>Strg</kbd> + <kbd>Enter</kbd> verwenden, um Code schnell auszuführen.</p>
                 </div>
             </div>
         </aside>
@@ -137,13 +132,37 @@
             paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' },
             // Reduce initial load time by disabling unused features
             'vs/nls': {
-                availableLanguages: { '*': 'en' }
+                availableLanguages: { '*': 'de' }
             }
         };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
+    
+    <!-- Markdown Loader und Script -->
+    <script src="markdown-loader.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Initialisiere die Anwendung -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialisiere die Anwendung
+            if (typeof initializeApp === 'function') {
+                initializeApp();
+            } else {
+                console.error('initializeApp-Funktion nicht gefunden. Stelle sicher, dass markdown-loader.js korrekt geladen wurde.');
+            }
+            
+            // Sidebar-Toggle-Funktionalität
+            document.getElementById('toggle-sidebar-mobile').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+            
+            document.getElementById('toggle-sidebar-desktop').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
