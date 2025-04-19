@@ -256,22 +256,8 @@ body {
 
 @media (max-width: 992px) {
     .container {
-        grid-template-columns: 180px 1fr;
-        grid-template-areas: 
-            "sidebar content"
-            "instructions instructions";
-    }
-    
-    #instructions {
-        height: auto;
-        position: static;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
         grid-template-columns: 1fr;
-        grid-template-areas: 
+        grid-template-areas:
             "content"
             "instructions";
     }
@@ -280,17 +266,58 @@ body {
         position: fixed;
         left: -250px;
         z-index: 1000;
+        height: 100vh;
     }
     
     #sidebar.active {
         left: 0;
     }
     
+    #instructions {
+        height: auto;
+        position: static;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .editor-buttons, .navigation-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .navigation-buttons button {
+        width: 100%;
+    }
+}
+
+/* Mobile Sidebar Toggle Button */
+.sidebar-toggle-container {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+}
+
+#toggle-sidebar-mobile {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border: none;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 992px) {
     .sidebar-toggle-container {
         display: block;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 1001;
     }
 }

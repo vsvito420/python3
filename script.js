@@ -70,12 +70,23 @@ async function initializePyodide() {
 
 // Set up event listeners
 function setupEventListeners() {
-    // Toggle sidebar
-    const toggleSidebarButton = document.getElementById('toggle-sidebar');
-    toggleSidebarButton.addEventListener('click', function() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('active');
-    });
+    // Toggle sidebar (desktop)
+    const toggleSidebarDesktop = document.getElementById('toggle-sidebar-desktop');
+    if (toggleSidebarDesktop) {
+        toggleSidebarDesktop.addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        });
+    }
+    
+    // Toggle sidebar (mobile)
+    const toggleSidebarMobile = document.getElementById('toggle-sidebar-mobile');
+    if (toggleSidebarMobile) {
+        toggleSidebarMobile.addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        });
+    }
     
     // Run code buttons
     document.querySelectorAll('.run-button').forEach(button => {
