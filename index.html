@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Python Lessons</h3>
+                <button id="toggle-sidebar">☰</button>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="#lesson1">Lesson 1: Introduction</a></li>
+                <li><a href="#lesson2">Lesson 2: Variables</a></li>
+                <li><a href="#lesson3">Lesson 3: Control Flow</a></li>
+                <li><a href="#lesson4">Lesson 4: Functions</a></li>
+                <li><a href="#lesson5">Lesson 5: Data Structures</a></li>
+            </ul>
+        </nav>
+
+        <main id="content">
+            <div class="lesson-container" id="lesson1">
+                <h2>Introduction to Python</h2>
+                <div class="task-description">
+                    <p>Let's start with a simple "Hello, World!" program. Try running the code in the editor.</p>
+                </div>
+                <div class="editor-container">
+                    <div id="editor1" class="code-editor"></div>
+                    <div class="editor-buttons">
+                        <button class="run-button" data-editor="editor1">Run Code</button>
+                        <button class="reset-button" data-editor="editor1">Reset</button>
+                    </div>
+                </div>
+                <div class="output-container" id="output1">
+                    <h3>Output:</h3>
+                    <div class="output-content"></div>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="next-button" data-next="lesson2">Next Lesson</button>
+                </div>
+            </div>
+
+            <div class="lesson-container hidden" id="lesson2">
+                <h2>Variables and Data Types</h2>
+                <div class="task-description">
+                    <p>Create variables of different types and print their values.</p>
+                </div>
+                <div class="editor-container">
+                    <div id="editor2" class="code-editor"></div>
+                    <div class="editor-buttons">
+                        <button class="run-button" data-editor="editor2">Run Code</button>
+                        <button class="reset-button" data-editor="editor2">Reset</button>
+                    </div>
+                </div>
+                <div class="output-container" id="output2">
+                    <h3>Output:</h3>
+                    <div class="output-content"></div>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="prev-button" data-prev="lesson1">Previous Lesson</button>
+                    <button class="next-button" data-next="lesson3">Next Lesson</button>
+                </div>
+            </div>
+
+            <!-- Additional lessons would be added here -->
+        </main>
+
+        <aside id="instructions">
+            <h2>Instructions</h2>
+            <div class="instructions-content">
+                <h3>How to use this platform:</h3>
+                <ol>
+                    <li>Read the lesson description on each page</li>
+                    <li>Write your Python code in the editor</li>
+                    <li>Click "Run Code" to execute and see the output</li>
+                    <li>Use "Reset" to clear your code and start over</li>
+                    <li>Navigate between lessons using the buttons at the bottom</li>
+                </ol>
+                <div class="tip-box">
+                    <h4>Tip:</h4>
+                    <p>You can use the sidebar on the left to jump to any lesson directly.</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>var require = { paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } };</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
