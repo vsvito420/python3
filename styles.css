@@ -465,3 +465,25 @@ body {
         animation: none !important;
     }
 }
+
+/* Code-Editor-Container */
+.code-editor-container {
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Sprach-Tag für Codeblöcke */
+.language-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #2c3e50;
+    color: white;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-bottom-left-radius: 5px;
+    z-index: 10;
+}

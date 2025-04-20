@@ -156,6 +156,11 @@
             // Initialisiere die Anwendung
             if (typeof initializeApp === 'function') {
                 initializeApp();
+                
+                // Lade die README.md-Datei direkt
+                setTimeout(() => {
+                    loadMarkdownFile('README.md');
+                }, 1000);
             } else {
                 console.error('initializeApp-Funktion nicht gefunden. Stelle sicher, dass markdown-loader.js korrekt geladen wurde.');
             }

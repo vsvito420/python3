@@ -1,101 +1,184 @@
-# Python Learning Platform
+# Python-Lernplattform: Architektur und Wartungsanleitung
 
-A simple, interactive web-based platform for learning Python. This platform allows users to write and execute Python code directly in the browser using Pyodide and the Monaco code editor.
+Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern.
 
-## Features
+## Dateistruktur
 
-- Interactive Python code execution in the browser
-- Monaco code editor with syntax highlighting
-- Responsive layout with:
-  - Left: Collapsible navigation sidebar
-  - Middle: Code editor and output
-  - Right: Instructions panel
-- Multiple lessons with progressive learning
-- No server-side code required (all Python execution happens client-side)
+Die Plattform besteht aus folgenden Hauptdateien:
 
-## Project Structure
+| Datei | Beschreibung |
+|-------|-------------|
+| **index.html** | Hauptdatei mit der HTML-Struktur der Anwendung |
+| **styles.css** | Enthält alle Styling-Informationen und das responsive Layout |
+| **script.js** | Enthält JavaScript-Funktionen für den eigenständigen Code-Editor |
+| **markdown-loader.js** | Hauptlogik für das Laden und Verarbeiten von Markdown-Dateien |
+| **python-docs/** | Verzeichnis mit den Markdown-Dokumentationen, nach Kapiteln organisiert |
 
-- `index.html` - Main HTML file with the page structure
-- `styles.css` - CSS styling for the website
-- `script.js` - JavaScript code for editor initialization and Python execution
+## Hauptkomponenten
 
-## How It Works
+Die Anwendung besteht aus drei Hauptkomponenten:
 
-This platform uses:
+| Komponente | Beschreibung |
+|------------|-------------|
+| **Sidebar-Navigation** | Linke Seitenleiste mit Kapitelübersicht und Fortschrittsanzeige |
+| **Code-Editor** | Zentraler Bereich mit einem eigenständigen Python-Editor |
+| **Markdown-Inhalt** | Bereich unter dem Code-Editor, der die Lernmaterialien anzeigt |
 
-- [Pyodide](https://pyodide.org/) - A Python distribution for the browser, compiled to WebAssembly
-- [Monaco Editor](https://microsoft.github.io/monaco-editor/) - The code editor that powers VS Code, for a rich editing experience
+### Layout-Struktur
 
-## Local Development
+Das Layout verwendet CSS Grid mit folgender Struktur:
 
-To run this project locally:
-
-1. Clone this repository
-2. Open the project folder in your preferred code editor
-3. Use a local development server to serve the files (due to CORS restrictions)
-
-You can use any of these methods to start a local server:
-
-**Using Python:**
-```bash
-# Python 3
-python -m http.server
-
-# Python 2
-python -m SimpleHTTPServer
+```css
+.container {
+    display: grid;
+    grid-template-columns: 250px 300px 1fr;
+    grid-template-areas: "sidebar editor-sidebar content";
+}
 ```
 
-**Using Node.js:**
-```bash
-# Install http-server globally if you haven't already
-npm install -g http-server
+| Bereich | Beschreibung |
+|---------|-------------|
+| `sidebar` | Linke Navigationsleiste |
+| `editor-sidebar` | Code-Editor in der Mitte |
+| `content` | Markdown-Inhalt rechts |
 
-# Start the server
-http-server
+Auf mobilen Geräten ändert sich das Layout zu:
+
+```css
+.container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "editor-sidebar"
+        "content";
+}
 ```
 
-Then open your browser and navigate to `http://localhost:8000` (or the port shown in your terminal).
+## Markdown-Verarbeitung
 
-## Deploying to Cloudflare Pages
+Die Markdown-Verarbeitung erfolgt in `markdown-loader.js` und umfasst folgende Schritte:
 
-To deploy this website to Cloudflare Pages:
+1. **Laden der Markdown-Dateien**: Die Funktion `loadMarkdownFile(filePath)` lädt eine Markdown-Datei von einem angegebenen Pfad.
+2. **Pfadkorrektur**: Die Funktion `correctPath(path)` korrigiert Pfade in Markdown-Links.
+3. **Markdown-Parsing**: Die Funktion `parseMarkdown(markdown)` wandelt Markdown in HTML um.
+4. **Code-Block-Verarbeitung**: Code-Blöcke werden extrahiert und durch interaktive Editoren ersetzt.
 
-1. Create a Cloudflare account if you don't have one already
-2. Go to the Cloudflare Dashboard and navigate to Pages
-3. Click "Create a project"
-4. Connect your GitHub account and select this repository
-5. Configure your build settings:
-   - Build command: Leave empty (no build required)
-   - Build output directory: Leave as the default (usually `/`)
-6. Click "Save and Deploy"
+### Markdown-Datei-Cache
 
-Cloudflare Pages will automatically deploy your site and provide you with a URL.
+Die Plattform verwendet einen Cache für Markdown-Dateien, um die Ladezeiten zu verbessern:
 
-### Manual Deployment
+```javascript
+// Initialisiere den Markdown-Datei-Cache
+async function initializeMarkdownCache() {
+    markdownFileCache = {};
+    await scanDirectoryRecursively(DOCS_BASE_DIR);
+}
+```
 
-If you prefer to deploy manually:
+## Code-Editor-Funktionalität
 
-1. Go to Cloudflare Pages in your dashboard
-2. Click "Create a project"
-3. Select "Direct Upload"
-4. Drag and drop all the files from this project
-5. Click "Deploy site"
+Die Plattform bietet zwei Arten von Code-Editoren:
 
-## Customizing the Platform
+1. **Eingebettete Editoren**: In Markdown-Inhalten eingebettete Code-Blöcke werden zu interaktiven Editoren.
+2. **Eigenständiger Editor**: Ein separater Editor in der Seitenleiste für freies Experimentieren.
 
-### Adding New Lessons
+### Monaco Editor Integration
 
-To add new lessons, edit the `index.html` file:
+Die Plattform verwendet den Monaco Editor für die Code-Bearbeitung:
 
-1. Add a new lesson item to the sidebar menu
-2. Create a new lesson container with the appropriate ID
-3. Add the lesson content, editor, and output elements
-4. Update the `defaultCode` object in `script.js` with the default code for the new lesson
+```javascript
+// Erstelle den Editor
+const standaloneEditor = monaco.editor.create(document.getElementById('standalone-editor'), {
+    value: '# Schreibe deinen Python-Code hier\n\n# Beispiel:\nprint("Hallo, Welt!")',
+    language: 'python',
+    theme: 'vs-dark',
+    automaticLayout: true,
+    // weitere Optionen...
+});
+```
 
-### Modifying the Layout
+### Pyodide Integration
 
-The layout uses CSS Grid and is fully responsive. You can modify the layout by editing the CSS in `styles.css`.
+Die Python-Code-Ausführung erfolgt mit Pyodide:
 
-## License
+```javascript
+// Lade Pyodide
+async function loadPyodideIfNeeded() {
+    if (window.pyodide) return window.pyodide;
+    // Lade Pyodide...
+    window.pyodide = await loadPyodide();
+    return window.pyodide;
+}
 
-This project is open source and available under the MIT License.
+// Führe Python-Code aus
+async function runPythonCode(editorId) {
+    // Code ausführen und Ausgabe anzeigen...
+}
+```
+
+## Responsive Design
+
+Die Plattform verwendet ein responsives Design mit drei Breakpoints:
+
+| Gerät | Bildschirmgröße | Layout |
+|-------|----------------|--------|
+| **Mobile** | < 768px | Einspaltiges Layout, ausgeblendete Seitenleisten |
+| **Tablet** | 768px - 992px | Zweispaltiges Layout |
+| **Desktop** | > 992px | Dreispaltiges Layout mit allen Komponenten sichtbar |
+
+### Ein-/Ausklappbare Komponenten
+
+Beide Seitenleisten können ein- und ausgeklappt werden:
+
+```javascript
+// Toggle-Button für den Editor-Sidebar
+document.getElementById('toggle-editor-sidebar').addEventListener('click', function() {
+    document.getElementById('code-editor-sidebar').classList.toggle('collapsed');
+    // Layout aktualisieren...
+});
+```
+
+## Erweiterungsmöglichkeiten
+
+### Neue Kapitel hinzufügen
+
+Um neue Kapitel hinzuzufügen:
+
+1. Erstelle eine neue Markdown-Datei im entsprechenden Kapitel-Verzeichnis
+2. Füge einen Link zur neuen Datei in der Hauptseite (`Anfang_Lese_Mich.md`) hinzu
+
+### Neue Funktionen hinzufügen
+
+Für neue Funktionen:
+
+1. **Neue UI-Elemente**: Füge HTML in `index.html` hinzu
+2. **Styling**: Erweitere `styles.css`
+3. **Funktionalität**: Implementiere JavaScript in `script.js` oder `markdown-loader.js`
+
+## Wartungstipps
+
+### Häufige Probleme
+
+| Problem | Lösung |
+|---------|--------|
+| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache |
+| **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung |
+| **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration |
+
+### Performance-Optimierung
+
+Die Plattform verwendet mehrere Techniken zur Performance-Optimierung:
+
+| Technik | Beschreibung |
+|---------|-------------|
+| **Lazy Loading** | Pyodide wird erst geladen, wenn es benötigt wird |
+| **Debouncing** | Verhindert zu häufige Layout-Aktualisierungen |
+| **Caching** | Markdown-Dateien werden gecacht |
+
+### Browser-Kompatibilität
+
+Die Plattform wurde für moderne Browser optimiert. Bei Problemen mit älteren Browsern:
+
+| Überprüfung | Details |
+|-------------|---------|
+| CSS-Kompatibilität | Grid, Flexbox |
+| JavaScript-Kompatibilität | async/await, ES6-Features |

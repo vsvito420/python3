@@ -328,17 +328,45 @@ function parseMarkdown(markdown) {
     // Temporäre Platzhalter für Code-Blöcke
     const codePlaceholders = [];
     
-    // Ersetze Code-Blöcke mit drei Backticks und speichere sie
-    let processedMarkdown = markdown.replace(/```python\n([\s\S]*?)```/g, (match, code) => {
-        const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
-        codePlaceholders.push({ type: 'code', code: code.trim() });
+    // Temporäre Platzhalter für Inline-Code, um sie vor der Codeblock-Verarbeitung zu schützen
+    const inlineCodePlaceholders = [];
+    
+    // Schütze Inline-Code vor der Codeblock-Verarbeitung
+    let tempMarkdown = markdown.replace(/`([^`\n]+?)`/g, (match, code) => {
+        const placeholder = `__INLINE_CODE_${inlineCodePlaceholders.length}__`;
+        inlineCodePlaceholders.push(code);
         return placeholder;
     });
     
-    // Ersetze auch Code-Blöcke mit einem Backtick und speichere sie
-    processedMarkdown = processedMarkdown.replace(/`python\n([\s\S]*?)`/g, (match, code) => {
+    // Protokolliere den Markdown-Inhalt für Debugging-Zwecke
+    console.log("Verarbeite Markdown:", tempMarkdown.substring(0, 200) + "...");
+    
+    // Ersetze alle Code-Blöcke mit drei Backticks, unabhängig von der Sprache
+    // Wichtig: Diese Regex muss vor der spezifischeren Regex für Sprachen kommen
+    let processedMarkdown = tempMarkdown;
+    
+    // Ersetze Code-Blöcke mit drei Backticks und einer Sprachbezeichnung
+    // Wir verwenden einen einfacheren Ansatz mit String.replace und einer Funktion
+    processedMarkdown = tempMarkdown.replace(/```([\w-]*)\n([\s\S]*?)```/g, function(match, language, code) {
         const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
-        codePlaceholders.push({ type: 'code', code: code.trim() });
+        language = language.trim() || 'text';
+        code = code.trim();
+        
+        console.log(`Codeblock gefunden mit Sprache: "${language}", Code: "${code.substring(0, 50)}..."`);
+        
+        codePlaceholders.push({
+            type: 'code',
+            code: code,
+            language: language
+        });
+        
+        return placeholder;
+    });
+    
+    // Ersetze Code-Blöcke mit einem Backtick und einer Sprachbezeichnung
+    processedMarkdown = processedMarkdown.replace(/`(\w+)\n([\s\S]*?)\n`/g, (match, language, code) => {
+        const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
+        codePlaceholders.push({ type: 'code', code: code.trim(), language: language || 'text' });
         return placeholder;
     });
     
@@ -346,10 +374,15 @@ function parseMarkdown(markdown) {
     processedMarkdown = processedMarkdown.replace(/^python\s*$([\s\S]*?)(?=^[a-zA-Z]|\n\s*\n|$)/gm, (match, code) => {
         if (code.trim()) {
             const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
-            codePlaceholders.push({ type: 'code', code: code.trim() });
+            codePlaceholders.push({ type: 'code', code: code.trim(), language: 'python' });
             return placeholder;
         }
         return match;
+    });
+    
+    // Stelle Inline-Code wieder her
+    inlineCodePlaceholders.forEach((code, index) => {
+        processedMarkdown = processedMarkdown.replace(`__INLINE_CODE_${index}__`, `<code>${code}</code>`);
     });
     
     // Ersetze Überschriften
@@ -382,7 +415,7 @@ function parseMarkdown(markdown) {
     // Ersetze Hervorhebungen
     processedMarkdown = processedMarkdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     processedMarkdown = processedMarkdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
-    processedMarkdown = processedMarkdown.replace(/`(.*?)`/g, '<code>$1</code>');
+    // Inline-Code wurde bereits oben ersetzt
     
     // Ersetze horizontale Linien
     processedMarkdown = processedMarkdown.replace(/^---$/gm, '<hr>');
@@ -391,8 +424,24 @@ function parseMarkdown(markdown) {
     codePlaceholders.forEach((placeholder, index) => {
         if (placeholder.type === 'code') {
             const id = `code-block-${codeBlocks.length}`;
-            codeBlocks.push({ id, code: placeholder.code });
-            processedMarkdown = processedMarkdown.replace(`__CODE_BLOCK_${index}__`, `<div id="${id}" class="code-editor-container"></div>`);
+            const language = placeholder.language || 'text';
+            
+            // Protokolliere den Codeblock für Debugging-Zwecke
+            console.log(`Erstelle Codeblock mit ID ${id}, Sprache: ${language}`);
+            console.log(`Code-Anfang: "${placeholder.code.substring(0, 50)}..."`);
+            
+            // Füge den Codeblock zur globalen Liste hinzu
+            codeBlocks.push({
+                id,
+                code: placeholder.code,
+                language: language
+            });
+            
+            // Ersetze den Platzhalter durch einen Container für den Code-Editor
+            processedMarkdown = processedMarkdown.replace(
+                `__CODE_BLOCK_${index}__`,
+                `<div id="${id}" class="code-editor-container" data-language="${language}"></div>`
+            );
         }
     });
     
@@ -408,30 +457,86 @@ function parseMarkdown(markdown) {
 
 // Initialisiere interaktive Code-Blöcke
 function initializeCodeBlocks() {
-    codeBlocks.forEach(({ id, code }) => {
+    codeBlocks.forEach(({ id, code, language }) => {
         const container = document.getElementById(id);
-        if (!container) return;
+        if (!container) {
+            console.error(`Container für Codeblock ${id} nicht gefunden`);
+            return;
+        }
         
-        // Erstelle Editor-Container
-        container.innerHTML = `
-            <div class="editor-container">
-                <div id="${id}-editor" class="code-editor"></div>
+        console.log(`Initialisiere Codeblock ${id} mit Sprache ${language}`);
+        
+        // Zeige die Sprache des Codeblocks an
+        const languageDisplay = language ? `<div class="language-tag">${language}</div>` : '';
+        
+        // Erstelle Editor-Container mit angepassten Buttons je nach Sprache
+        let editorButtons = '';
+        if (language === 'python') {
+            editorButtons = `
                 <div class="editor-buttons">
                     <button class="run-button" data-editor="${id}-editor">Code ausführen</button>
                     <button class="reset-button" data-editor="${id}-editor">Zurücksetzen</button>
                 </div>
+            `;
+        } else {
+            editorButtons = `
+                <div class="editor-buttons">
+                    <button class="reset-button" data-editor="${id}-editor">Zurücksetzen</button>
+                </div>
+            `;
+        }
+        
+        // Erstelle unterschiedliche Ausgabe-Container je nach Sprache
+        let outputContainer = '';
+        if (language === 'python') {
+            outputContainer = `
+                <div class="output-container" id="${id}-output">
+                    <h3>Ausgabe:</h3>
+                    <div class="output-content"></div>
+                </div>
+            `;
+        } else {
+            outputContainer = `
+                <div class="output-container" id="${id}-output" style="display: none;">
+                    <div class="output-content"></div>
+                </div>
+            `;
+        }
+        
+        // Setze den HTML-Inhalt des Containers
+        container.innerHTML = `
+            ${languageDisplay}
+            <div class="editor-container">
+                <div id="${id}-editor" class="code-editor"></div>
+                ${editorButtons}
             </div>
-            <div class="output-container" id="${id}-output">
-                <h3>Ausgabe:</h3>
-                <div class="output-content"></div>
-            </div>
+            ${outputContainer}
         `;
         
         // Initialisiere Monaco Editor
         require(['vs/editor/editor.main'], function() {
+            // Bestimme die Sprache für den Editor
+            const codeBlock = codeBlocks.find(block => block.id === id);
+            const language = codeBlock && codeBlock.language ? codeBlock.language : 'python';
+            
+            // Mappe Markdown-Sprachbezeichnungen auf Monaco-Editor-Sprachbezeichnungen
+            let editorLanguage = 'plaintext';
+            if (language === 'python') editorLanguage = 'python';
+            else if (language === 'javascript' || language === 'js') editorLanguage = 'javascript';
+            else if (language === 'typescript' || language === 'ts') editorLanguage = 'typescript';
+            else if (language === 'html') editorLanguage = 'html';
+            else if (language === 'css') editorLanguage = 'css';
+            else if (language === 'json') editorLanguage = 'json';
+            else if (language === 'xml') editorLanguage = 'xml';
+            else if (language === 'markdown' || language === 'md') editorLanguage = 'markdown';
+            else if (language === 'sql') editorLanguage = 'sql';
+            else if (language === 'java') editorLanguage = 'java';
+            else if (language === 'c' || language === 'cpp' || language === 'c++') editorLanguage = 'cpp';
+            else if (language === 'csharp' || language === 'c#') editorLanguage = 'csharp';
+            
             editors[`${id}-editor`] = monaco.editor.create(document.getElementById(`${id}-editor`), {
                 value: code,
-                language: 'python',
+                language: editorLanguage,
                 theme: 'vs-dark',
                 automaticLayout: true,
                 minimap: {
@@ -514,7 +619,7 @@ async function loadPyodideIfNeeded() {
     }
 }
 
-// Führe Python-Code aus
+// Führe Code aus
 async function runPythonCode(editorId) {
     if (!editors[editorId]) {
         console.error(`Editor ${editorId} nicht gefunden`);
@@ -527,6 +632,17 @@ async function runPythonCode(editorId) {
     
     if (!outputElement) {
         console.error(`Output-Element für ${editorId} nicht gefunden`);
+        return;
+    }
+    
+    // Finde den zugehörigen Code-Block, um die Sprache zu bestimmen
+    const originalId = editorId.replace('-editor', '');
+    const codeBlock = codeBlocks.find(block => block.id === originalId);
+    const language = codeBlock && codeBlock.language ? codeBlock.language : 'python';
+    
+    // Wenn es kein Python-Code ist, zeige nur den Code an
+    if (language !== 'python') {
+        outputElement.textContent = 'Hinweis: Ausführung ist nur für Python-Code verfügbar. Andere Sprachen werden nur angezeigt.';
         return;
     }
     
@@ -572,6 +688,27 @@ function resetEditor(editorId) {
     
     if (codeBlock && editors[editorId]) {
         editors[editorId].setValue(codeBlock.code);
+        
+        // Wenn die Sprache geändert wurde, aktualisiere auch die Sprache des Editors
+        const editorModel = editors[editorId].getModel();
+        if (editorModel && codeBlock.language) {
+            // Mappe Markdown-Sprachbezeichnungen auf Monaco-Editor-Sprachbezeichnungen
+            let editorLanguage = 'plaintext';
+            if (codeBlock.language === 'python') editorLanguage = 'python';
+            else if (codeBlock.language === 'javascript' || codeBlock.language === 'js') editorLanguage = 'javascript';
+            else if (codeBlock.language === 'typescript' || codeBlock.language === 'ts') editorLanguage = 'typescript';
+            else if (codeBlock.language === 'html') editorLanguage = 'html';
+            else if (codeBlock.language === 'css') editorLanguage = 'css';
+            else if (codeBlock.language === 'json') editorLanguage = 'json';
+            else if (codeBlock.language === 'xml') editorLanguage = 'xml';
+            else if (codeBlock.language === 'markdown' || codeBlock.language === 'md') editorLanguage = 'markdown';
+            else if (codeBlock.language === 'sql') editorLanguage = 'sql';
+            else if (codeBlock.language === 'java') editorLanguage = 'java';
+            else if (codeBlock.language === 'c' || codeBlock.language === 'cpp' || codeBlock.language === 'c++') editorLanguage = 'cpp';
+            else if (codeBlock.language === 'csharp' || codeBlock.language === 'c#') editorLanguage = 'csharp';
+            
+            monaco.editor.setModelLanguage(editorModel, editorLanguage);
+        }
     }
 }
 
