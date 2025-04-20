@@ -2,6 +2,36 @@
 
 Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern.
 
+## Deployment auf Cloudflare Pages
+
+Diese Anwendung wird automatisch auf Cloudflare Pages deployt, wenn Änderungen zum Hauptbranch gepusht werden. Das Deployment wird durch GitHub Actions und Wrangler (Cloudflare's CLI-Tool) gesteuert.
+
+### Einrichtung der GitHub Secrets
+
+Um das automatische Deployment zu ermöglichen, müssen folgende GitHub Secrets eingerichtet werden:
+
+1. Gehen Sie zu Ihrem GitHub-Repository
+2. Navigieren Sie zu "Settings" > "Secrets and variables" > "Actions"
+3. Fügen Sie folgende Secrets hinzu:
+   - `CLOUDFLARE_API_TOKEN`: Ein API-Token von Cloudflare mit Berechtigung zum Deployment auf Pages
+   - `CLOUDFLARE_ACCOUNT_ID`: Ihre Cloudflare Account ID
+
+### Erstellen eines Cloudflare API-Tokens
+
+1. Melden Sie sich bei Ihrem Cloudflare-Dashboard an
+2. Gehen Sie zu "My Profile" > "API Tokens"
+3. Klicken Sie auf "Create Token"
+4. Wählen Sie "Create Custom Token"
+5. Geben Sie dem Token einen Namen (z.B. "GitHub Actions Deployment")
+6. Fügen Sie folgende Berechtigungen hinzu:
+   - Account > Cloudflare Pages > Edit
+   - Zone > Zone > Read
+7. Erstellen Sie das Token und kopieren Sie es (Sie werden es nur einmal sehen)
+
+### Finden Ihrer Cloudflare Account ID
+
+Ihre Cloudflare Account ID finden Sie im Cloudflare Dashboard unter "Workers & Pages" > "Overview" in der URL oder in der rechten Seitenleiste.
+
 ## Dateistruktur
 
 Die Plattform besteht aus folgenden Hauptdateien:
