@@ -103,17 +103,17 @@
         <aside id="code-editor-sidebar" aria-label="Code-Editor">
             <div class="sidebar-header">
                 <h2>Python Code-Editor</h2>
-                <button id="toggle-editor-sidebar" aria-label="Code-Editor umschalten">
-                    <span class="toggle-icon-open">✕</span>
-                    <span class="toggle-icon-closed">☰</span>
-                </button>
+                <div class="editor-header-buttons">
+                    <button id="standalone-run-button" class="run-button">Code ausführen</button>
+                    <button id="standalone-reset-button" class="reset-button">Zurücksetzen</button>
+                    <button id="toggle-editor-sidebar" aria-label="Code-Editor umschalten">
+                        <span class="toggle-icon-open">✕</span>
+                        <span class="toggle-icon-closed">☰</span>
+                    </button>
+                </div>
             </div>
             <div class="editor-sidebar-content">
                 <div id="standalone-editor" class="code-editor"></div>
-                <div class="editor-buttons">
-                    <button id="standalone-run-button" class="run-button">Code ausführen</button>
-                    <button id="standalone-reset-button" class="reset-button">Zurücksetzen</button>
-                </div>
                 <div class="output-container" id="standalone-output">
                     <h3>Ausgabe:</h3>
                     <div class="output-content"></div>

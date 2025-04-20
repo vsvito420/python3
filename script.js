@@ -171,11 +171,22 @@ function initializeStandaloneEditor() {
 
     // Toggle-Button für den Editor-Sidebar
     document.getElementById('toggle-editor-sidebar').addEventListener('click', function() {
-        document.getElementById('code-editor-sidebar').classList.toggle('collapsed');
+        const editorSidebar = document.getElementById('code-editor-sidebar');
+        editorSidebar.classList.toggle('collapsed');
         
         // Layout des Editors aktualisieren, wenn er sichtbar ist
-        if (!document.getElementById('code-editor-sidebar').classList.contains('collapsed')) {
+        if (!editorSidebar.classList.contains('collapsed')) {
             setTimeout(() => standaloneEditor.layout(), 300);
+            
+            // Stelle sicher, dass der Resize-Handle sichtbar ist (nur auf Desktop)
+            if (window.innerWidth >= 992) {
+                document.getElementById('vertical-resize-handle').style.display = 'block';
+            }
+        } else {
+            // Wenn der Editor eingeklappt ist, setze die Container-Spalten zurück
+            if (window.innerWidth >= 992) {
+                document.querySelector('.container').style.gridTemplateColumns = '250px 50px 1fr';
+            }
         }
     });
 
@@ -208,24 +219,33 @@ function initializeStandaloneEditor() {
     const verticalResizeHandle = document.getElementById('vertical-resize-handle');
     let startX, startWidth, container, editorSidebar, contentArea;
 
-    verticalResizeHandle.addEventListener('mousedown', function(e) {
-        startX = e.clientX;
-        container = document.querySelector('.container');
-        editorSidebar = document.getElementById('code-editor-sidebar');
-        contentArea = document.getElementById('content');
-        
-        // Aktuelle Breite des Editor-Sidebars ermitteln
-        const computedStyle = window.getComputedStyle(editorSidebar);
-        startWidth = parseInt(computedStyle.width, 10);
-        
-        document.addEventListener('mousemove', resizeHorizontal);
-        document.addEventListener('mouseup', stopHorizontalResize);
-        document.body.style.cursor = 'ew-resize';
-        document.body.style.userSelect = 'none';
-        e.preventDefault();
-    });
+    // Nur auf Desktop-Geräten aktivieren
+    if (verticalResizeHandle) {
+        verticalResizeHandle.addEventListener('mousedown', function(e) {
+            // Nur fortfahren, wenn wir auf einem Desktop-Gerät sind
+            if (window.innerWidth < 992) return;
+            
+            startX = e.clientX;
+            container = document.querySelector('.container');
+            editorSidebar = document.getElementById('code-editor-sidebar');
+            contentArea = document.getElementById('content');
+            
+            // Aktuelle Breite des Editor-Sidebars ermitteln
+            const computedStyle = window.getComputedStyle(editorSidebar);
+            startWidth = parseInt(computedStyle.width, 10);
+            
+            document.addEventListener('mousemove', resizeHorizontal);
+            document.addEventListener('mouseup', stopHorizontalResize);
+            document.body.style.cursor = 'ew-resize';
+            document.body.style.userSelect = 'none';
+            e.preventDefault();
+        });
+    }
 
     function resizeHorizontal(e) {
+        // Nur fortfahren, wenn wir auf einem Desktop-Gerät sind
+        if (window.innerWidth < 992) return;
+        
         const deltaX = e.clientX - startX;
         const newWidth = Math.max(200, Math.min(800, startWidth + deltaX)); // Min 200px, Max 800px
         
@@ -250,4 +270,25 @@ function initializeStandaloneEditor() {
 // Initialisiere den eigenständigen Editor, wenn die Seite geladen ist
 document.addEventListener('DOMContentLoaded', function() {
     initializeStandaloneEditor();
+    
+    // Überprüfe die Fenstergröße und passe die Anzeige des Resize-Handles an
+    function checkWindowSize() {
+        const verticalResizeHandle = document.getElementById('vertical-resize-handle');
+        if (verticalResizeHandle) {
+            if (window.innerWidth < 992) {
+                verticalResizeHandle.style.display = 'none';
+            } else {
+                // Nur anzeigen, wenn der Editor nicht eingeklappt ist
+                if (!document.getElementById('code-editor-sidebar').classList.contains('collapsed')) {
+                    verticalResizeHandle.style.display = 'block';
+                }
+            }
+        }
+    }
+    
+    // Initial prüfen
+    checkWindowSize();
+    
+    // Bei Größenänderung prüfen
+    window.addEventListener('resize', checkWindowSize);
 });

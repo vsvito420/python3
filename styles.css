@@ -301,6 +301,18 @@ body {
     align-items: center;
 }
 
+.editor-header-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.editor-header-buttons .run-button,
+.editor-header-buttons .reset-button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
 #code-editor-sidebar h2 {
     margin: 0;
     font-size: 1.2rem;
@@ -350,7 +362,16 @@ body {
     display: none;
 }
 
+#code-editor-sidebar.collapsed .vertical-resize-handle {
+    display: none;
+}
+
 #code-editor-sidebar.collapsed h2 {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed .editor-header-buttons .run-button,
+#code-editor-sidebar.collapsed .editor-header-buttons .reset-button {
     display: none;
 }
 
@@ -392,6 +413,11 @@ body {
         "content";
 }
 
+/* Hide vertical resize handle on mobile */
+.vertical-resize-handle {
+    display: none;
+}
+
 #sidebar {
     position: fixed;
     transform: translateX(-100%);
@@ -408,6 +434,7 @@ body {
     height: auto;
     position: static;
     max-width: 100%;
+    width: 100% !important; /* Force full width on mobile */
 }
 
 .editor-buttons, .navigation-buttons {
@@ -451,7 +478,12 @@ body {
     #code-editor-sidebar {
         height: 100vh;
         position: sticky;
-        resize: horizontal;
+        width: auto !important; /* Override mobile width */
+    }
+    
+    /* Show vertical resize handle on desktop */
+    .vertical-resize-handle {
+        display: block;
     }
 }
 
