@@ -76,7 +76,10 @@
         <nav id="sidebar" aria-label="Kapitel-Navigation">
             <header class="sidebar-header">
                 <h1>Python Lernen</h1>
-                <button id="toggle-sidebar-desktop" aria-label="Navigationsmenü schließen">✕</button>
+                <button id="toggle-sidebar-desktop" aria-label="Navigationsmenü umschalten">
+                    <span class="toggle-icon-open">✕</span>
+                    <span class="toggle-icon-closed">☰</span>
+                </button>
             </header>
             
             <!-- Fortschritts-Tracker -->
@@ -90,39 +93,42 @@
             <!-- Dynamisch generiertes Menü -->
             <ul class="sidebar-menu" role="menu">
                 <li class="active" role="menuitem">
-                    <a href="javascript:void(0)" onclick="loadMarkdownFile('alte-markdown-dateien/Kapitel_0/Anfang_Lese_Mich.md')" aria-current="page">Hauptseite</a>
+                    <a href="javascript:void(0)" onclick="loadMarkdownFile('python-docs/Kapitel_0/Anfang_Lese_Mich.md')" aria-current="page">Hauptseite</a>
                 </li>
                 <!-- Weitere Menüpunkte werden dynamisch hinzugefügt -->
             </ul>
         </nav>
 
-        <!-- Main content area -->
+        <!-- Code Editor (jetzt vor dem Hauptinhalt) -->
+        <aside id="code-editor-sidebar" aria-label="Code-Editor">
+            <div class="sidebar-header">
+                <h2>Python Code-Editor</h2>
+                <button id="toggle-editor-sidebar" aria-label="Code-Editor umschalten">
+                    <span class="toggle-icon-open">✕</span>
+                    <span class="toggle-icon-closed">☰</span>
+                </button>
+            </div>
+            <div class="editor-sidebar-content">
+                <div id="standalone-editor" class="code-editor"></div>
+                <div class="editor-buttons">
+                    <button id="standalone-run-button" class="run-button">Code ausführen</button>
+                    <button id="standalone-reset-button" class="reset-button">Zurücksetzen</button>
+                </div>
+                <div class="output-container" id="standalone-output">
+                    <h3>Ausgabe:</h3>
+                    <div class="output-content"></div>
+                </div>
+                <div class="resize-handle" id="editor-resize-handle"></div>
+            </div>
+        </aside>
+        
+        <!-- Main content area (jetzt nach dem Code-Editor) -->
         <main id="content" class="markdown-content">
             <!-- Markdown-Inhalte werden hier dynamisch geladen -->
             <div class="loading">
                 <p>Inhalte werden geladen...</p>
             </div>
         </main>
-
-        <!-- Instructions sidebar -->
-        <aside id="instructions" aria-label="Anweisungen">
-            <h2>Anleitung</h2>
-            <div class="instructions-content">
-                <h3>So verwendest du diese Plattform:</h3>
-                <ol>
-                    <li>Wähle ein Kapitel aus dem Menü links</li>
-                    <li>Lies die Erklärungen und Beispiele</li>
-                    <li>Schreibe und bearbeite Python-Code in den Editoren</li>
-                    <li>Klicke auf "Code ausführen", um den Code auszuführen</li>
-                    <li>Verwende "Zurücksetzen", um den Code auf den Ausgangszustand zurückzusetzen</li>
-                    <li>Markiere Kapitel als abgeschlossen, um deinen Fortschritt zu verfolgen</li>
-                </ol>
-                <div class="tip-box" role="note">
-                    <h4>Tipp:</h4>
-                    <p>Du kannst die Tastenkombination <kbd>Strg</kbd> + <kbd>Enter</kbd> verwenden, um Code schnell auszuführen.</p>
-                </div>
-            </div>
-        </aside>
     </div>
 
     <!-- Scripts with optimized loading -->
@@ -161,6 +167,26 @@
             
             document.getElementById('toggle-sidebar-desktop').addEventListener('click', function() {
                 document.getElementById('sidebar').classList.toggle('active');
+            });
+            
+            // Setze den initialen Zustand der Sidebar basierend auf der Bildschirmgröße
+            function setInitialSidebarState() {
+                const sidebar = document.getElementById('sidebar');
+                if (window.innerWidth < 992) {
+                    // Auf kleinen Bildschirmen ausblenden
+                    sidebar.classList.remove('active');
+                } else {
+                    // Auf großen Bildschirmen anzeigen
+                    sidebar.classList.add('active');
+                }
+            }
+            
+            // Setze den initialen Zustand
+            setInitialSidebarState();
+            
+            // Aktualisiere den Zustand bei Änderung der Fenstergröße
+            window.addEventListener('resize', function() {
+                setInitialSidebarState();
             });
         });
     </script>

@@ -325,11 +325,31 @@ function parseMarkdown(markdown) {
     // Speichere Code-Blöcke für spätere Verarbeitung
     codeBlocks = [];
     
-    // Ersetze Code-Blöcke mit Platzhaltern
+    // Temporäre Platzhalter für Code-Blöcke
+    const codePlaceholders = [];
+    
+    // Ersetze Code-Blöcke mit drei Backticks und speichere sie
     let processedMarkdown = markdown.replace(/```python\n([\s\S]*?)```/g, (match, code) => {
-        const id = `code-block-${codeBlocks.length}`;
-        codeBlocks.push({ id, code: code.trim() });
-        return `<div id="${id}" class="code-editor-container"></div>`;
+        const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
+        codePlaceholders.push({ type: 'code', code: code.trim() });
+        return placeholder;
+    });
+    
+    // Ersetze auch Code-Blöcke mit einem Backtick und speichere sie
+    processedMarkdown = processedMarkdown.replace(/`python\n([\s\S]*?)`/g, (match, code) => {
+        const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
+        codePlaceholders.push({ type: 'code', code: code.trim() });
+        return placeholder;
+    });
+    
+    // Ersetze Code-Blöcke, die nur mit dem Wort "python" in einer eigenen Zeile beginnen
+    processedMarkdown = processedMarkdown.replace(/^python\s*$([\s\S]*?)(?=^[a-zA-Z]|\n\s*\n|$)/gm, (match, code) => {
+        if (code.trim()) {
+            const placeholder = `__CODE_BLOCK_${codePlaceholders.length}__`;
+            codePlaceholders.push({ type: 'code', code: code.trim() });
+            return placeholder;
+        }
+        return match;
     });
     
     // Ersetze Überschriften
@@ -366,6 +386,15 @@ function parseMarkdown(markdown) {
     
     // Ersetze horizontale Linien
     processedMarkdown = processedMarkdown.replace(/^---$/gm, '<hr>');
+    
+    // Ersetze die Code-Block-Platzhalter durch tatsächliche Code-Editoren
+    codePlaceholders.forEach((placeholder, index) => {
+        if (placeholder.type === 'code') {
+            const id = `code-block-${codeBlocks.length}`;
+            codeBlocks.push({ id, code: placeholder.code });
+            processedMarkdown = processedMarkdown.replace(`__CODE_BLOCK_${index}__`, `<div id="${id}" class="code-editor-container"></div>`);
+        }
+    });
     
     // Füge Navigationsbuttons hinzu
     processedMarkdown += `
@@ -451,6 +480,40 @@ function initializeCodeBlocks() {
     }
 }
 
+// Lade Pyodide
+async function loadPyodideIfNeeded() {
+    // Wenn Pyodide bereits geladen ist, gib es zurück
+    if (window.pyodide) {
+        return window.pyodide;
+    }
+    
+    // Wenn Pyodide gerade geladen wird, warte auf den Abschluss
+    if (window.pyodideLoading) {
+        // Warte, bis das Laden abgeschlossen ist
+        while (window.pyodideLoading) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        return window.pyodide;
+    }
+    
+    // Setze Flag, dass Pyodide geladen wird
+    window.pyodideLoading = true;
+    
+    try {
+        console.log("Lade Pyodide...");
+        // Lade Pyodide
+        window.pyodide = await loadPyodide();
+        console.log("Pyodide erfolgreich geladen!");
+        return window.pyodide;
+    } catch (error) {
+        console.error("Fehler beim Laden von Pyodide:", error);
+        throw error;
+    } finally {
+        // Setze Flag zurück
+        window.pyodideLoading = false;
+    }
+}
+
 // Führe Python-Code aus
 async function runPythonCode(editorId) {
     if (!editors[editorId]) {
@@ -471,13 +534,11 @@ async function runPythonCode(editorId) {
     
     try {
         // Lade Pyodide, falls noch nicht geladen
-        if (!window.pyodide) {
-            try {
-                window.pyodide = await loadPyodide();
-            } catch (error) {
-                outputElement.textContent = `Fehler beim Laden der Python-Umgebung: ${error.message}`;
-                return;
-            }
+        try {
+            await loadPyodideIfNeeded();
+        } catch (error) {
+            outputElement.textContent = `Fehler beim Laden der Python-Umgebung: ${error.message}`;
+            return;
         }
         
         // Umleiten der Standardausgabe

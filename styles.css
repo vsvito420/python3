@@ -50,8 +50,8 @@ body {
 /* Layout */
 .container {
     display: grid;
-    grid-template-columns: 250px 1fr 300px;
-    grid-template-areas: "sidebar content instructions";
+    grid-template-columns: 250px 300px 1fr;
+    grid-template-areas: "sidebar editor-sidebar content";
     min-height: 100vh;
     max-width: 100%;
     will-change: grid-template-columns; /* Performance optimization for grid changes */
@@ -86,6 +86,24 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
     padding: var(--spacing-xs);
+    position: relative;
+}
+
+.toggle-icon-open, .toggle-icon-closed {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+}
+
+.toggle-icon-closed {
+    display: none;
+}
+
+#sidebar:not(.active) .toggle-icon-open {
+    display: none;
+}
+
+#sidebar:not(.active) .toggle-icon-closed {
+    display: inline-block;
 }
 
 .sidebar-menu {
@@ -239,55 +257,85 @@ body {
     background-color: var(--neutral-hover);
 }
 
-/* Instructions Sidebar Styles */
-#instructions {
-    grid-area: instructions;
+/* Code Editor Sidebar Styles */
+#code-editor-sidebar {
+    grid-area: editor-sidebar;
     background-color: var(--light-gray);
-    padding: var(--spacing-xl);
     box-shadow: var(--shadow-sm);
     overflow-y: auto;
     height: 100vh;
     position: sticky;
     top: 0;
     z-index: 5;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
 }
 
-#instructions h2 {
-    margin-bottom: var(--spacing-lg);
-    color: var(--secondary-color);
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: var(--spacing-md);
+#code-editor-sidebar .sidebar-header {
+    padding: var(--spacing-md);
+    background-color: var(--secondary-color);
+    color: var(--light-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.instructions-content {
-    line-height: 1.6;
+#code-editor-sidebar h2 {
+    margin: 0;
+    font-size: 1.2rem;
 }
 
-.instructions-content h3 {
-    margin: var(--spacing-lg) 0 var(--spacing-md);
-    color: var(--secondary-color);
+#toggle-editor-sidebar {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
 }
 
-.instructions-content ol {
-    padding-left: var(--spacing-xl);
-    margin-bottom: var(--spacing-lg);
+.editor-sidebar-content {
+    padding: var(--spacing-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 50px);
 }
 
-.instructions-content li {
-    margin-bottom: var(--spacing-sm);
+#standalone-editor {
+    height: 300px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    flex-grow: 1;
+    min-height: 100px;
 }
 
-.tip-box {
-    background-color: var(--tip-bg);
-    border-left: 4px solid var(--primary-color);
-    padding: var(--spacing-md) var(--spacing-lg);
-    margin-top: var(--spacing-xl);
-    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+.resize-handle {
+    height: 10px;
+    background-color: var(--border-color);
+    cursor: ns-resize;
+    margin: var(--spacing-md) 0;
+    border-radius: var(--border-radius-sm);
 }
 
-.tip-box h4 {
-    color: var(--primary-dark);
-    margin-bottom: var(--spacing-xs);
+/* Collapsed state */
+#code-editor-sidebar.collapsed {
+    width: 50px;
+    overflow: hidden;
+}
+
+#code-editor-sidebar.collapsed .editor-sidebar-content {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed h2 {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed #toggle-editor-sidebar {
+    margin: 0 auto;
 }
 
 /* Utility Classes */
@@ -320,8 +368,8 @@ body {
 .container {
     grid-template-columns: 1fr;
     grid-template-areas:
-        "content"
-        "instructions";
+        "editor-sidebar"
+        "content";
 }
 
 #sidebar {
@@ -336,7 +384,7 @@ body {
     transform: translateX(0);
 }
 
-#instructions {
+#code-editor-sidebar {
     height: auto;
     position: static;
     max-width: 100%;
@@ -370,8 +418,8 @@ body {
     }
     
     .container {
-        grid-template-columns: 250px 1fr 300px;
-        grid-template-areas: "sidebar content instructions";
+        grid-template-columns: 250px 300px 1fr;
+        grid-template-areas: "sidebar editor-sidebar content";
     }
     
     #sidebar {
@@ -380,7 +428,7 @@ body {
         width: auto;
     }
     
-    #instructions {
+    #code-editor-sidebar {
         height: 100vh;
         position: sticky;
     }
@@ -389,13 +437,13 @@ body {
 /* Large desktop styles */
 @media (min-width: 1200px) {
     .container {
-        grid-template-columns: 250px 1fr 300px;
+        grid-template-columns: 250px 350px 1fr;
     }
 }
 
 /* Print styles */
 @media print {
-    .sidebar-toggle-container, #sidebar, #instructions, .editor-buttons, .navigation-buttons {
+    .sidebar-toggle-container, #sidebar, #code-editor-sidebar, .editor-buttons, .navigation-buttons {
         display: none !important;
     }
     
