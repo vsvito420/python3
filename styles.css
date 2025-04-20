@@ -57,6 +57,25 @@ body {
     will-change: grid-template-columns; /* Performance optimization for grid changes */
 }
 
+/* Vertical resize handle between editor and content */
+.vertical-resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    background-color: var(--border-color);
+    cursor: ew-resize;
+    z-index: 15;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.vertical-resize-handle:hover {
+    opacity: 1;
+    background-color: var(--primary-color);
+}
+
 /* Sidebar Styles */
 #sidebar {
     grid-area: sidebar;
@@ -270,6 +289,7 @@ body {
     display: flex;
     flex-direction: column;
     transition: width 0.3s ease;
+    position: relative; /* For positioning the resize handle */
 }
 
 #code-editor-sidebar .sidebar-header {
@@ -418,7 +438,7 @@ body {
     }
     
     .container {
-        grid-template-columns: 250px 300px 1fr;
+        grid-template-columns: 250px minmax(200px, 300px) 1fr;
         grid-template-areas: "sidebar editor-sidebar content";
     }
     
@@ -431,13 +451,14 @@ body {
     #code-editor-sidebar {
         height: 100vh;
         position: sticky;
+        resize: horizontal;
     }
 }
 
 /* Large desktop styles */
 @media (min-width: 1200px) {
     .container {
-        grid-template-columns: 250px 350px 1fr;
+        grid-template-columns: 250px minmax(200px, 350px) 1fr;
     }
 }
 

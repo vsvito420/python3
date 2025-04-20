@@ -179,7 +179,7 @@ function initializeStandaloneEditor() {
         }
     });
 
-    // Resize-Funktionalität für den Editor
+    // Resize-Funktionalität für den Editor (vertikal)
     const resizeHandle = document.getElementById('editor-resize-handle');
     let startY, startHeight;
 
@@ -202,6 +202,48 @@ function initializeStandaloneEditor() {
     function stopResize() {
         document.removeEventListener('mousemove', resizeEditor);
         document.removeEventListener('mouseup', stopResize);
+    }
+    
+    // Resize-Funktionalität für die Grenze zwischen Editor und Inhalt (horizontal)
+    const verticalResizeHandle = document.getElementById('vertical-resize-handle');
+    let startX, startWidth, container, editorSidebar, contentArea;
+
+    verticalResizeHandle.addEventListener('mousedown', function(e) {
+        startX = e.clientX;
+        container = document.querySelector('.container');
+        editorSidebar = document.getElementById('code-editor-sidebar');
+        contentArea = document.getElementById('content');
+        
+        // Aktuelle Breite des Editor-Sidebars ermitteln
+        const computedStyle = window.getComputedStyle(editorSidebar);
+        startWidth = parseInt(computedStyle.width, 10);
+        
+        document.addEventListener('mousemove', resizeHorizontal);
+        document.addEventListener('mouseup', stopHorizontalResize);
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.userSelect = 'none';
+        e.preventDefault();
+    });
+
+    function resizeHorizontal(e) {
+        const deltaX = e.clientX - startX;
+        const newWidth = Math.max(200, Math.min(800, startWidth + deltaX)); // Min 200px, Max 800px
+        
+        // Aktualisiere das Grid-Template
+        const sidebarWidth = 250; // Breite der linken Sidebar
+        container.style.gridTemplateColumns = `${sidebarWidth}px ${newWidth}px 1fr`;
+        
+        // Aktualisiere das Layout des Editors
+        if (editors['standalone-editor']) {
+            editors['standalone-editor'].layout();
+        }
+    }
+
+    function stopHorizontalResize() {
+        document.removeEventListener('mousemove', resizeHorizontal);
+        document.removeEventListener('mouseup', stopHorizontalResize);
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
     }
 }
 

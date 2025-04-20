@@ -640,9 +640,17 @@ async function runPythonCode(editorId) {
     const codeBlock = codeBlocks.find(block => block.id === originalId);
     const language = codeBlock && codeBlock.language ? codeBlock.language : 'python';
     
-    // Wenn es kein Python-Code ist, zeige nur den Code an
+    console.log(`Führe Code aus für Editor ${editorId}, Sprache: ${language}`);
+    
+    // Wenn es kein Python-Code ist, zeige einen Hinweis an und breche ab
     if (language !== 'python') {
-        outputElement.textContent = 'Hinweis: Ausführung ist nur für Python-Code verfügbar. Andere Sprachen werden nur angezeigt.';
+        // Zeige den Output-Container an, falls er versteckt ist
+        const outputContainer = document.getElementById(outputId);
+        if (outputContainer) {
+            outputContainer.style.display = 'block';
+        }
+        
+        outputElement.textContent = `Hinweis: Ausführung ist nur für Python-Code verfügbar. Dieser Code ist in der Sprache "${language}" geschrieben und wird nur angezeigt.`;
         return;
     }
     
