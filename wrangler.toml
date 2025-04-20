@@ -2,5 +2,5 @@ name = "python3-tutor"
 compatibility_date = "2025-04-20"
 
 # Konfiguration für statische Website
-[site]
-bucket = "."  # Das Root-Verzeichnis enthält alle statischen Dateien
+[pages]
+directory = "."  # Das Root-Verzeichnis enthält alle statischen Dateien
