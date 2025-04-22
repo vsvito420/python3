@@ -16,6 +16,7 @@ graph TD
         A --> C4[js/ui-*.js]
         A --> C5[js/python-*.js]
         A --> C6[js/markdown-*.js]
+        A --> C7[js/script.js]
     end
     
     subgraph "Externe Bibliotheken"
@@ -32,10 +33,12 @@ graph TD
         C6 --> I[Markdown Parsen]
         C3 --> J[Code-Block Verarbeitung]
         C4 --> K[Fortschrittsverfolgung]
+        C4 --> K2[Hover-Navigation]
         
         C3 --> L[Standalone Editor]
         C4 --> M[UI-Interaktionen]
         C3 --> N[Resize-Funktionalität]
+        C7 --> O[Hilfsfunktionen]
         
         H --> I
         I --> J
@@ -44,13 +47,40 @@ graph TD
     end
     
     subgraph "Deployment"
-        O[GitHub Actions] --> P[Wrangler]
-        P --> Q[Cloudflare Pages]
+        P1[GitHub Actions] --> P2[Wrangler]
+        P2 --> P3[Cloudflare Pages]
     end
     
     A --> E
     A --> F
     C6 --> G
+```
+
+### CSS-Modulstruktur
+
+Die CSS-Struktur ist modular aufgebaut und wird über main.css importiert:
+
+```mermaid
+graph TD
+    subgraph "CSS-Module"
+        main[css/main.css] --> variables[css/variables.css]
+        main --> base[css/base.css]
+        main --> layout[css/layout.css]
+        main --> sidebar[css/sidebar.css]
+        main --> content[css/content.css]
+        main --> editor[css/editor.css]
+        main --> buttons[css/buttons.css]
+        main --> utilities[css/utilities.css]
+    end
+    
+    subgraph "Optimierungen"
+        buttons --> touch[Touch-Optimierungen]
+        buttons --> perf[Performance-Verbesserungen]
+        
+        touch --> active["Active-State für Touch"]
+        perf --> backdrop["Entfernung von backdrop-filter"]
+        perf --> gpu["will-change für GPU-Beschleunigung"]
+    end
 ```
 
 ### Datenfluss
@@ -67,12 +97,39 @@ graph TD
 
 3. **Code-Ausführung**:
    - Pyodide wird bei Bedarf geladen
-   - Python-Code wird im Browser ausgeführt
+   - Python-Code wird im Browser ausführt
    - Ausgabe wird im entsprechenden Ausgabebereich angezeigt
 
 4. **Fortschrittsverfolgung**:
    - Abgeschlossene Kapitel werden im localStorage gespeichert
    - Fortschrittsanzeige wird aktualisiert
+
+5. **Hover-Navigation**:
+   - Ermöglicht Navigation zwischen Abschnitten und Kapiteln
+   - Zeigt Fortschrittsindikator an
+   - Unterstützt Tastaturnavigation
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Browser
+    participant MarkdownLoader
+    participant MarkdownParser
+    participant CodeEditor
+    participant Pyodide
+    
+    User->>Browser: Öffnet Anwendung
+    Browser->>MarkdownLoader: Lädt Startseite
+    MarkdownLoader->>MarkdownParser: Verarbeitet Markdown
+    MarkdownParser->>CodeEditor: Erstellt Code-Editoren
+    User->>CodeEditor: Schreibt Code
+    User->>CodeEditor: Klickt "Ausführen"
+    CodeEditor->>Pyodide: Führt Python-Code aus
+    Pyodide->>CodeEditor: Gibt Ergebnis zurück
+    CodeEditor->>Browser: Zeigt Ausgabe an
+    User->>Browser: Navigiert zu neuem Kapitel
+    Browser->>MarkdownLoader: Lädt neues Kapitel
+```
 
 ### Komponentendetails
 
@@ -81,12 +138,13 @@ graph TD
 | Komponente | Dateien | Hauptfunktionen |
 |------------|--------|----------------|
 | **HTML-Struktur** | `index.html` | Definiert die grundlegende Seitenstruktur mit drei Hauptbereichen: Sidebar-Navigation, Code-Editor und Inhaltsbereich |
-| **Styling** | `css/main.css` | Implementiert responsives Design mit CSS Grid und Flexbox, definiert Farbschema und UI-Komponenten |
+| **Styling** | `css/main.css` und Module | Implementiert responsives Design mit CSS Grid und Flexbox, definiert Farbschema und UI-Komponenten |
 | **Core Utilities** | `js/core-utils.js` | Stellt grundlegende Hilfsfunktionen wie Debouncing bereit |
 | **Python Integration** | `js/python-pyodide.js`, `js/python-executor.js` | Lädt Pyodide und führt Python-Code aus |
 | **Editor-Funktionalität** | `js/editor-standalone.js`, `js/editor-codeblocks.js`, `js/editor-resize.js` | Verwaltet den eigenständigen Code-Editor und eingebettete Code-Blöcke, implementiert Resize-Funktionalität |
-| **UI-Komponenten** | `js/ui-navigation.js`, `js/ui-progress.js` | Verwaltet Navigation, Sidebar und Fortschrittsverfolgung |
+| **UI-Komponenten** | `js/ui-navigation.js`, `js/ui-progress.js`, `js/ui-hover-navigation.js` | Verwaltet Navigation, Sidebar, Fortschrittsverfolgung und Hover-Navigation |
 | **Markdown-Verarbeitung** | `js/markdown-loader.js`, `js/markdown-parser.js`, `js/markdown-cache.js` | Lädt und verarbeitet Markdown-Dateien, extrahiert Code-Blöcke, verwaltet Fortschritt |
+| **Hilfsfunktionen** | `js/script.js` | Enthält ergänzende Funktionen für die Plattform |
 | **Haupteinstiegspunkt** | `js/main.js` | Initialisiert alle Module und richtet Event-Listener ein |
 
 #### Technische Implementierungsdetails
@@ -95,6 +153,7 @@ graph TD
    - Verwendet reguläre Ausdrücke zur Extraktion von Code-Blöcken und Umwandlung von Markdown in HTML
    - Implementiert einen Pfad-Cache für effizientes Auffinden von Markdown-Dateien
    - Korrigiert relative Pfade in Markdown-Links für korrekte Navigation
+   - **Hinweis**: Die Markdown-Tabellen-Verarbeitung ist noch nicht vollständig implementiert
 
 2. **Code-Editor-Integration**:
    - Monaco Editor wird für Syntax-Highlighting und Code-Bearbeitung verwendet
@@ -110,11 +169,44 @@ graph TD
    - Mobile-First-Ansatz mit drei Breakpoints (Mobile, Tablet, Desktop)
    - Anpassbare Layouts mit ein-/ausklappbaren Seitenleisten
    - Resize-Funktionalität für den Code-Editor
+   - Touch-Optimierungen für mobile Geräte
 
 5. **Deployment-Prozess**:
    - GitHub Actions Workflow wird durch Pushes zum Hauptbranch ausgelöst
    - Wrangler (Cloudflare CLI) deployt die Anwendung auf Cloudflare Pages
    - Statische Dateien werden direkt aus dem Repository-Root bereitgestellt
+   - Worker-Name in wrangler.toml ist "python3"
+
+```mermaid
+graph TD
+    subgraph "Kapitelstruktur"
+        docs[python-docs/]
+        kap0[Kapitel_0/]
+        kap1[Kapitel_1/]
+        kap2[Kapitel_2/]
+        kap3[Kapitel_3/]
+        projekt[z_Projekt_Daten/]
+        
+        docs --> kap0
+        docs --> kap1
+        docs --> kap2
+        docs --> kap3
+        docs --> projekt
+    end
+    
+    subgraph "Hover-Navigation"
+        hover[js/ui-hover-navigation.js]
+        
+        hover --> sections[Abschnittsnavigation]
+        hover --> progress[Fortschrittsanzeige]
+        hover --> chapter[Kapitelübergänge]
+        
+        sections --> prev[Vorheriger Abschnitt]
+        sections --> next[Nächster Abschnitt]
+        chapter --> prevChap[Vorheriges Kapitel]
+        chapter --> nextChap[Nächstes Kapitel]
+    end
+```
 
 ### Herausforderungen und Lösungen
 
@@ -125,7 +217,7 @@ Bei der Entwicklung der Python-Lernplattform wurden mehrere technische Herausfor
 | **Python im Browser ausführen** | Integration von Pyodide | Lazy-Loading von Pyodide, Umleitung der Standardausgabe, asynchrone Ausführung |
 | **Dynamische Markdown-Verarbeitung** | Eigener Markdown-Parser | Reguläre Ausdrücke für Markdown-Elemente, Extraktion von Code-Blöcke, Pfadkorrektur für Links |
 | **Responsive Layout** | CSS Grid mit dynamischen Bereichen | Anpassbare Grid-Template-Columns, Media Queries für verschiedene Geräte, ein-/ausklappbare Seitenleisten |
-| **Performance-Optimierung** | Caching und Lazy-Loading | Markdown-Datei-Cache, verzögerte Initialisierung von Pyodide, Debouncing für Layout-Aktualisierungen |
+| **Performance-Optimierung** | Caching und Lazy-Loading | Markdown-Datei-Cache, verzögerte Initialisierung von Pyodide, Debouncing für Layout-Aktualisierungen, Touch-Optimierungen |
 | **Fortschrittsverfolgung** | Client-seitiges Speichern | localStorage für Benutzerdaten, dynamische Aktualisierung der UI basierend auf Fortschritt |
 
 ### Architekturprinzipien
@@ -134,13 +226,14 @@ Die Architektur der Python-Lernplattform folgt mehreren wichtigen Prinzipien:
 
 1. **Modularität**: Klare Trennung von Verantwortlichkeiten zwischen den Dateien
    - `index.html`: Struktur und Einbindung von Ressourcen
-   - `css/main.css`: Styling und Layout
+   - `css/main.css` und CSS-Module: Styling und Layout
    - Modulare JavaScript-Dateien im js-Ordner mit spezifischen Aufgaben:
      - Core-Module: `js/core-utils.js`
      - Python-Module: `js/python-pyodide.js`, `js/python-executor.js`
      - Editor-Module: `js/editor-standalone.js`, `js/editor-codeblocks.js`, `js/editor-resize.js`
-     - UI-Module: `js/ui-navigation.js`, `js/ui-progress.js`
+     - UI-Module: `js/ui-navigation.js`, `js/ui-progress.js`, `js/ui-hover-navigation.js`
      - Markdown-Module: `js/markdown-loader.js`, `js/markdown-parser.js`, `js/markdown-cache.js`
+     - Hilfsfunktionen: `js/script.js`
      - Hauptmodul: `js/main.js`
 
 2. **Progressive Enhancement**: Die Anwendung funktioniert auch mit eingeschränkten Funktionen
@@ -171,6 +264,7 @@ Die Architektur der Python-Lernplattform wurde mit Blick auf zukünftige Erweite
 | **Kollaborative Features** | Gemeinsames Bearbeiten von Code | Integration von WebSockets oder ähnlichen Technologien für Echtzeit-Kollaboration |
 | **Offline-Unterstützung** | Nutzung ohne Internetverbindung | Service Worker für Caching, IndexedDB für lokale Datenspeicherung |
 | **Erweiterte Visualisierungen** | Visualisierung von Algorithmen und Datenstrukturen | Integration von Visualisierungsbibliotheken wie D3.js oder Python-Bibliotheken in Pyodide |
+| **Markdown-Tabellen** | Vollständige Unterstützung für Markdown-Tabellen | Implementierung einer eigenen Tabellen-Verarbeitung im Markdown-Parser |
 
 #### Technische Verbesserungen
 
@@ -235,7 +329,15 @@ Die Plattform besteht aus folgenden Hauptdateien:
 | Datei | Beschreibung |
 |-------|-------------|
 | **index.html** | Hauptdatei mit der HTML-Struktur der Anwendung |
-| **css/main.css** | Enthält alle Styling-Informationen und das responsive Layout |
+| **css/main.css** | Importiert alle CSS-Module |
+| **css/variables.css** | Enthält CSS-Variablen für Farben, Abstände, etc. |
+| **css/base.css** | Grundlegende Styling-Regeln |
+| **css/layout.css** | Layout-Struktur mit CSS Grid |
+| **css/sidebar.css** | Styling für die Sidebar-Navigation |
+| **css/content.css** | Styling für den Inhaltsbereich |
+| **css/editor.css** | Styling für den Code-Editor |
+| **css/buttons.css** | Styling für Buttons mit Touch-Optimierungen |
+| **css/utilities.css** | Hilfsklassen für häufig verwendete Styles |
 | **js/core-utils.js** | Grundlegende Hilfsfunktionen wie Debouncing |
 | **js/python-pyodide.js** | Laden und Initialisierung von Pyodide |
 | **js/python-executor.js** | Ausführung von Python-Code |
@@ -244,11 +346,14 @@ Die Plattform besteht aus folgenden Hauptdateien:
 | **js/editor-resize.js** | Größenänderungsfunktionalität für Editoren |
 | **js/ui-navigation.js** | Navigation und Sidebar-Funktionalität |
 | **js/ui-progress.js** | Fortschrittsverfolgung |
+| **js/ui-hover-navigation.js** | Hover-Navigation zwischen Abschnitten und Kapiteln |
 | **js/markdown-cache.js** | Caching von Markdown-Dateien |
 | **js/markdown-parser.js** | Parsing von Markdown zu HTML |
 | **js/markdown-loader.js** | Laden von Markdown-Dateien |
+| **js/script.js** | Ergänzende Hilfsfunktionen |
 | **js/main.js** | Haupteinstiegspunkt und Initialisierung |
 | **js/server.js** | Lokaler Entwicklungsserver |
+| **wrangler.toml** | Konfiguration für Cloudflare Pages mit Worker-Namen "python3" |
 | **python-docs/** | Verzeichnis mit den Markdown-Dokumentationen, nach Kapiteln organisiert |
 
 ## Hauptkomponenten
@@ -388,7 +493,7 @@ Um neue Kapitel hinzuzufügen:
 Für neue Funktionen:
 
 1. **Neue UI-Elemente**: Füge HTML in `index.html` hinzu
-2. **Styling**: Erweitere `css/main.css`
+2. **Styling**: Erweitere die entsprechenden CSS-Module
 3. **Funktionalität**: Implementiere JavaScript in den entsprechenden Modulen oder erstelle neue Module
 
 ## Wartungstipps
@@ -401,6 +506,7 @@ Für neue Funktionen:
 | **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung in `js/editor-standalone.js` und `js/editor-codeblocks.js` |
 | **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration in `js/python-pyodide.js` und `js/python-executor.js` |
 | **CORS-Fehler bei lokalem Testen** | Verwende den lokalen Entwicklungsserver mit `node js/server.js` |
+| **Markdown-Tabellen werden nicht korrekt angezeigt** | Die Tabellen-Verarbeitung ist noch nicht vollständig implementiert |
 
 ### Performance-Optimierung
 
@@ -411,6 +517,7 @@ Die Plattform verwendet mehrere Techniken zur Performance-Optimierung:
 | **Lazy Loading** | Pyodide wird erst geladen, wenn es benötigt wird |
 | **Debouncing** | Verhindert zu häufige Layout-Aktualisierungen |
 | **Caching** | Markdown-Dateien werden gecacht |
+| **Touch-Optimierungen** | Entfernung von backdrop-filter, will-change für GPU-Beschleunigung |
 | **Optimierte CSS-Effekte** | Reduzierung von aufwändigen CSS-Effekten wie backdrop-filter und box-shadow |
 | **Dynamisches Padding** | Anpassung des Container-Paddings beim Ein-/Ausblenden des Editors |
 
