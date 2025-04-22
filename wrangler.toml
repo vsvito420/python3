@@ -1,2 +1,6 @@
-# wrangler.toml
-name = 'python3'
+name = "python3-tutor"
+compatibility_date = "2025-04-20"
+
+# Konfiguration für statische Website
+[assets]
+directory = "."  # Das Root-Verzeichnis enthält alle statischen Dateien
