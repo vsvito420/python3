@@ -113,10 +113,10 @@
                 </div>
             </div>
             <div class="editor-sidebar-content">
-                <div id="standalone-editor" class="code-editor"></div>
-                <div class="output-container" id="standalone-output">
+                <div id="standalone-editor" class="code-editor" style="width: 60%;"></div>
+                <div class="output-container" id="standalone-output" style="position: absolute; right: 0; top: 50px; bottom: 0; width: 40%; background-color: rgba(44, 62, 80, 0.9); color: var(--light-gray); z-index: 10; border-radius: var(--border-radius-md) 0 0 0; margin: 0;">
                     <h3>Ausgabe:</h3>
-                    <div class="output-content"></div>
+                    <div class="output-content" style="height: calc(100% - 40px); max-height: none;"></div>
                 </div>
                 <div class="resize-handle" id="editor-resize-handle"></div>
             </div>

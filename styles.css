@@ -81,22 +81,22 @@ body::before {
 /* Layout */
 .container {
     display: grid;
-    grid-template-columns: 250px 300px 1fr;
-    grid-template-areas: "sidebar editor-sidebar content";
+    grid-template-columns: 250px 1fr;
+    grid-template-areas: "sidebar content";
     min-height: 100vh;
     max-width: 100%;
-    will-change: grid-template-columns; /* Performance optimization for grid changes */
+    padding-bottom: 300px; /* Space for the fixed editor at bottom */
 }
 
-/* Vertical resize handle between editor and content */
+/* Horizontal resize handle between editor and content */
 .vertical-resize-handle {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 8px;
-    height: 100%;
+    left: 0;
+    width: 100%;
+    height: 8px;
     background-color: var(--border-color);
-    cursor: ew-resize;
+    cursor: ns-resize;
     z-index: 15;
     opacity: 0.5;
     transition: opacity 0.2s ease;
@@ -267,6 +267,7 @@ body::before {
     padding: var(--spacing-xl);
     overflow-y: auto;
     position: relative;
+    margin-bottom: 0; /* No margin needed since we have padding on container */
 }
 
 .lesson-container {
@@ -446,26 +447,27 @@ body::before {
     background-color: rgba(236, 240, 241, 0.85);
     box-shadow: var(--macos-glass-shadow);
     overflow-y: auto;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    z-index: 5;
+    height: 300px;
+    position: fixed;
+    bottom: 0;
+    left: 250px; /* Width of the sidebar */
+    right: 0;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
-    position: relative; /* For positioning the resize handle */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     border: 1px solid var(--macos-glass-border);
-    margin: 0 var(--spacing-md);
-    transform: translateZ(0) perspective(1000px) rotateY(1deg) translateX(-3px);
+    border-bottom: none;
+    transform: translateZ(0);
 }
 
 #code-editor-sidebar:hover {
     box-shadow: var(--macos-glass-shadow);
     border-color: rgba(230, 126, 34, 0.2);
-    transform: translateZ(0) perspective(1000px) rotateY(1.5deg) translateX(-5px);
+    transform: translateZ(0) perspective(1000px) rotateX(-1.5deg) translateY(-5px);
 }
 
 #code-editor-sidebar .sidebar-header {
@@ -533,8 +535,9 @@ body::before {
 
 /* Collapsed state */
 #code-editor-sidebar.collapsed {
-    width: 50px;
+    height: 50px;
     overflow: hidden;
+    transform: translateY(250px);
 }
 
 #code-editor-sidebar.collapsed .editor-sidebar-content {
@@ -590,9 +593,8 @@ body::before {
 
 .container {
     grid-template-columns: 1fr;
-    grid-template-areas:
-        "editor-sidebar"
-        "content";
+    grid-template-areas: "content";
+    padding-bottom: 300px;
 }
 
 /* Hide vertical resize handle on mobile */
@@ -613,8 +615,11 @@ body::before {
 }
 
 #code-editor-sidebar {
-    height: auto;
-    position: static;
+    height: 300px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     max-width: 100%;
     width: 100% !important; /* Force full width on mobile */
 }
@@ -647,8 +652,9 @@ body::before {
     }
     
     .container {
-        grid-template-columns: 250px minmax(200px, 300px) 1fr;
-        grid-template-areas: "sidebar editor-sidebar content";
+        grid-template-columns: 250px 1fr;
+        grid-template-areas: "sidebar content";
+        padding-bottom: 300px;
     }
     
     #sidebar {
@@ -658,8 +664,11 @@ body::before {
     }
     
     #code-editor-sidebar {
-        height: 100vh;
-        position: sticky;
+        height: 300px;
+        position: fixed;
+        bottom: 0;
+        left: 250px;
+        right: 0;
         width: auto !important; /* Override mobile width */
     }
     
@@ -672,7 +681,12 @@ body::before {
 /* Large desktop styles */
 @media (min-width: 1200px) {
     .container {
-        grid-template-columns: 250px minmax(200px, 350px) 1fr;
+        grid-template-columns: 250px 1fr;
+        padding-bottom: 350px;
+    }
+    
+    #code-editor-sidebar {
+        height: 350px;
     }
 }
 

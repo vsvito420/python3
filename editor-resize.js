@@ -6,14 +6,14 @@
  * Initialize resize functionality for the editor
  */
 function initializeEditorResize() {
-    // Resize functionality for the editor (vertical)
+    // Resize functionality for the editor (internal)
     const resizeHandle = document.getElementById('editor-resize-handle');
-    let startY, startHeight;
+    let editorStartY, editorStartHeight;
 
     if (resizeHandle) {
         resizeHandle.addEventListener('mousedown', function(e) {
-            startY = e.clientY;
-            startHeight = document.getElementById('standalone-editor').offsetHeight;
+            editorStartY = e.clientY;
+            editorStartHeight = document.getElementById('standalone-editor').offsetHeight;
             document.addEventListener('mousemove', resizeEditor);
             document.addEventListener('mouseup', stopResize);
             e.preventDefault();
@@ -21,7 +21,7 @@ function initializeEditorResize() {
     }
 
     function resizeEditor(e) {
-        const newHeight = startHeight + (e.clientY - startY);
+        const newHeight = editorStartHeight + (e.clientY - editorStartY);
         if (newHeight > 100) { // Minimum height
             document.getElementById('standalone-editor').style.height = newHeight + 'px';
             if (window.editors && window.editors['standalone-editor']) {
@@ -35,9 +35,9 @@ function initializeEditorResize() {
         document.removeEventListener('mouseup', stopResize);
     }
     
-    // Resize functionality for the boundary between editor and content (horizontal)
+    // Resize functionality for the boundary between editor and content (vertical)
     const verticalResizeHandle = document.getElementById('vertical-resize-handle');
-    let startX, startWidth, container, editorSidebar, contentArea;
+    let boundaryStartY, boundaryStartHeight, container, editorSidebar, contentArea;
 
     // Only enable on desktop devices
     if (verticalResizeHandle) {
@@ -45,33 +45,35 @@ function initializeEditorResize() {
             // Only proceed if we're on a desktop device
             if (window.innerWidth < 992) return;
             
-            startX = e.clientX;
+            boundaryStartY = e.clientY;
             container = document.querySelector('.container');
             editorSidebar = document.getElementById('code-editor-sidebar');
             contentArea = document.getElementById('content');
             
-            // Get current width of the editor sidebar
+            // Get current height of the editor sidebar
             const computedStyle = window.getComputedStyle(editorSidebar);
-            startWidth = parseInt(computedStyle.width, 10);
+            boundaryStartHeight = parseInt(computedStyle.height, 10);
             
-            document.addEventListener('mousemove', resizeHorizontal);
-            document.addEventListener('mouseup', stopHorizontalResize);
-            document.body.style.cursor = 'ew-resize';
+            document.addEventListener('mousemove', resizeVertical);
+            document.addEventListener('mouseup', stopVerticalResize);
+            document.body.style.cursor = 'ns-resize';
             document.body.style.userSelect = 'none';
             e.preventDefault();
         });
     }
 
-    function resizeHorizontal(e) {
+    function resizeVertical(e) {
         // Only proceed if we're on a desktop device
         if (window.innerWidth < 992) return;
         
-        const deltaX = e.clientX - startX;
-        const newWidth = Math.max(200, Math.min(800, startWidth + deltaX)); // Min 200px, Max 800px
+        const deltaY = boundaryStartY - e.clientY;
+        const newHeight = Math.max(150, Math.min(600, boundaryStartHeight + deltaY)); // Min 150px, Max 600px
         
-        // Update the grid template
-        const sidebarWidth = 250; // Width of the left sidebar
-        container.style.gridTemplateColumns = `${sidebarWidth}px ${newWidth}px 1fr`;
+        // Update the editor height
+        editorSidebar.style.height = `${newHeight}px`;
+        
+        // Update the container padding to match
+        container.style.paddingBottom = `${newHeight}px`;
         
         // Update the editor layout
         if (window.editors && window.editors['standalone-editor']) {
@@ -79,9 +81,9 @@ function initializeEditorResize() {
         }
     }
 
-    function stopHorizontalResize() {
-        document.removeEventListener('mousemove', resizeHorizontal);
-        document.removeEventListener('mouseup', stopHorizontalResize);
+    function stopVerticalResize() {
+        document.removeEventListener('mousemove', resizeVertical);
+        document.removeEventListener('mouseup', stopVerticalResize);
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
     }
@@ -97,10 +99,31 @@ function checkWindowSize() {
             verticalResizeHandle.style.display = 'none';
         } else {
             // Only show if the editor is not collapsed
-            if (!document.getElementById('code-editor-sidebar').classList.contains('collapsed')) {
+            const editorSidebar = document.getElementById('code-editor-sidebar');
+            if (!editorSidebar.classList.contains('collapsed')) {
                 verticalResizeHandle.style.display = 'block';
+                // Position the resize handle at the top of the editor sidebar
+                verticalResizeHandle.style.top = '0';
+                verticalResizeHandle.style.left = '0';
+                verticalResizeHandle.style.width = '100%';
+                
+                // Adjust sidebar position based on window width
+                if (window.innerWidth >= 992) {
+                    editorSidebar.style.left = '250px'; // Width of the sidebar
+                } else {
+                    editorSidebar.style.left = '0';
+                }
             }
         }
+    }
+    
+    // Update container padding to match editor height
+    const editorSidebar = document.getElementById('code-editor-sidebar');
+    const container = document.querySelector('.container');
+    if (editorSidebar && container && !editorSidebar.classList.contains('collapsed')) {
+        const computedStyle = window.getComputedStyle(editorSidebar);
+        const height = parseInt(computedStyle.height, 10);
+        container.style.paddingBottom = `${height}px`;
     }
 }
 
