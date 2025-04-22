@@ -5,7 +5,7 @@
             "type": "node",
             "request": "launch",
             "name": "Start Local Server (Port 3001)",
-            "program": "${workspaceFolder}/server.js",
+            "program": "${workspaceFolder}/js/server.js",
             "skipFiles": [
                 "<node_internals>/**"
             ],
