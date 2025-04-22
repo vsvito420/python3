@@ -1,7 +1,7 @@
 :root {
     /* Color variables */
-    --primary-color: #3498db;
-    --primary-dark: #2980b9;
+    --primary-color: #f39c12; /* Gelb statt Blau */
+    --primary-dark: #d35400; /* Orange statt Dunkelblau */
     --secondary-color: #2c3e50;
     --secondary-dark: #1a2530;
     --secondary-light: #34495e;
@@ -17,7 +17,17 @@
     --light-gray: #ecf0f1;
     --dark-text: #333;
     --border-color: #ddd;
-    --tip-bg: #d6eaf8;
+    --tip-bg: #fef5e7; /* Helles Gelb statt Hellblau */
+    
+    /* macOS-like colors mit Gelb/Orange */
+    --macos-bg-gradient-start: #e67e22; /* Orange */
+    --macos-bg-gradient-end: #f1c40f; /* Gelb */
+    --macos-glass-bg: rgba(255, 255, 255, 0.65);
+    --macos-glass-border: rgba(255, 255, 255, 0.7);
+    --macos-card-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 6px 6px rgba(0, 0, 0, 0.1);
+    --macos-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --macos-orange-glow: 0 0 15px rgba(230, 126, 34, 0.5);
+    --macos-yellow-glow: 0 0 15px rgba(241, 196, 15, 0.5);
     
     /* Spacing variables */
     --spacing-xs: 5px;
@@ -28,11 +38,12 @@
     
     /* Shadow variables */
     --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
     
     /* Border radius */
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
 }
 
 * {
@@ -42,9 +53,23 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--light-bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     color: var(--dark-text);
+    background: linear-gradient(135deg, var(--macos-bg-gradient-start), var(--macos-bg-gradient-end));
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(70px);
+    z-index: -1;
 }
 
 /* Layout */
@@ -79,23 +104,35 @@ body {
 /* Sidebar Styles */
 #sidebar {
     grid-area: sidebar;
-    background-color: var(--secondary-color);
+    background-color: rgba(44, 62, 80, 0.65); /* Semi-transparent version of secondary-color */
     color: var(--light-gray);
-    transition: transform 0.3s ease-out; /* More specific transition for better performance */
-    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease-out; /* More specific transition for better performance */
+    box-shadow: var(--macos-glass-shadow);
     overflow-y: auto;
     height: 100vh;
     position: sticky;
     top: 0;
     z-index: 10;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-right: 1px solid var(--macos-glass-border);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    margin-right: var(--spacing-md);
+}
+
+#sidebar:hover {
+    box-shadow: var(--macos-glass-shadow), var(--macos-orange-glow);
+    border-right-color: rgba(230, 126, 34, 0.3);
 }
 
 .sidebar-header {
     padding: var(--spacing-xl);
-    background-color: var(--secondary-dark);
+    background-color: rgba(26, 37, 48, 0.8); /* Semi-transparent version of secondary-dark */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid var(--macos-glass-border);
+    border-radius: 0 var(--border-radius-md) 0 0;
 }
 
 #toggle-sidebar-desktop {
@@ -133,16 +170,20 @@ body {
 /* Allgemeine Stile für alle Menüpunkte */
 .sidebar-menu li {
     padding: var(--spacing-md) var(--spacing-xl);
-    border-bottom: 1px solid var(--secondary-lighter);
-    transition: background-color 0.2s ease; /* Faster transition for better performance */
+    border-bottom: 1px solid rgba(61, 81, 102, 0.3);
+    transition: all 0.2s ease; /* Faster transition for better performance */
+    margin: 2px var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
 }
 
 .sidebar-menu li:hover {
-    background-color: var(--secondary-light);
+    background-color: rgba(52, 73, 94, 0.7);
+    transform: translateX(3px);
 }
 
 .sidebar-menu li.active {
-    background-color: var(--primary-color);
+    background-color: rgba(243, 156, 18, 0.7); /* Gelb statt Blau */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-menu a {
@@ -153,19 +194,25 @@ body {
 
 /* Hauptseite-Stil */
 .sidebar-menu li.menu-home {
-    background-color: var(--secondary-dark);
+    background-color: rgba(26, 37, 48, 0.7);
     border-left: 4px solid var(--primary-color);
     font-weight: bold;
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Kapitelüberschriften-Stil */
 .sidebar-menu li.chapter-header {
-    background-color: var(--secondary-lighter);
+    background-color: rgba(61, 81, 102, 0.5);
     font-weight: bold;
     padding-top: var(--spacing-lg);
     padding-bottom: var(--spacing-lg);
     border-left: 4px solid var(--success-color);
     margin-top: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-menu li.chapter-header span {
@@ -176,18 +223,23 @@ body {
 /* Kapitel-Einträge-Stil */
 .sidebar-menu li.chapter-item {
     padding-left: calc(var(--spacing-xl) + 15px);
-    background-color: var(--secondary-color);
+    background-color: rgba(44, 62, 80, 0.4);
     border-left: 2px solid var(--neutral-color);
+    margin-left: var(--spacing-lg);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    transition: all 0.2s ease;
 }
 
 .sidebar-menu li.chapter-item:hover {
-    background-color: var(--secondary-light);
+    background-color: rgba(52, 73, 94, 0.6);
     border-left: 2px solid var(--primary-color);
+    transform: translateX(3px);
 }
 
 .sidebar-menu li.chapter-item.active {
-    background-color: var(--primary-color);
+    background-color: rgba(243, 156, 18, 0.6); /* Gelb statt Blau */
     border-left: 2px solid var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Abgeschlossene Kapitel */
@@ -200,14 +252,27 @@ body {
     grid-area: content;
     padding: var(--spacing-xl);
     overflow-y: auto;
+    position: relative;
 }
 
 .lesson-container {
-    background-color: var(--white);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--macos-card-shadow);
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--macos-glass-border);
+    position: relative;
+    transform: translateZ(0);
+    transition: all 0.3s ease;
+}
+
+.lesson-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.12), var(--macos-yellow-glow);
+    border-color: rgba(243, 156, 18, 0.4);
 }
 
 .lesson-container h2 {
@@ -229,8 +294,9 @@ body {
 .code-editor {
     height: 200px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
     overflow: hidden; /* Prevent Monaco editor overflow issues */
+    box-shadow: var(--shadow-sm);
 }
 
 .editor-buttons {
@@ -243,40 +309,56 @@ body {
 .run-button, .reset-button, .next-button, .prev-button {
     padding: 8px 16px;
     border: none;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s ease, transform 0.1s ease; /* Smoother transitions */
+    font-weight: 500;
+    transition: all 0.2s ease; /* Smoother transitions */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .run-button:active, .reset-button:active, .next-button:active, .prev-button:active {
-    transform: translateY(1px); /* Subtle button press effect */
+    transform: scale(0.97); /* macOS-like button press effect */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .run-button {
-    background-color: var(--success-color);
+    background-color: rgba(39, 174, 96, 0.9);
     color: var(--white);
 }
 
 .run-button:hover {
-    background-color: var(--success-hover);
+    background-color: rgba(46, 204, 113, 0.9);
+    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
 }
 
 .reset-button {
-    background-color: var(--danger-color);
+    background-color: rgba(231, 76, 60, 0.9);
     color: var(--white);
 }
 
 .reset-button:hover {
-    background-color: var(--danger-hover);
+    background-color: rgba(192, 57, 43, 0.9);
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
 }
 
 .output-container {
-    background-color: #f9f9f9;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
+    background-color: rgba(249, 249, 249, 0.7);
+    border: 1px solid var(--macos-glass-border);
+    border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.output-container:hover {
+    box-shadow: var(--shadow-md), var(--macos-yellow-glow);
+    border-color: rgba(243, 156, 18, 0.4);
 }
 
 .output-container h3 {
@@ -285,15 +367,16 @@ body {
 }
 
 .output-content {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', Courier, monospace;
     white-space: pre-wrap;
     min-height: 50px;
     max-height: 200px;
     overflow-y: auto;
-    background-color: var(--secondary-color);
+    background-color: rgba(44, 62, 80, 0.9);
     color: var(--light-gray);
     padding: var(--spacing-md);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .navigation-buttons {
@@ -303,29 +386,31 @@ body {
 }
 
 .next-button {
-    background-color: var(--primary-color);
+    background-color: rgba(243, 156, 18, 0.9); /* Gelb statt Blau */
     color: var(--white);
     margin-left: auto;
 }
 
 .next-button:hover {
-    background-color: var(--primary-dark);
+    background-color: rgba(211, 84, 0, 0.9); /* Orange statt Dunkelblau */
+    box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
 }
 
 .prev-button {
-    background-color: var(--neutral-color);
+    background-color: rgba(149, 165, 166, 0.9);
     color: var(--white);
 }
 
 .prev-button:hover {
-    background-color: var(--neutral-hover);
+    background-color: rgba(127, 140, 141, 0.9);
+    box-shadow: 0 4px 10px rgba(149, 165, 166, 0.3);
 }
 
 /* Code Editor Sidebar Styles */
 #code-editor-sidebar {
     grid-area: editor-sidebar;
-    background-color: var(--light-gray);
-    box-shadow: var(--shadow-sm);
+    background-color: rgba(236, 240, 241, 0.65);
+    box-shadow: var(--macos-glass-shadow);
     overflow-y: auto;
     height: 100vh;
     position: sticky;
@@ -333,17 +418,29 @@ body {
     z-index: 5;
     display: flex;
     flex-direction: column;
-    transition: width 0.3s ease;
+    transition: all 0.3s ease;
     position: relative; /* For positioning the resize handle */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--macos-glass-border);
+    margin: 0 var(--spacing-md);
+}
+
+#code-editor-sidebar:hover {
+    box-shadow: var(--macos-glass-shadow), var(--macos-orange-glow);
+    border-color: rgba(230, 126, 34, 0.3);
 }
 
 #code-editor-sidebar .sidebar-header {
     padding: var(--spacing-md);
-    background-color: var(--secondary-color);
+    background-color: rgba(44, 62, 80, 0.8);
     color: var(--light-gray);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid var(--macos-glass-border);
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
 }
 
 .editor-header-buttons {
@@ -383,10 +480,11 @@ body {
 #standalone-editor {
     height: 300px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
     overflow: hidden;
     flex-grow: 1;
     min-height: 100px;
+    box-shadow: var(--shadow-sm);
 }
 
 .resize-handle {
@@ -440,15 +538,18 @@ body {
 }
 
 #toggle-sidebar-mobile {
-    background-color: var(--secondary-color);
+    background-color: rgba(44, 62, 80, 0.8);
     color: var(--light-gray);
     border: none;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
     width: 40px;
     height: 40px;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--macos-glass-shadow);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--macos-glass-border);
 }
 
 .container {
@@ -567,10 +668,18 @@ body {
 /* Code-Editor-Container */
 .code-editor-container {
     margin: 20px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    border: 1px solid var(--macos-glass-border);
+    border-radius: var(--border-radius-md);
     overflow: hidden;
     position: relative;
+    box-shadow: var(--macos-card-shadow);
+    transition: all 0.3s ease;
+}
+
+.code-editor-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15), var(--macos-orange-glow);
+    border-color: rgba(230, 126, 34, 0.4);
 }
 
 /* Sprach-Tag für Codeblöcke */
@@ -578,7 +687,7 @@ body {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: #2c3e50;
+    background-color: rgba(211, 84, 0, 0.9); /* Orange statt Dunkelblau */
     color: white;
     padding: 2px 8px;
     font-size: 12px;
@@ -594,12 +703,15 @@ body {
     transform: translateX(-50%);
     width: auto;
     max-width: 90%;
-    background-color: var(--secondary-color);
+    background-color: rgba(44, 62, 80, 0.8);
     border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--macos-glass-shadow);
     z-index: 1000;
     opacity: 0.3;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--macos-glass-border);
 }
 
 .hover-navigation:hover {
@@ -628,7 +740,7 @@ body {
 }
 
 .nav-button:hover {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color); /* Bereits auf Gelb geändert */
     color: white;
 }
 
@@ -636,6 +748,54 @@ body {
     opacity: 0.5;
     cursor: not-allowed;
     background: none;
+}
+
+/* macOS-like scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(236, 240, 241, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(52, 73, 94, 0.5);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(52, 73, 94, 0.8);
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+/* Floating effect for content boxes */
+.lesson-container, .code-editor-container, .output-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Add subtle animation to the background */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+body {
+    background-size: 200% 200%;
+    animation: gradientAnimation 15s ease infinite;
 }
 
 .nav-icon {
@@ -655,14 +815,14 @@ body {
 .nav-progress-indicator {
     position: absolute;
     height: 100%;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color); /* Bereits auf Gelb geändert */
     width: 0%;
     transition: width 0.3s ease;
 }
 
 /* Highlight current section in content */
 .current-section {
-    background-color: rgba(52, 152, 219, 0.1);
+    background-color: rgba(243, 156, 18, 0.1); /* Gelb statt Blau */
     border-left: 3px solid var(--primary-color);
     padding-left: 10px;
     margin-left: -13px;
@@ -683,7 +843,7 @@ html {
 /* Chapter transition effect */
 .hover-navigation.chapter-transition {
     animation: chapter-transition-pulse 1.5s ease;
-    box-shadow: 0 0 25px rgba(52, 152, 219, 0.8);
+    box-shadow: 0 0 25px rgba(243, 156, 18, 0.8); /* Gelb statt Blau */
     transform: translateX(-50%) translateY(-10px) !important;
 }
 
@@ -693,7 +853,7 @@ html {
         transform: translateX(-50%) translateY(-5px);
     }
     50% {
-        background-color: var(--primary-color);
+        background-color: var(--primary-color); /* Bereits auf Gelb geändert */
         transform: translateX(-50%) translateY(-10px);
     }
     100% {
