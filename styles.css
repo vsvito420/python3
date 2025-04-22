@@ -18,6 +18,10 @@
     --dark-text: #333;
     --border-color: #ddd;
     --tip-bg: #fef5e7; /* Helles Gelb statt Hellblau */
+    --link-color: #2980b9; /* Blau für Links - besser lesbar */
+    --link-hover: #3498db; /* Helleres Blau für Hover */
+    --link-bg: rgba(41, 128, 185, 0.8); /* Blauer Hintergrund für Links */
+    --link-bg-hover: rgba(52, 152, 219, 0.9); /* Hellerer blauer Hintergrund für Links hover */
     
     /* macOS-like colors mit Gelb/Orange */
     --macos-bg-gradient-start: #e67e22; /* Orange */
@@ -55,7 +59,9 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     color: var(--dark-text);
-    background: linear-gradient(135deg, var(--macos-bg-gradient-start), var(--macos-bg-gradient-end));
+    background: linear-gradient(135deg,
+        rgba(230, 126, 34, 0.7),
+        rgba(241, 196, 15, 0.5));
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
@@ -104,7 +110,7 @@ body::before {
 /* Sidebar Styles */
 #sidebar {
     grid-area: sidebar;
-    background-color: rgba(44, 62, 80, 0.65); /* Semi-transparent version of secondary-color */
+    background-color: rgba(44, 62, 80, 0.85); /* Weniger transparent für bessere Lesbarkeit */
     color: var(--light-gray);
     transition: all 0.3s ease-out; /* More specific transition for better performance */
     box-shadow: var(--macos-glass-shadow);
@@ -113,16 +119,16 @@ body::before {
     position: sticky;
     top: 0;
     z-index: 10;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-right: 1px solid var(--macos-glass-border);
     border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
     margin-right: var(--spacing-md);
 }
 
 #sidebar:hover {
-    box-shadow: var(--macos-glass-shadow), var(--macos-orange-glow);
-    border-right-color: rgba(230, 126, 34, 0.3);
+    box-shadow: var(--macos-glass-shadow);
+    border-right-color: rgba(230, 126, 34, 0.2);
 }
 
 .sidebar-header {
@@ -187,9 +193,17 @@ body::before {
 }
 
 .sidebar-menu a {
-    color: var(--light-gray);
+    color: white; /* Weiß für bessere Lesbarkeit */
     text-decoration: none;
     display: block;
+    font-weight: 600;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+}
+
+.sidebar-menu a:hover {
+    color: white;
+    text-decoration: underline;
+    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black; /* Stärkere schwarze Umrandung */
 }
 
 /* Hauptseite-Stil */
@@ -256,23 +270,23 @@ body::before {
 }
 
 .lesson-container {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--macos-card-shadow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--macos-glass-border);
     position: relative;
-    transform: translateZ(0);
+    transform: translateZ(0) perspective(1000px) rotateY(-1deg) translateX(5px);
     transition: all 0.3s ease;
 }
 
 .lesson-container:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.12), var(--macos-yellow-glow);
-    border-color: rgba(243, 156, 18, 0.4);
+    transform: translateZ(0) perspective(1000px) rotateY(-2deg) translateX(8px) translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: rgba(243, 156, 18, 0.2);
 }
 
 .lesson-container h2 {
@@ -280,6 +294,26 @@ body::before {
     color: var(--secondary-color);
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: var(--spacing-md);
+}
+
+.lesson-container a {
+    color: white;
+    background-color: rgba(41, 128, 185, 0.9); /* Blauer Hintergrund */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.lesson-container a:hover {
+    background-color: rgba(52, 152, 219, 1); /* Vollständig deckender blauer Hintergrund */
+    color: white;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .task-description {
@@ -386,14 +420,14 @@ body::before {
 }
 
 .next-button {
-    background-color: rgba(243, 156, 18, 0.9); /* Gelb statt Blau */
+    background-color: rgba(243, 156, 18, 0.8); /* Etwas transparenter */
     color: var(--white);
     margin-left: auto;
 }
 
 .next-button:hover {
-    background-color: rgba(211, 84, 0, 0.9); /* Orange statt Dunkelblau */
-    box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+    background-color: rgba(211, 84, 0, 0.8); /* Etwas transparenter */
+    box-shadow: 0 4px 8px rgba(243, 156, 18, 0.2);
 }
 
 .prev-button {
@@ -409,7 +443,7 @@ body::before {
 /* Code Editor Sidebar Styles */
 #code-editor-sidebar {
     grid-area: editor-sidebar;
-    background-color: rgba(236, 240, 241, 0.65);
+    background-color: rgba(236, 240, 241, 0.85);
     box-shadow: var(--macos-glass-shadow);
     overflow-y: auto;
     height: 100vh;
@@ -420,16 +454,18 @@ body::before {
     flex-direction: column;
     transition: all 0.3s ease;
     position: relative; /* For positioning the resize handle */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: var(--border-radius-md);
     border: 1px solid var(--macos-glass-border);
     margin: 0 var(--spacing-md);
+    transform: translateZ(0) perspective(1000px) rotateY(1deg) translateX(-3px);
 }
 
 #code-editor-sidebar:hover {
-    box-shadow: var(--macos-glass-shadow), var(--macos-orange-glow);
-    border-color: rgba(230, 126, 34, 0.3);
+    box-shadow: var(--macos-glass-shadow);
+    border-color: rgba(230, 126, 34, 0.2);
+    transform: translateZ(0) perspective(1000px) rotateY(1.5deg) translateX(-5px);
 }
 
 #code-editor-sidebar .sidebar-header {
@@ -678,8 +714,8 @@ body::before {
 
 .code-editor-container:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15), var(--macos-orange-glow);
-    border-color: rgba(230, 126, 34, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: rgba(230, 126, 34, 0.2);
 }
 
 /* Sprach-Tag für Codeblöcke */
@@ -795,7 +831,7 @@ body::before {
 
 body {
     background-size: 200% 200%;
-    animation: gradientAnimation 15s ease infinite;
+    animation: gradientAnimation 20s ease infinite;
 }
 
 .nav-icon {
@@ -860,4 +896,23 @@ html {
         background-color: var(--secondary-color);
         transform: translateX(-50%) translateY(-5px);
     }
+}
+
+/* Allgemeine Regel für alle Links im Content-Bereich */
+#content a {
+    color: white;
+    background-color: rgba(41, 128, 185, 0.9);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+#content a:hover {
+    background-color: rgba(52, 152, 219, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
