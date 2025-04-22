@@ -1,0 +1,189 @@
+/* content.css - Stile für den Inhaltsbereich */
+
+.lesson-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--macos-glass-border);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.lesson-container:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: rgba(243, 156, 18, 0.2);
+}
+
+.lesson-container h2 {
+    margin-bottom: var(--spacing-lg);
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: var(--spacing-md);
+}
+
+.lesson-container a {
+    color: white;
+    background-color: rgba(41, 128, 185, 0.9); /* Blauer Hintergrund */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.lesson-container a:hover {
+    background-color: rgba(52, 152, 219, 1); /* Vollständig deckender blauer Hintergrund */
+    color: white;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.task-description {
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.6;
+}
+
+.editor-container {
+    margin-bottom: var(--spacing-xl);
+}
+
+.code-editor {
+    height: 200px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden; /* Prevent Monaco editor overflow issues */
+    box-shadow: var(--shadow-sm);
+}
+
+.editor-buttons {
+    margin-top: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.output-container {
+    background-color: rgba(249, 249, 249, 0.7);
+    border: 1px solid var(--macos-glass-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.output-container:hover {
+    box-shadow: var(--shadow-md), var(--macos-yellow-glow);
+    border-color: rgba(243, 156, 18, 0.4);
+}
+
+.output-container h3 {
+    margin-bottom: var(--spacing-md);
+    color: var(--secondary-color);
+}
+
+.output-content {
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    min-height: 50px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: rgba(44, 62, 80, 0.9);
+    color: var(--light-gray);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-xl);
+}
+
+/* Code-Editor-Container */
+.code-editor-container {
+    margin: 20px 0;
+    border: 1px solid var(--macos-glass-border);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--macos-card-shadow);
+    transition: all 0.3s ease;
+}
+
+.code-editor-container:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: rgba(230, 126, 34, 0.2);
+}
+
+/* Sprach-Tag für Codeblöcke */
+.language-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(211, 84, 0, 0.9); /* Orange statt Dunkelblau */
+    color: white;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-bottom-left-radius: 5px;
+    z-index: 10;
+}
+
+/* Highlight current section in content */
+.current-section {
+    background-color: rgba(243, 156, 18, 0.1); /* Gelb statt Blau */
+    border-left: 3px solid var(--primary-color);
+    padding-left: 10px;
+    margin-left: -13px;
+    transition: background-color 0.5s ease;
+}
+
+/* Allgemeine Regel für alle Links im Content-Bereich */
+#content a {
+    color: white;
+    background-color: rgba(41, 128, 185, 0.9);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+#content a:hover {
+    background-color: rgba(52, 152, 219, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile Styles */
+.editor-buttons, .navigation-buttons {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.navigation-buttons button {
+    width: 100%;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+    .editor-buttons, .navigation-buttons {
+        flex-direction: row;
+        gap: var(--spacing-md);
+    }
+    
+    .navigation-buttons button {
+        width: auto;
+    }
+}

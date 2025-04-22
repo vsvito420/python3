@@ -1,0 +1,175 @@
+/* sidebar.css - Stile für die Seitenleiste */
+
+/* Sidebar Styles */
+#sidebar {
+    grid-area: sidebar;
+    background-color: rgba(44, 62, 80, 0.85); /* Weniger transparent für bessere Lesbarkeit */
+    color: var(--light-gray);
+    transition: all 0.3s ease-out; /* More specific transition for better performance */
+    box-shadow: var(--macos-glass-shadow);
+    overflow-y: auto;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-right: 1px solid var(--macos-glass-border);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    margin-right: var(--spacing-md);
+}
+
+#sidebar:hover {
+    box-shadow: var(--macos-glass-shadow);
+    border-right-color: rgba(230, 126, 34, 0.2);
+}
+
+.sidebar-header {
+    padding: var(--spacing-xl);
+    background-color: rgba(26, 37, 48, 0.8); /* Semi-transparent version of secondary-dark */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--macos-glass-border);
+    border-radius: 0 var(--border-radius-md) 0 0;
+}
+
+#toggle-sidebar-desktop {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    position: relative;
+}
+
+.toggle-icon-open, .toggle-icon-closed {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+}
+
+.toggle-icon-closed {
+    display: none;
+}
+
+#sidebar:not(.active) .toggle-icon-open {
+    display: none;
+}
+
+#sidebar:not(.active) .toggle-icon-closed {
+    display: inline-block;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: var(--spacing-md) 0;
+}
+
+/* Allgemeine Stile für alle Menüpunkte */
+.sidebar-menu li {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-bottom: 1px solid rgba(61, 81, 102, 0.3);
+    transition: all 0.2s ease; /* Faster transition for better performance */
+    margin: 2px var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+}
+
+.sidebar-menu li:hover {
+    background-color: rgba(52, 73, 94, 0.7);
+}
+
+.sidebar-menu li.active {
+    background-color: rgba(243, 156, 18, 0.7); /* Gelb statt Blau */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-menu a {
+    color: white; /* Weiß für bessere Lesbarkeit */
+    text-decoration: none;
+    display: block;
+    font-weight: 600;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+}
+
+.sidebar-menu a:hover {
+    color: white;
+    text-decoration: underline;
+    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black; /* Stärkere schwarze Umrandung */
+}
+
+/* Hauptseite-Stil */
+.sidebar-menu li.menu-home {
+    background-color: rgba(26, 37, 48, 0.7);
+    border-left: 4px solid var(--primary-color);
+    font-weight: bold;
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Kapitelüberschriften-Stil */
+.sidebar-menu li.chapter-header {
+    background-color: rgba(61, 81, 102, 0.5);
+    font-weight: bold;
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-left: 4px solid var(--success-color);
+    margin-top: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-menu li.chapter-header span {
+    display: block;
+    font-size: 1.1em;
+}
+
+/* Kapitel-Einträge-Stil */
+.sidebar-menu li.chapter-item {
+    padding-left: calc(var(--spacing-xl) + 15px);
+    background-color: rgba(44, 62, 80, 0.4);
+    border-left: 2px solid var(--neutral-color);
+    margin-left: var(--spacing-lg);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu li.chapter-item:hover {
+    background-color: rgba(52, 73, 94, 0.6);
+    border-left: 2px solid var(--primary-color);
+}
+
+.sidebar-menu li.chapter-item.active {
+    background-color: rgba(243, 156, 18, 0.6); /* Gelb statt Blau */
+    border-left: 2px solid var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Abgeschlossene Kapitel */
+.sidebar-menu li.chapter-item.completed {
+    border-left: 2px solid var(--success-color);
+}
+
+/* Mobile Sidebar Styles */
+#sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+    z-index: 1000;
+    height: 100vh;
+    width: 250px;
+}
+
+#sidebar.active {
+    transform: translateX(0);
+}
+
+/* Desktop Sidebar Styles */
+@media (min-width: 992px) {
+    #sidebar {
+        position: sticky;
+        transform: translateX(0);
+        width: auto;
+    }
+}

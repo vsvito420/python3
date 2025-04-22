@@ -1,0 +1,149 @@
+/* editor.css - Stile für den Code-Editor */
+
+/* Code Editor Sidebar Styles */
+#code-editor-sidebar {
+    grid-area: editor-sidebar;
+    background-color: rgba(236, 240, 241, 0.85);
+    box-shadow: var(--macos-glass-shadow);
+    overflow-y: auto;
+    height: 300px;
+    position: fixed;
+    bottom: 0;
+    left: 250px; /* Width of the sidebar */
+    right: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+    border: 1px solid var(--macos-glass-border);
+    border-bottom: none;
+}
+
+#code-editor-sidebar:hover {
+    box-shadow: var(--macos-glass-shadow);
+    border-color: rgba(230, 126, 34, 0.2);
+}
+
+#code-editor-sidebar .sidebar-header {
+    padding: var(--spacing-md);
+    background-color: rgba(44, 62, 80, 0.8);
+    color: var(--light-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--macos-glass-border);
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+}
+
+.editor-header-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.editor-header-buttons .run-button,
+.editor-header-buttons .reset-button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+#code-editor-sidebar h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+#toggle-editor-sidebar {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+}
+
+.editor-sidebar-content {
+    padding: var(--spacing-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 50px);
+}
+
+#standalone-editor {
+    height: 300px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    flex-grow: 1;
+    min-height: 100px;
+    box-shadow: var(--shadow-sm);
+}
+
+.resize-handle {
+    height: 10px;
+    background-color: var(--border-color);
+    cursor: ns-resize;
+    margin: var(--spacing-md) 0;
+    border-radius: var(--border-radius-sm);
+}
+
+/* Collapsed state */
+#code-editor-sidebar.collapsed {
+    height: 50px;
+    overflow: hidden;
+    transform: translateY(250px);
+}
+
+#code-editor-sidebar.collapsed .editor-sidebar-content {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed .vertical-resize-handle {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed h2 {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed .editor-header-buttons .run-button,
+#code-editor-sidebar.collapsed .editor-header-buttons .reset-button {
+    display: none;
+}
+
+#code-editor-sidebar.collapsed #toggle-editor-sidebar {
+    margin: 0 auto;
+}
+
+/* Mobile Styles */
+#code-editor-sidebar {
+    height: 300px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    width: 100% !important; /* Force full width on mobile */
+}
+
+/* Desktop Styles */
+@media (min-width: 992px) {
+    #code-editor-sidebar {
+        height: 300px;
+        position: fixed;
+        bottom: 0;
+        left: 250px;
+        right: 0;
+        width: auto !important; /* Override mobile width */
+    }
+}
+
+/* Large desktop styles */
+@media (min-width: 1200px) {
+    #code-editor-sidebar {
+        height: 350px;
+    }
+}

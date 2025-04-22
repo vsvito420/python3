@@ -184,7 +184,6 @@ body::before {
 
 .sidebar-menu li:hover {
     background-color: rgba(52, 73, 94, 0.7);
-    transform: translateX(3px);
 }
 
 .sidebar-menu li.active {
@@ -247,7 +246,6 @@ body::before {
 .sidebar-menu li.chapter-item:hover {
     background-color: rgba(52, 73, 94, 0.6);
     border-left: 2px solid var(--primary-color);
-    transform: translateX(3px);
 }
 
 .sidebar-menu li.chapter-item.active {
@@ -280,12 +278,10 @@ body::before {
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--macos-glass-border);
     position: relative;
-    transform: translateZ(0) perspective(1000px) rotateY(-1deg) translateX(5px);
     transition: all 0.3s ease;
 }
 
 .lesson-container:hover {
-    transform: translateZ(0) perspective(1000px) rotateY(-2deg) translateX(8px) translateY(-2px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.08);
     border-color: rgba(243, 156, 18, 0.2);
 }
@@ -461,13 +457,11 @@ body::before {
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     border: 1px solid var(--macos-glass-border);
     border-bottom: none;
-    transform: translateZ(0);
 }
 
 #code-editor-sidebar:hover {
     box-shadow: var(--macos-glass-shadow);
     border-color: rgba(230, 126, 34, 0.2);
-    transform: translateZ(0) perspective(1000px) rotateX(-1.5deg) translateY(-5px);
 }
 
 #code-editor-sidebar .sidebar-header {
@@ -727,7 +721,6 @@ body::before {
 }
 
 .code-editor-container:hover {
-    transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     border-color: rgba(230, 126, 34, 0.2);
 }
@@ -766,7 +759,6 @@ body::before {
 
 .hover-navigation:hover {
     opacity: 1;
-    transform: translateX(-50%) translateY(-5px);
 }
 
 .hover-navigation-inner {
@@ -894,21 +886,17 @@ html {
 .hover-navigation.chapter-transition {
     animation: chapter-transition-pulse 1.5s ease;
     box-shadow: 0 0 25px rgba(243, 156, 18, 0.8); /* Gelb statt Blau */
-    transform: translateX(-50%) translateY(-10px) !important;
 }
 
 @keyframes chapter-transition-pulse {
     0% {
         background-color: var(--secondary-color);
-        transform: translateX(-50%) translateY(-5px);
     }
     50% {
         background-color: var(--primary-color); /* Bereits auf Gelb geändert */
-        transform: translateX(-50%) translateY(-10px);
     }
     100% {
         background-color: var(--secondary-color);
-        transform: translateX(-50%) translateY(-5px);
     }
 }
 

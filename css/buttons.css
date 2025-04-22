@@ -1,0 +1,155 @@
+/* buttons.css - Stile für Buttons */
+
+/* Button styles */
+.run-button, .reset-button, .next-button, .prev-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease; /* Smoother transitions */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.run-button:active, .reset-button:active, .next-button:active, .prev-button:active {
+    transform: scale(0.97); /* macOS-like button press effect */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.run-button {
+    background-color: rgba(39, 174, 96, 0.9);
+    color: var(--white);
+}
+
+.run-button:hover {
+    background-color: rgba(46, 204, 113, 0.9);
+    box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+}
+
+.reset-button {
+    background-color: rgba(231, 76, 60, 0.9);
+    color: var(--white);
+}
+
+.reset-button:hover {
+    background-color: rgba(192, 57, 43, 0.9);
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+}
+
+.next-button {
+    background-color: rgba(243, 156, 18, 0.8); /* Etwas transparenter */
+    color: var(--white);
+    margin-left: auto;
+}
+
+.next-button:hover {
+    background-color: rgba(211, 84, 0, 0.8); /* Etwas transparenter */
+    box-shadow: 0 4px 8px rgba(243, 156, 18, 0.2);
+}
+
+.prev-button {
+    background-color: rgba(149, 165, 166, 0.9);
+    color: var(--white);
+}
+
+.prev-button:hover {
+    background-color: rgba(127, 140, 141, 0.9);
+    box-shadow: 0 4px 10px rgba(149, 165, 166, 0.3);
+}
+
+/* Hover Navigation Menu */
+.hover-navigation {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90%;
+    background-color: rgba(44, 62, 80, 0.8);
+    border-radius: 50px;
+    box-shadow: var(--macos-glass-shadow);
+    z-index: 1000;
+    opacity: 0.3;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--macos-glass-border);
+}
+
+.hover-navigation:hover {
+    opacity: 1;
+}
+
+.hover-navigation-inner {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    border-radius: 25px;
+}
+
+.nav-button:hover {
+    background-color: var(--primary-color); /* Bereits auf Gelb geändert */
+    color: white;
+}
+
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: none;
+}
+
+.nav-icon {
+    font-size: 1.2em;
+}
+
+.nav-progress {
+    height: 4px;
+    background-color: var(--secondary-lighter);
+    border-radius: 2px;
+    width: 100px;
+    margin: 0 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-progress-indicator {
+    position: absolute;
+    height: 100%;
+    background-color: var(--primary-color); /* Bereits auf Gelb geändert */
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Chapter transition effect */
+.hover-navigation.chapter-transition {
+    animation: chapter-transition-pulse 1.5s ease;
+    box-shadow: 0 0 25px rgba(243, 156, 18, 0.8); /* Gelb statt Blau */
+}
+
+@keyframes chapter-transition-pulse {
+    0% {
+        background-color: var(--secondary-color);
+    }
+    50% {
+        background-color: var(--primary-color); /* Bereits auf Gelb geändert */
+    }
+    100% {
+        background-color: var(--secondary-color);
+    }
+}

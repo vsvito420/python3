@@ -1,0 +1,11 @@
+/* main.css - Hauptdatei, die alle Module importiert */
+
+/* Importiere alle Module */
+@import 'variables.css';
+@import 'base.css';
+@import 'layout.css';
+@import 'sidebar.css';
+@import 'content.css';
+@import 'editor.css';
+@import 'buttons.css';
+@import 'utilities.css';

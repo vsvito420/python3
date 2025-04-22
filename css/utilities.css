@@ -1,0 +1,12 @@
+/* utilities.css - Hilfsstile */
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Floating effect for content boxes */
+.lesson-container, .code-editor-container, .output-container {
+    position: relative;
+    z-index: 1;
+}

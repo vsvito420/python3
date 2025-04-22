@@ -1,0 +1,53 @@
+/* variables.css - Farbvariablen und andere Konstanten */
+
+:root {
+    /* Color variables */
+    --primary-color: #f39c12; /* Gelb statt Blau */
+    --primary-dark: #d35400; /* Orange statt Dunkelblau */
+    --secondary-color: #2c3e50;
+    --secondary-dark: #1a2530;
+    --secondary-light: #34495e;
+    --secondary-lighter: #3d5166;
+    --success-color: #27ae60;
+    --success-hover: #2ecc71;
+    --danger-color: #e74c3c;
+    --danger-hover: #c0392b;
+    --neutral-color: #95a5a6;
+    --neutral-hover: #7f8c8d;
+    --light-bg: #f5f5f5;
+    --white: #fff;
+    --light-gray: #ecf0f1;
+    --dark-text: #333;
+    --border-color: #ddd;
+    --tip-bg: #fef5e7; /* Helles Gelb statt Hellblau */
+    --link-color: #2980b9; /* Blau für Links - besser lesbar */
+    --link-hover: #3498db; /* Helleres Blau für Hover */
+    --link-bg: rgba(41, 128, 185, 0.8); /* Blauer Hintergrund für Links */
+    --link-bg-hover: rgba(52, 152, 219, 0.9); /* Hellerer blauer Hintergrund für Links hover */
+    
+    /* macOS-like colors mit Gelb/Orange */
+    --macos-bg-gradient-start: #e67e22; /* Orange */
+    --macos-bg-gradient-end: #f1c40f; /* Gelb */
+    --macos-glass-bg: rgba(255, 255, 255, 0.65);
+    --macos-glass-border: rgba(255, 255, 255, 0.7);
+    --macos-card-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 6px 6px rgba(0, 0, 0, 0.1);
+    --macos-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --macos-orange-glow: 0 0 15px rgba(230, 126, 34, 0.5);
+    --macos-yellow-glow: 0 0 15px rgba(241, 196, 15, 0.5);
+    
+    /* Spacing variables */
+    --spacing-xs: 5px;
+    --spacing-sm: 8px;
+    --spacing-md: 10px;
+    --spacing-lg: 15px;
+    --spacing-xl: 20px;
+    
+    /* Shadow variables */
+    --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.12);
+    
+    /* Border radius */
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+}
