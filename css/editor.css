@@ -3,8 +3,8 @@
 /* Code Editor Sidebar Styles - Basis-Stile für alle Bildschirmgrößen */
 #code-editor-sidebar {
     grid-area: editor-sidebar;
-    background-color: rgba(236, 240, 241, 0.85);
-    box-shadow: var(--macos-glass-shadow);
+    background-color: rgba(236, 240, 241, 0.95); /* Erhöhte Deckkraft */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Leichterer Schatten */
     overflow-y: auto;
     height: 300px;
     position: fixed;
@@ -14,18 +14,18 @@
     z-index: 100;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, height 0.3s ease; /* Optimierte Transitions */
+    /* Entferne backdrop-filter für bessere Performance */
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
-    border: 1px solid var(--macos-glass-border);
+    border: 1px solid rgba(200, 200, 200, 0.3);
     border-bottom: none;
     max-width: 100%;
     width: 100% !important; /* Standardmäßig volle Breite */
+    will-change: transform, height; /* Optimierung für GPU-Beschleunigung */
 }
 
 #code-editor-sidebar:hover {
-    box-shadow: var(--macos-glass-shadow);
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.15);
     border-color: rgba(230, 126, 34, 0.2);
 }
 
@@ -118,6 +118,11 @@
 
 #code-editor-sidebar.collapsed #toggle-editor-sidebar {
     margin: 0 auto;
+}
+
+/* Klasse für den Container, wenn der Editor ausgeblendet ist */
+.editor-hidden {
+    padding-bottom: 50px !important; /* Reduziertes Padding wenn Editor ausgeblendet */
 }
 
 /* Mobile Styles - werden durch die Basis-Stile abgedeckt */

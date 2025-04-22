@@ -108,6 +108,16 @@ async function initializeApp() {
     // Initialize the markdown file cache (minimal mode)
     await window.initializeMarkdownCache();
     
+    // Check if editor is collapsed and set container class accordingly
+    const editorSidebar = document.getElementById('code-editor-sidebar');
+    const container = document.querySelector('.container');
+    if (editorSidebar && container) {
+        if (editorSidebar.classList.contains('collapsed')) {
+            container.classList.add('editor-hidden');
+            container.style.paddingBottom = '50px';
+        }
+    }
+    
     // Load the main page
     loadMarkdownFile(`${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`)
         .then(success => {

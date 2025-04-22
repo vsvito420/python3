@@ -8,6 +8,7 @@
     min-height: 100vh;
     max-width: 100%;
     padding-bottom: 300px; /* Space for the fixed editor at bottom */
+    transition: padding-bottom 0.3s ease; /* Smooth transition for padding changes */
 }
 
 /* Horizontal resize handle between editor and content */

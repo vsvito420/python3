@@ -68,15 +68,15 @@
     transform: translateX(-50%);
     width: auto;
     max-width: 90%;
-    background-color: rgba(44, 62, 80, 0.8);
+    background-color: rgba(44, 62, 80, 0.9);
     border-radius: 50px;
-    box-shadow: var(--macos-glass-shadow);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    opacity: 0.3;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--macos-glass-border);
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    /* Entferne backdrop-filter für bessere Performance */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    will-change: opacity; /* Optimierung für GPU-Beschleunigung */
 }
 
 .hover-navigation:hover {
@@ -138,8 +138,8 @@
 
 /* Chapter transition effect */
 .hover-navigation.chapter-transition {
-    animation: chapter-transition-pulse 1.5s ease;
-    box-shadow: 0 0 25px rgba(243, 156, 18, 0.8); /* Gelb statt Blau */
+    animation: chapter-transition-pulse 1s ease;
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.6); /* Reduzierte Intensität */
 }
 
 @keyframes chapter-transition-pulse {
@@ -147,7 +147,7 @@
         background-color: var(--secondary-color);
     }
     50% {
-        background-color: var(--primary-color); /* Bereits auf Gelb geändert */
+        background-color: var(--primary-color);
     }
     100% {
         background-color: var(--secondary-color);

@@ -120,10 +120,19 @@ function checkWindowSize() {
     // Update container padding to match editor height
     const editorSidebar = document.getElementById('code-editor-sidebar');
     const container = document.querySelector('.container');
-    if (editorSidebar && container && !editorSidebar.classList.contains('collapsed')) {
-        const computedStyle = window.getComputedStyle(editorSidebar);
-        const height = parseInt(computedStyle.height, 10);
-        container.style.paddingBottom = `${height}px`;
+    
+    if (editorSidebar && container) {
+        if (editorSidebar.classList.contains('collapsed')) {
+            // If editor is collapsed, add editor-hidden class and set minimal padding
+            container.classList.add('editor-hidden');
+            container.style.paddingBottom = '50px';
+        } else {
+            // If editor is visible, remove editor-hidden class and set padding to match editor height
+            container.classList.remove('editor-hidden');
+            const computedStyle = window.getComputedStyle(editorSidebar);
+            const height = parseInt(computedStyle.height, 10);
+            container.style.paddingBottom = `${height}px`;
+        }
     }
 }
 

@@ -85,17 +85,31 @@ function initializeStandaloneEditor() {
     // Toggle button for the editor sidebar
     document.getElementById('toggle-editor-sidebar').addEventListener('click', function() {
         const editorSidebar = document.getElementById('code-editor-sidebar');
+        const container = document.querySelector('.container');
+        
         editorSidebar.classList.toggle('collapsed');
+        
+        // Toggle editor-hidden class on container for proper padding
+        container.classList.toggle('editor-hidden', editorSidebar.classList.contains('collapsed'));
         
         // Update editor layout if it's visible
         if (!editorSidebar.classList.contains('collapsed')) {
-            setTimeout(() => standaloneEditor.layout(), 300);
+            setTimeout(() => {
+                standaloneEditor.layout();
+                // Restore container padding based on editor height
+                const computedStyle = window.getComputedStyle(editorSidebar);
+                const height = parseInt(computedStyle.height, 10);
+                container.style.paddingBottom = `${height}px`;
+            }, 300);
             
             // Make sure the resize handle is visible (only on desktop)
             if (window.innerWidth >= 992) {
                 document.getElementById('vertical-resize-handle').style.display = 'block';
             }
         } else {
+            // If the editor is collapsed, set minimal padding
+            container.style.paddingBottom = '50px';
+            
             // If the editor is collapsed, reset the container columns
             if (window.innerWidth >= 992) {
                 document.querySelector('.container').style.gridTemplateColumns = '250px 50px 1fr';

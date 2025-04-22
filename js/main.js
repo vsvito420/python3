@@ -45,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check window size and adjust resize handle display
     window.checkWindowSize();
     
+    // Check if editor is collapsed and set container class accordingly
+    const editorSidebar = document.getElementById('code-editor-sidebar');
+    const container = document.querySelector('.container');
+    if (editorSidebar && container) {
+        if (editorSidebar.classList.contains('collapsed')) {
+            container.classList.add('editor-hidden');
+            container.style.paddingBottom = '50px';
+        }
+    }
+    
     // Handle window resize events
     window.addEventListener('resize', function() {
         // Update sidebar state

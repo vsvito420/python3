@@ -178,6 +178,8 @@ Die Architektur der Python-Lernplattform wurde mit Blick auf zukünftige Erweite
    - Lazy-Loading von Markdown-Inhalten
    - Virtualisierung für lange Listen in der Navigation
    - Optimierung der Pyodide-Ladezeit und -Speichernutzung
+   - Reduzierung von aufwändigen CSS-Effekten (backdrop-filter, box-shadow)
+   - Dynamische Anpassung des Container-Paddings beim Ein-/Ausblenden des Editors
 
 2. **Erweiterte Code-Editor-Funktionen**:
    - Intellisense und Autovervollständigung
@@ -409,6 +411,8 @@ Die Plattform verwendet mehrere Techniken zur Performance-Optimierung:
 | **Lazy Loading** | Pyodide wird erst geladen, wenn es benötigt wird |
 | **Debouncing** | Verhindert zu häufige Layout-Aktualisierungen |
 | **Caching** | Markdown-Dateien werden gecacht |
+| **Optimierte CSS-Effekte** | Reduzierung von aufwändigen CSS-Effekten wie backdrop-filter und box-shadow |
+| **Dynamisches Padding** | Anpassung des Container-Paddings beim Ein-/Ausblenden des Editors |
 
 ### Browser-Kompatibilität
 
