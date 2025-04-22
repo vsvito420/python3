@@ -10,30 +10,32 @@ Die Python-Lernplattform ist eine clientseitige Webanwendung, die Markdown-Dokum
 graph TD
     subgraph Frontend
         A[index.html] --> B[styles.css]
-        A --> C[script.js]
-        A --> D[markdown-loader.js]
+        A --> C1[main.js]
+        A --> C2[core-utils.js]
+        A --> C3[editor-*.js]
+        A --> C4[ui-*.js]
+        A --> C5[python-*.js]
+        A --> C6[markdown-*.js]
     end
     
     subgraph "Externe Bibliotheken"
-        E[Monaco Editor] -.-> C
-        E -.-> D
-        F[Pyodide] -.-> C
-        F -.-> D
+        E[Monaco Editor] -.-> C3
+        F[Pyodide] -.-> C5
     end
     
     subgraph "Daten & Inhalte"
-        G[python-docs/] -.-> D
+        G[python-docs/] -.-> C6
     end
     
     subgraph "Hauptfunktionen"
-        D --> H[Markdown Laden]
-        D --> I[Markdown Parsen]
-        D --> J[Code-Block Verarbeitung]
-        D --> K[Fortschrittsverfolgung]
+        C6 --> H[Markdown Laden]
+        C6 --> I[Markdown Parsen]
+        C3 --> J[Code-Block Verarbeitung]
+        C4 --> K[Fortschrittsverfolgung]
         
-        C --> L[Standalone Editor]
-        C --> M[UI-Interaktionen]
-        C --> N[Resize-Funktionalität]
+        C3 --> L[Standalone Editor]
+        C4 --> M[UI-Interaktionen]
+        C3 --> N[Resize-Funktionalität]
         
         H --> I
         I --> J
@@ -48,15 +50,15 @@ graph TD
     
     A --> E
     A --> F
-    D --> G
+    C6 --> G
 ```
 
 ### Datenfluss
 
 1. **Initialisierung**:
    - Die Anwendung wird in `index.html` geladen
-   - `script.js` initialisiert den eigenständigen Code-Editor
-   - `markdown-loader.js` lädt die Startseite und initialisiert den Markdown-Cache
+   - `main.js` initialisiert alle Module
+   - Die verschiedenen JavaScript-Module werden in der richtigen Reihenfolge geladen
 
 2. **Markdown-Verarbeitung**:
    - Markdown-Dateien werden aus dem `python-docs/`-Verzeichnis geladen
@@ -76,12 +78,16 @@ graph TD
 
 #### Kernkomponenten
 
-| Komponente | Datei | Hauptfunktionen |
-|------------|-------|----------------|
+| Komponente | Dateien | Hauptfunktionen |
+|------------|--------|----------------|
 | **HTML-Struktur** | `index.html` | Definiert die grundlegende Seitenstruktur mit drei Hauptbereichen: Sidebar-Navigation, Code-Editor und Inhaltsbereich |
 | **Styling** | `styles.css` | Implementiert responsives Design mit CSS Grid und Flexbox, definiert Farbschema und UI-Komponenten |
-| **Standalone Editor** | `script.js` | Initialisiert und verwaltet den eigenständigen Code-Editor, implementiert Resize-Funktionalität und UI-Interaktionen |
-| **Markdown-Verarbeitung** | `markdown-loader.js` | Lädt und verarbeitet Markdown-Dateien, extrahiert Code-Blöcke, verwaltet Fortschritt |
+| **Core Utilities** | `core-utils.js` | Stellt grundlegende Hilfsfunktionen wie Debouncing bereit |
+| **Python Integration** | `python-pyodide.js`, `python-executor.js` | Lädt Pyodide und führt Python-Code aus |
+| **Editor-Funktionalität** | `editor-standalone.js`, `editor-codeblocks.js`, `editor-resize.js` | Verwaltet den eigenständigen Code-Editor und eingebettete Code-Blöcke, implementiert Resize-Funktionalität |
+| **UI-Komponenten** | `ui-navigation.js`, `ui-progress.js` | Verwaltet Navigation, Sidebar und Fortschrittsverfolgung |
+| **Markdown-Verarbeitung** | `markdown-loader.js`, `markdown-parser.js`, `markdown-cache.js` | Lädt und verarbeitet Markdown-Dateien, extrahiert Code-Blöcke, verwaltet Fortschritt |
+| **Haupteinstiegspunkt** | `main.js` | Initialisiert alle Module und richtet Event-Listener ein |
 
 #### Technische Implementierungsdetails
 
@@ -129,8 +135,13 @@ Die Architektur der Python-Lernplattform folgt mehreren wichtigen Prinzipien:
 1. **Modularität**: Klare Trennung von Verantwortlichkeiten zwischen den Dateien
    - `index.html`: Struktur und Einbindung von Ressourcen
    - `styles.css`: Styling und Layout
-   - `script.js`: UI-Interaktionen und eigenständiger Editor
-   - `markdown-loader.js`: Inhaltsverarbeitung und Code-Block-Funktionalität
+   - Modulare JavaScript-Dateien mit spezifischen Aufgaben:
+     - Core-Module: `core-utils.js`
+     - Python-Module: `python-pyodide.js`, `python-executor.js`
+     - Editor-Module: `editor-standalone.js`, `editor-codeblocks.js`, `editor-resize.js`
+     - UI-Module: `ui-navigation.js`, `ui-progress.js`
+     - Markdown-Module: `markdown-loader.js`, `markdown-parser.js`, `markdown-cache.js`
+     - Hauptmodul: `main.js`
 
 2. **Progressive Enhancement**: Die Anwendung funktioniert auch mit eingeschränkten Funktionen
    - Grundlegende Inhalte sind auch ohne JavaScript zugänglich
@@ -223,8 +234,19 @@ Die Plattform besteht aus folgenden Hauptdateien:
 |-------|-------------|
 | **index.html** | Hauptdatei mit der HTML-Struktur der Anwendung |
 | **styles.css** | Enthält alle Styling-Informationen und das responsive Layout |
-| **script.js** | Enthält JavaScript-Funktionen für den eigenständigen Code-Editor |
-| **markdown-loader.js** | Hauptlogik für das Laden und Verarbeiten von Markdown-Dateien |
+| **core-utils.js** | Grundlegende Hilfsfunktionen wie Debouncing |
+| **python-pyodide.js** | Laden und Initialisierung von Pyodide |
+| **python-executor.js** | Ausführung von Python-Code |
+| **editor-standalone.js** | Funktionalität für den eigenständigen Editor |
+| **editor-codeblocks.js** | Funktionalität für eingebettete Code-Blöcke |
+| **editor-resize.js** | Größenänderungsfunktionalität für Editoren |
+| **ui-navigation.js** | Navigation und Sidebar-Funktionalität |
+| **ui-progress.js** | Fortschrittsverfolgung |
+| **markdown-cache.js** | Caching von Markdown-Dateien |
+| **markdown-parser.js** | Parsing von Markdown zu HTML |
+| **markdown-loader.js** | Laden von Markdown-Dateien |
+| **main.js** | Haupteinstiegspunkt und Initialisierung |
+| **server.js** | Lokaler Entwicklungsserver |
 | **python-docs/** | Verzeichnis mit den Markdown-Dokumentationen, nach Kapiteln organisiert |
 
 ## Hauptkomponenten
@@ -365,7 +387,7 @@ Für neue Funktionen:
 
 1. **Neue UI-Elemente**: Füge HTML in `index.html` hinzu
 2. **Styling**: Erweitere `styles.css`
-3. **Funktionalität**: Implementiere JavaScript in `script.js` oder `markdown-loader.js`
+3. **Funktionalität**: Implementiere JavaScript in den entsprechenden Modulen oder erstelle neue Module
 
 ## Wartungstipps
 
@@ -373,9 +395,10 @@ Für neue Funktionen:
 
 | Problem | Lösung |
 |---------|--------|
-| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache |
-| **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung |
-| **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration |
+| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache in `markdown-cache.js` |
+| **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung in `editor-standalone.js` und `editor-codeblocks.js` |
+| **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration in `python-pyodide.js` und `python-executor.js` |
+| **CORS-Fehler bei lokalem Testen** | Verwende den lokalen Entwicklungsserver mit `node server.js` |
 
 ### Performance-Optimierung
 

@@ -147,54 +147,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
     
-    <!-- Markdown Loader und Script -->
+    <!-- Modular JavaScript files -->
+    <script src="core-utils.js"></script>
+    <script src="python-pyodide.js"></script>
+    <script src="python-executor.js"></script>
+    <script src="editor-codeblocks.js"></script>
+    <script src="editor-standalone.js"></script>
+    <script src="editor-resize.js"></script>
+    <script src="ui-progress.js"></script>
+    <script src="ui-navigation.js"></script>
+    <script src="markdown-cache.js"></script>
+    <script src="markdown-parser.js"></script>
     <script src="markdown-loader.js"></script>
-    <script src="script.js"></script>
+    <script src="main.js"></script>
     
-    <!-- Initialisiere die Anwendung -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialisiere die Anwendung
-            if (typeof initializeApp === 'function') {
-                initializeApp();
-                
-                // Lade die README.md-Datei direkt
-                setTimeout(() => {
-                    loadMarkdownFile('README.md');
-                }, 1000);
-            } else {
-                console.error('initializeApp-Funktion nicht gefunden. Stelle sicher, dass markdown-loader.js korrekt geladen wurde.');
-            }
-            
-            // Sidebar-Toggle-Funktionalität
-            document.getElementById('toggle-sidebar-mobile').addEventListener('click', function() {
-                document.getElementById('sidebar').classList.toggle('active');
-            });
-            
-            document.getElementById('toggle-sidebar-desktop').addEventListener('click', function() {
-                document.getElementById('sidebar').classList.toggle('active');
-            });
-            
-            // Setze den initialen Zustand der Sidebar basierend auf der Bildschirmgröße
-            function setInitialSidebarState() {
-                const sidebar = document.getElementById('sidebar');
-                if (window.innerWidth < 992) {
-                    // Auf kleinen Bildschirmen ausblenden
-                    sidebar.classList.remove('active');
-                } else {
-                    // Auf großen Bildschirmen anzeigen
-                    sidebar.classList.add('active');
-                }
-            }
-            
-            // Setze den initialen Zustand
-            setInitialSidebarState();
-            
-            // Aktualisiere den Zustand bei Änderung der Fenstergröße
-            window.addEventListener('resize', function() {
-                setInitialSidebarState();
-            });
-        });
-    </script>
+    <!-- Application is initialized in main.js -->
 </body>
 </html>
