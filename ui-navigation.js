@@ -11,9 +11,17 @@ function updateActiveMenuItem(filePath) {
         item.classList.remove('active');
     });
     
-    document.querySelectorAll(`.sidebar-menu a[href*="${filePath}"]`).forEach(link => {
+    document.querySelectorAll(`.sidebar-menu a[onclick*="${filePath}"]`).forEach(link => {
         link.parentElement.classList.add('active');
     });
+    
+    // If no exact match, try to match by filename
+    if (document.querySelectorAll('.sidebar-menu li.active').length === 0) {
+        const fileName = filePath.split('/').pop();
+        document.querySelectorAll(`.sidebar-menu a[onclick*="${fileName}"]`).forEach(link => {
+            link.parentElement.classList.add('active');
+        });
+    }
 }
 
 /**
@@ -53,6 +61,12 @@ function createSidebarMenu() {
         }
         
         sidebarMenu.appendChild(item);
+    });
+    
+    // Add event listeners to all navigation links to ensure they load only when clicked
+    document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        const originalOnclick = link.getAttribute('onclick');
+        link.setAttribute('onclick', `event.preventDefault(); ${originalOnclick}`);
     });
 }
 

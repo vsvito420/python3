@@ -12,7 +12,7 @@
  */
 async function loadMarkdownFile(filePath) {
     try {
-        // If the cache is empty, initialize it
+        // If the cache is empty, initialize it (minimal mode)
         if (Object.keys(window.markdownFileCache).length === 0) {
             await window.initializeMarkdownCache();
         }
@@ -21,82 +21,57 @@ async function loadMarkdownFile(filePath) {
         const correctedPath = window.correctPath(filePath);
         console.log(`Attempting to load file: ${correctedPath} (Original: ${filePath})`);
         
-        const response = await fetch(correctedPath);
+        // Try to load the file directly
+        let response = await fetch(correctedPath);
+        let foundPath = correctedPath;
+        
+        // If the file was not found, try to find it in the chapters
         if (!response.ok) {
-            // If the file was not found, try a recursive search
-            console.log("File not found, starting recursive search...");
+            console.log("File not found, searching in chapters...");
             
             // Extract the file name without path
             const fileName = filePath.split('/').pop();
             
-            // Search all chapter directories for the file
-            for (let i = 0; i <= 10; i++) {
-                const kapitelDir = `${window.DOCS_BASE_DIR}/Kapitel_${i}`;
-                const alternativePath = `${kapitelDir}/${fileName}`;
-                
-                console.log(`Attempting to load alternative file: ${alternativePath}`);
-                
-                try {
-                    const altResponse = await fetch(alternativePath);
-                    if (altResponse.ok) {
-                        console.log(`File found at: ${alternativePath}`);
-                        
-                        // Update the cache for future requests
-                        window.cacheFilePath(fileName, alternativePath);
-                        
-                        const markdown = await altResponse.text();
-                        window.currentChapter = alternativePath.split('/').pop().replace('.md', '');
-                        
-                        // Convert markdown to HTML and display it
-                        const html = window.parseMarkdown(markdown);
-                        document.getElementById('content').innerHTML = html;
-                        
-                        // Initialize interactive code blocks
-                        console.log(`Found ${window.codeBlocks.length} code blocks to initialize`);
-                        window.initializeCodeBlocks();
-                        
-                        // Update active menu item
-                        window.updateActiveMenuItem(alternativePath);
-                        
-                        // Update progress display
-                        window.updateProgressUI();
-                        
-                        // Scroll to the top of the page
-                        window.scrollTo(0, 0);
-                        
-                        return true;
-                    }
-                } catch (altError) {
-                    // Ignore errors and try the next directory
-                }
-            }
+            // Search for the file in all chapter directories
+            const alternativePath = await window.findFileInChapters(fileName);
             
-            // If the file was not found anywhere, display an error
-            throw new Error(`File not found: ${fileName}`);
+            if (alternativePath) {
+                console.log(`File found at: ${alternativePath}`);
+                response = await fetch(alternativePath);
+                foundPath = alternativePath;
+            } else {
+                // If the file was not found anywhere, display an error
+                throw new Error(`File not found: ${fileName}`);
+            }
         }
         
-        const markdown = await response.text();
-        window.currentChapter = correctedPath.split('/').pop().replace('.md', '');
-        
-        // Convert markdown to HTML and display it
-        const html = window.parseMarkdown(markdown);
-        document.getElementById('content').innerHTML = html;
-        
-        // Initialize interactive code blocks
-        console.log(`Found ${window.codeBlocks.length} code blocks to initialize`);
-        window.initializeCodeBlocks();
-        
-        // Update active menu item
-        window.updateActiveMenuItem(correctedPath);
-        
-        // Update progress display
-        window.updateProgressUI();
-        
-        // Scroll to the top of the page
-        window.scrollTo(0, 0);
-        
-        console.log(`File successfully loaded: ${correctedPath}`);
-        return true;
+        // If we have a valid response, process the file
+        if (response.ok) {
+            const markdown = await response.text();
+            window.currentChapter = foundPath.split('/').pop().replace('.md', '');
+            
+            // Convert markdown to HTML and display it
+            const html = window.parseMarkdown(markdown);
+            document.getElementById('content').innerHTML = html;
+            
+            // Initialize interactive code blocks
+            console.log(`Found ${window.codeBlocks.length} code blocks to initialize`);
+            window.initializeCodeBlocks();
+            
+            // Update active menu item
+            window.updateActiveMenuItem(foundPath);
+            
+            // Update progress display
+            window.updateProgressUI();
+            
+            // Scroll to the top of the page
+            window.scrollTo(0, 0);
+            
+            console.log(`File successfully loaded: ${foundPath}`);
+            return true;
+        } else {
+            throw new Error(`Failed to load file: ${foundPath}`);
+        }
     } catch (error) {
         console.error('Error loading markdown file:', error);
         document.getElementById('content').innerHTML = `
@@ -125,10 +100,10 @@ async function initializeApp() {
     
     console.log("Initializing application...");
     
-    // Initialize the markdown file cache
+    // Initialize the markdown file cache (minimal mode)
     await window.initializeMarkdownCache();
     
-    // Create chapter menu from the table of contents file
+    // Load the main page
     loadMarkdownFile(`${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`)
         .then(success => {
             if (success) {
