@@ -38,29 +38,71 @@ function createSidebarMenu() {
     
     // Add home page link
     const homeItem = document.createElement('li');
-    homeItem.classList.add('active');
+    homeItem.classList.add('active', 'menu-home');
     homeItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">Hauptseite</a>`;
     sidebarMenu.appendChild(homeItem);
     
-    // Add links from the table of contents
+    // Group links by chapter
+    const chapters = {};
+    
     links.forEach(link => {
         const filePath = link.getAttribute('onclick').match(/'([^']+)'/)[1];
         const text = link.textContent;
         
-        // Skip links to the home page
+        // Skip links to the home page (but still include other Kapitel_0 files)
         if (filePath.includes('Anfang_Lese_Mich.md')) return;
         
-        const item = document.createElement('li');
-        item.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${filePath}')">${text}</a>`;
+        // Extract chapter from file path
+        const pathParts = filePath.split('/');
+        const chapterDir = pathParts[pathParts.length - 2]; // e.g., "Kapitel_1"
         
-        // Mark as completed if applicable
-        const chapterId = filePath.split('/').pop().replace('.md', '');
-        if (window.progress && window.progress[chapterId] && window.progress[chapterId].completed) {
-            item.classList.add('completed');
-            item.innerHTML += ' ✓';
+        // Create chapter group if it doesn't exist
+        if (!chapters[chapterDir]) {
+            chapters[chapterDir] = [];
         }
         
-        sidebarMenu.appendChild(item);
+        // Add link to chapter group
+        chapters[chapterDir].push({
+            filePath,
+            text,
+            chapterId: pathParts[pathParts.length - 1].replace('.md', '')
+        });
+    });
+    
+    // Sort chapters by name
+    const sortedChapterKeys = Object.keys(chapters).sort((a, b) => {
+        // Extract chapter numbers for sorting
+        const numA = parseInt(a.split('_')[1]);
+        const numB = parseInt(b.split('_')[1]);
+        return numA - numB;
+    });
+    
+    // Add chapters and their links to the menu
+    sortedChapterKeys.forEach(chapterKey => {
+        // Skip non-chapter directories like "z_Projekt_Daten"
+        if (!chapterKey.startsWith('Kapitel_')) return;
+        
+        // Create chapter header
+        const chapterNum = chapterKey.split('_')[1];
+        const chapterHeader = document.createElement('li');
+        chapterHeader.classList.add('chapter-header');
+        chapterHeader.innerHTML = `<span>Kapitel ${chapterNum}</span>`;
+        sidebarMenu.appendChild(chapterHeader);
+        
+        // Add chapter links
+        chapters[chapterKey].forEach(item => {
+            const menuItem = document.createElement('li');
+            menuItem.classList.add('chapter-item');
+            menuItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${item.filePath}')">${item.text}</a>`;
+            
+            // Mark as completed if applicable
+            if (window.progress && window.progress[item.chapterId] && window.progress[item.chapterId].completed) {
+                menuItem.classList.add('completed');
+                menuItem.innerHTML += ' ✓';
+            }
+            
+            sidebarMenu.appendChild(menuItem);
+        });
     });
     
     // Add event listeners to all navigation links to ensure they load only when clicked

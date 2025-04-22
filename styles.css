@@ -130,6 +130,7 @@ body {
     padding: var(--spacing-md) 0;
 }
 
+/* Allgemeine Stile für alle Menüpunkte */
 .sidebar-menu li {
     padding: var(--spacing-md) var(--spacing-xl);
     border-bottom: 1px solid var(--secondary-lighter);
@@ -148,6 +149,50 @@ body {
     color: var(--light-gray);
     text-decoration: none;
     display: block;
+}
+
+/* Hauptseite-Stil */
+.sidebar-menu li.menu-home {
+    background-color: var(--secondary-dark);
+    border-left: 4px solid var(--primary-color);
+    font-weight: bold;
+}
+
+/* Kapitelüberschriften-Stil */
+.sidebar-menu li.chapter-header {
+    background-color: var(--secondary-lighter);
+    font-weight: bold;
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-left: 4px solid var(--success-color);
+    margin-top: var(--spacing-md);
+}
+
+.sidebar-menu li.chapter-header span {
+    display: block;
+    font-size: 1.1em;
+}
+
+/* Kapitel-Einträge-Stil */
+.sidebar-menu li.chapter-item {
+    padding-left: calc(var(--spacing-xl) + 15px);
+    background-color: var(--secondary-color);
+    border-left: 2px solid var(--neutral-color);
+}
+
+.sidebar-menu li.chapter-item:hover {
+    background-color: var(--secondary-light);
+    border-left: 2px solid var(--primary-color);
+}
+
+.sidebar-menu li.chapter-item.active {
+    background-color: var(--primary-color);
+    border-left: 2px solid var(--white);
+}
+
+/* Abgeschlossene Kapitel */
+.sidebar-menu li.chapter-item.completed {
+    border-left: 2px solid var(--success-color);
 }
 
 /* Main Content Styles */
