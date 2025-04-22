@@ -102,20 +102,42 @@ function navigateToSection(index) {
         // Highlight the new current section
         sectionHeadings[currentSectionIndex].element.classList.add('current-section');
         
-        // Scroll to the section
+        // Get the target element and its position
+        const targetElement = sectionHeadings[index].element;
         const targetPosition = sectionHeadings[index].position - 20; // 20px offset for better visibility
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
+        
+        // Scroll to the section with a more reliable approach
+        try {
+            // First try scrollIntoView which works better for elements outside viewport
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Then fine-tune with scrollTo for the offset
+            setTimeout(() => {
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        } catch (e) {
+            // Fallback to direct scrollTo if scrollIntoView fails
+            console.warn('ScrollIntoView failed, using fallback:', e);
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
         
         // Update navigation state
         updateNavigationState();
         
         // Reset navigation flag after animation completes
+        // Use a longer timeout to account for longer scrolling distances
         setTimeout(() => {
             isNavigating = false;
-        }, 500);
+        }, 1000);
     }
 }
 
@@ -150,6 +172,11 @@ function updateNavigationOnScroll() {
     if (isNavigating || sectionHeadings.length === 0) return;
     
     const scrollPosition = window.scrollY + 100; // 100px offset for better detection
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    
+    // Check if we're at the bottom of the page
+    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50;
     
     // Find the current section based on scroll position
     let newIndex = 0;
@@ -159,6 +186,11 @@ function updateNavigationOnScroll() {
         } else {
             break;
         }
+    }
+    
+    // If we're at the bottom of the page, select the last section
+    if (isAtBottom && sectionHeadings.length > 0) {
+        newIndex = sectionHeadings.length - 1;
     }
     
     // If the section has changed, update the navigation
@@ -176,6 +208,8 @@ function updateNavigationOnScroll() {
         
         // Update navigation state
         updateNavigationState();
+        
+        console.log(`Navigation updated to section ${currentSectionIndex}: ${sectionHeadings[currentSectionIndex].text}`);
     }
 }
 
@@ -205,11 +239,39 @@ function tryLoadPreviousChapter() {
                 // Extract the file path from the onclick attribute
                 const match = onclickAttr.match(/loadMarkdownFile\('([^']+)'\)/);
                 if (match && match[1]) {
+                    console.log(`Navigating to previous chapter: ${match[1]}`);
+                    
+                    // Add visual feedback for chapter transition
+                    const hoverNav = document.getElementById('hover-navigation');
+                    if (hoverNav) {
+                        // Make the hover navigation fully visible during transition
+                        hoverNav.style.opacity = '1';
+                        
+                        // Add a temporary class for transition effect
+                        hoverNav.classList.add('chapter-transition');
+                        
+                        // Reset after transition
+                        setTimeout(() => {
+                            hoverNav.classList.remove('chapter-transition');
+                            hoverNav.style.opacity = '';
+                        }, 1500);
+                    }
+                    
+                    // Load the previous chapter
                     window.loadMarkdownFile(match[1]);
+                    
+                    // Reset navigation state after loading
+                    setTimeout(() => {
+                        isNavigating = false;
+                    }, 1000);
+                    
+                    return true;
                 }
             }
         }
     }
+    
+    return false;
 }
 
 /**
@@ -238,11 +300,39 @@ function tryLoadNextChapter() {
                 // Extract the file path from the onclick attribute
                 const match = onclickAttr.match(/loadMarkdownFile\('([^']+)'\)/);
                 if (match && match[1]) {
+                    console.log(`Navigating to next chapter: ${match[1]}`);
+                    
+                    // Add visual feedback for chapter transition
+                    const hoverNav = document.getElementById('hover-navigation');
+                    if (hoverNav) {
+                        // Make the hover navigation fully visible during transition
+                        hoverNav.style.opacity = '1';
+                        
+                        // Add a temporary class for transition effect
+                        hoverNav.classList.add('chapter-transition');
+                        
+                        // Reset after transition
+                        setTimeout(() => {
+                            hoverNav.classList.remove('chapter-transition');
+                            hoverNav.style.opacity = '';
+                        }, 1500);
+                    }
+                    
+                    // Load the next chapter
                     window.loadMarkdownFile(match[1]);
+                    
+                    // Reset navigation state after loading
+                    setTimeout(() => {
+                        isNavigating = false;
+                    }, 1000);
+                    
+                    return true;
                 }
             }
         }
     }
+    
+    return false;
 }
 
 /**
