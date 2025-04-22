@@ -67,6 +67,11 @@ async function loadMarkdownFile(filePath) {
             // Scroll to the top of the page
             window.scrollTo(0, 0);
             
+            // Update hover navigation
+            if (window.updateHoverNavigationOnLoad) {
+                window.updateHoverNavigationOnLoad();
+            }
+            
             console.log(`File successfully loaded: ${foundPath}`);
             return true;
         } else {

@@ -585,3 +585,97 @@ body {
     border-bottom-left-radius: 5px;
     z-index: 10;
 }
+
+/* Hover Navigation Menu */
+.hover-navigation {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90%;
+    background-color: var(--secondary-color);
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0.3;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hover-navigation:hover {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.hover-navigation-inner {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    border-radius: 25px;
+}
+
+.nav-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: none;
+}
+
+.nav-icon {
+    font-size: 1.2em;
+}
+
+.nav-progress {
+    height: 4px;
+    background-color: var(--secondary-lighter);
+    border-radius: 2px;
+    width: 100px;
+    margin: 0 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-progress-indicator {
+    position: absolute;
+    height: 100%;
+    background-color: var(--primary-color);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Highlight current section in content */
+.current-section {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 3px solid var(--primary-color);
+    padding-left: 10px;
+    margin-left: -13px;
+    transition: background-color 0.5s ease;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}

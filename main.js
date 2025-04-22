@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize sidebar toggle functionality
     window.initializeSidebarToggle();
     
+    // Initialize hover navigation
+    if (typeof window.initializeHoverNavigation === 'function') {
+        window.initializeHoverNavigation();
+    } else {
+        console.warn('initializeHoverNavigation function not found. Hover navigation will not be available.');
+    }
+    
     // Check window size and adjust resize handle display
     window.checkWindowSize();
     

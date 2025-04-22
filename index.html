@@ -132,6 +132,23 @@
         </main>
     </div>
 
+    <!-- Hover Navigation Menu -->
+    <div id="hover-navigation" class="hover-navigation">
+        <div class="hover-navigation-inner">
+            <button id="prev-section" class="nav-button prev-button" aria-label="Vorherige Aufgabe">
+                <span class="nav-icon">←</span>
+                <span class="nav-text">Vorherige Aufgabe</span>
+            </button>
+            <div class="nav-progress">
+                <div class="nav-progress-indicator"></div>
+            </div>
+            <button id="next-section" class="nav-button next-button" aria-label="Nächste Aufgabe">
+                <span class="nav-text">Nächste Aufgabe</span>
+                <span class="nav-icon">→</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Scripts with optimized loading -->
     <script>
         // Configure Monaco Editor paths
@@ -156,6 +173,7 @@
     <script src="editor-resize.js"></script>
     <script src="ui-progress.js"></script>
     <script src="ui-navigation.js"></script>
+    <script src="ui-hover-navigation.js"></script>
     <script src="markdown-cache.js"></script>
     <script src="markdown-parser.js"></script>
     <script src="markdown-loader.js"></script>
