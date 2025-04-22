@@ -1,6 +1,6 @@
 /* editor.css - Stile für den Code-Editor */
 
-/* Code Editor Sidebar Styles */
+/* Code Editor Sidebar Styles - Basis-Stile für alle Bildschirmgrößen */
 #code-editor-sidebar {
     grid-area: editor-sidebar;
     background-color: rgba(236, 240, 241, 0.85);
@@ -9,7 +9,7 @@
     height: 300px;
     position: fixed;
     bottom: 0;
-    left: 250px; /* Width of the sidebar */
+    left: 0;
     right: 0;
     z-index: 100;
     display: flex;
@@ -20,6 +20,8 @@
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     border: 1px solid var(--macos-glass-border);
     border-bottom: none;
+    max-width: 100%;
+    width: 100% !important; /* Standardmäßig volle Breite */
 }
 
 #code-editor-sidebar:hover {
@@ -118,25 +120,12 @@
     margin: 0 auto;
 }
 
-/* Mobile Styles */
-#code-editor-sidebar {
-    height: 300px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 100%;
-    width: 100% !important; /* Force full width on mobile */
-}
+/* Mobile Styles - werden durch die Basis-Stile abgedeckt */
 
 /* Desktop Styles */
 @media (min-width: 992px) {
     #code-editor-sidebar {
-        height: 300px;
-        position: fixed;
-        bottom: 0;
-        left: 250px;
-        right: 0;
+        left: 250px; /* Width of the sidebar */
         width: auto !important; /* Override mobile width */
     }
 }
