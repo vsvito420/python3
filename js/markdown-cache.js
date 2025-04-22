@@ -10,22 +10,51 @@
  */
 async function initializeMarkdownCache() {
     console.log("Initializing markdown file cache (minimal mode)...");
-    
+
+    // Ensure DOCS_BASE_DIR is defined
+    if (typeof window.DOCS_BASE_DIR === 'undefined') {
+        window.DOCS_BASE_DIR = 'python-docs';
+        console.warn("window.DOCS_BASE_DIR was not defined in initializeMarkdownCache. Defaulting to 'python-docs'.");
+    }
+
     // Reset the cache
     window.markdownFileCache = {};
-    
+
     // Only cache the main page initially
     const mainPagePath = `${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`;
     try {
+        console.log(`Checking main page at: ${mainPagePath}`);
         const response = await fetch(mainPagePath);
         if (response.ok) {
             console.log(`Main page found: ${mainPagePath}`);
             cacheFilePath("Anfang_Lese_Mich.md", mainPagePath);
+        } else {
+            console.warn(`Main page not found at ${mainPagePath}, status: ${response.status}`);
         }
     } catch (error) {
-        console.error(`Error checking main page: ${error}`);
+        console.error(`Error checking main page: ${error.message}`);
     }
-    
+
+    // Try to cache some common paths
+    const commonPaths = [
+        `${window.DOCS_BASE_DIR}/Kapitel_0/Erste_Schritte_Mac.md`,
+        `${window.DOCS_BASE_DIR}/Kapitel_0/Erste_Schritte_Win_PC.md`,
+        `${window.DOCS_BASE_DIR}/Kapitel_0/Erste_Schritte_Mobile_Replit.md`
+    ];
+
+    for (const path of commonPaths) {
+        try {
+            const response = await fetch(path);
+            if (response.ok) {
+                const fileName = path.split('/').pop();
+                console.log(`Common file found: ${path}`);
+                cacheFilePath(fileName, path);
+            }
+        } catch (error) {
+            // Ignore errors for common paths
+        }
+    }
+
     console.log("Minimal markdown file cache initialized:", window.markdownFileCache);
 }
 
@@ -36,26 +65,16 @@ async function initializeMarkdownCache() {
  */
 async function findFileInChapters(fileName) {
     console.log(`Searching for file: ${fileName} in chapter directories`);
-    
-    // Check each chapter directory
-    for (let i = 0; i <= 10; i++) {
-        const kapitelDir = `${window.DOCS_BASE_DIR}/Kapitel_${i}`;
-        const filePath = `${kapitelDir}/${fileName}`;
-        
-        try {
-            const response = await fetch(filePath);
-            if (response.ok) {
-                console.log(`File found at: ${filePath}`);
-                cacheFilePath(fileName, filePath);
-                return filePath;
-            }
-        } catch (error) {
-            // Ignore errors and try the next directory
-        }
+
+    // Ensure DOCS_BASE_DIR is defined
+    if (typeof window.DOCS_BASE_DIR === 'undefined') {
+        window.DOCS_BASE_DIR = 'python-docs';
+        console.warn("window.DOCS_BASE_DIR was not defined in findFileInChapters. Defaulting to 'python-docs'.");
     }
-    
-    // Also check the main directory
+
+    // First check the main directory
     const mainDirPath = `${window.DOCS_BASE_DIR}/${fileName}`;
+    console.log(`Checking main directory: ${mainDirPath}`);
     try {
         const response = await fetch(mainDirPath);
         if (response.ok) {
@@ -64,9 +83,47 @@ async function findFileInChapters(fileName) {
             return mainDirPath;
         }
     } catch (error) {
-        // Ignore errors
+        console.warn(`Error checking main directory: ${error.message}`);
+        // Continue to check chapter directories
     }
-    
+
+    // Check each chapter directory
+    for (let i = 0; i <= 10; i++) {
+        const kapitelDir = `${window.DOCS_BASE_DIR}/Kapitel_${i}`;
+        const filePath = `${kapitelDir}/${fileName}`;
+
+        console.log(`Checking chapter directory: ${filePath}`);
+        try {
+            const response = await fetch(filePath);
+            if (response.ok) {
+                console.log(`File found at: ${filePath}`);
+                cacheFilePath(fileName, filePath);
+                return filePath;
+            }
+        } catch (error) {
+            console.warn(`Error checking chapter ${i}: ${error.message}`);
+            // Ignore errors and try the next directory
+        }
+    }
+
+    // Check for special directories like z_Projekt_Daten
+    const specialDirs = ['z_Projekt_Daten'];
+    for (const dir of specialDirs) {
+        const specialPath = `${window.DOCS_BASE_DIR}/${dir}/${fileName}`;
+        console.log(`Checking special directory: ${specialPath}`);
+        try {
+            const response = await fetch(specialPath);
+            if (response.ok) {
+                console.log(`File found at: ${specialPath}`);
+                cacheFilePath(fileName, specialPath);
+                return specialPath;
+            }
+        } catch (error) {
+            console.warn(`Error checking special directory ${dir}: ${error.message}`);
+            // Ignore errors and try the next directory
+        }
+    }
+
     console.log(`File not found: ${fileName}`);
     return null;
 }
@@ -79,18 +136,18 @@ async function findFileInChapters(fileName) {
 function cacheFilePath(fileName, fullPath) {
     // Store the full path
     window.markdownFileCache[fullPath] = fullPath;
-    
+
     // Store the file name
     window.markdownFileCache[fileName] = fullPath;
-    
+
     // Store the file name without extension
     const fileNameWithoutExt = fileName.replace('.md', '');
     window.markdownFileCache[fileNameWithoutExt] = fullPath;
-    
+
     // Store variants with different path prefixes
     window.markdownFileCache[`/${fullPath}`] = fullPath;
     window.markdownFileCache[`/Projekte/${fileName}`] = fullPath;
-    
+
     // Extract the chapter from the path (e.g. "Kapitel_1")
     const match = fullPath.match(/Kapitel_\d+/);
     if (match) {
@@ -106,20 +163,32 @@ function cacheFilePath(fileName, fullPath) {
  * @returns {string} - The corrected path
  */
 function correctPath(path) {
+    // Ensure DOCS_BASE_DIR is defined
+    if (typeof window.DOCS_BASE_DIR === 'undefined') {
+        window.DOCS_BASE_DIR = 'python-docs';
+        console.warn("window.DOCS_BASE_DIR was not defined in correctPath. Defaulting to 'python-docs'.");
+    }
+
+    // If the path is null or undefined, return the default path
+    if (!path) {
+        console.warn("Received null or undefined path in correctPath");
+        return `${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`;
+    }
+
     // If the path is in the cache, use the stored path
-    if (window.markdownFileCache[path]) {
+    if (window.markdownFileCache && window.markdownFileCache[path]) {
         console.log(`Path found in cache: ${path} -> ${window.markdownFileCache[path]}`);
         return window.markdownFileCache[path];
     }
-    
+
     // If the path already starts with the base directory
     if (path.startsWith(`${window.DOCS_BASE_DIR}/`)) {
         return path;
     }
-    
+
     // Remove leading slash if present
     let correctedPath = path.startsWith('/') ? path.substring(1) : path;
-    
+
     // Replace "Projekte/" with the base directory
     if (correctedPath.startsWith('Projekte/')) {
         correctedPath = correctedPath.replace('Projekte/', `${window.DOCS_BASE_DIR}/`);
@@ -128,19 +197,33 @@ function correctPath(path) {
     else if (!correctedPath.startsWith(`${window.DOCS_BASE_DIR}/`)) {
         // Extract the file name
         const fileName = correctedPath.split('/').pop();
-        
+
         // Try to find the path in the cache
-        for (const [cachedPath, fullPath] of Object.entries(window.markdownFileCache)) {
-            if (cachedPath.endsWith(fileName)) {
-                console.log(`File found in cache: ${fileName} -> ${fullPath}`);
-                return fullPath;
+        if (window.markdownFileCache) {
+            for (const [cachedPath, fullPath] of Object.entries(window.markdownFileCache)) {
+                if (cachedPath.endsWith(fileName)) {
+                    console.log(`File found in cache: ${fileName} -> ${fullPath}`);
+                    return fullPath;
+                }
             }
         }
-        
-        // If not found in the cache, add the base directory
-        correctedPath = `${window.DOCS_BASE_DIR}/` + correctedPath;
+
+        // Check if the path already contains a chapter directory
+        if (/Kapitel_\d+/.test(correctedPath)) {
+            // Just add the base directory
+            correctedPath = `${window.DOCS_BASE_DIR}/${correctedPath}`;
+        } else {
+            // Check if it's just a filename
+            if (!correctedPath.includes('/')) {
+                // Try to find it in Kapitel_0 first
+                correctedPath = `${window.DOCS_BASE_DIR}/Kapitel_0/${correctedPath}`;
+            } else {
+                // If not found in the cache, add the base directory
+                correctedPath = `${window.DOCS_BASE_DIR}/${correctedPath}`;
+            }
+        }
     }
-    
+
     console.log(`Path corrected: ${path} -> ${correctedPath}`);
     return correctedPath;
 }
