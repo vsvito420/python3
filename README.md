@@ -2,6 +2,189 @@
 
 Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern.
 
+## Architekturübersicht
+
+Die Python-Lernplattform ist eine clientseitige Webanwendung, die Markdown-Dokumente lädt, interaktive Python-Code-Editoren bereitstellt und Python-Code direkt im Browser ausführt.
+
+```mermaid
+graph TD
+    subgraph Frontend
+        A[index.html] --> B[styles.css]
+        A --> C[script.js]
+        A --> D[markdown-loader.js]
+    end
+    
+    subgraph "Externe Bibliotheken"
+        E[Monaco Editor] -.-> C
+        E -.-> D
+        F[Pyodide] -.-> C
+        F -.-> D
+    end
+    
+    subgraph "Daten & Inhalte"
+        G[python-docs/] -.-> D
+    end
+    
+    subgraph "Hauptfunktionen"
+        D --> H[Markdown Laden]
+        D --> I[Markdown Parsen]
+        D --> J[Code-Block Verarbeitung]
+        D --> K[Fortschrittsverfolgung]
+        
+        C --> L[Standalone Editor]
+        C --> M[UI-Interaktionen]
+        C --> N[Resize-Funktionalität]
+        
+        H --> I
+        I --> J
+        J --> E
+        L --> F
+    end
+    
+    subgraph "Deployment"
+        O[GitHub Actions] --> P[Wrangler]
+        P --> Q[Cloudflare Pages]
+    end
+    
+    A --> E
+    A --> F
+    D --> G
+```
+
+### Datenfluss
+
+1. **Initialisierung**:
+   - Die Anwendung wird in `index.html` geladen
+   - `script.js` initialisiert den eigenständigen Code-Editor
+   - `markdown-loader.js` lädt die Startseite und initialisiert den Markdown-Cache
+
+2. **Markdown-Verarbeitung**:
+   - Markdown-Dateien werden aus dem `python-docs/`-Verzeichnis geladen
+   - Markdown wird in HTML umgewandelt
+   - Code-Blöcke werden extrahiert und durch interaktive Editoren ersetzt
+
+3. **Code-Ausführung**:
+   - Pyodide wird bei Bedarf geladen
+   - Python-Code wird im Browser ausgeführt
+   - Ausgabe wird im entsprechenden Ausgabebereich angezeigt
+
+4. **Fortschrittsverfolgung**:
+   - Abgeschlossene Kapitel werden im localStorage gespeichert
+   - Fortschrittsanzeige wird aktualisiert
+
+### Komponentendetails
+
+#### Kernkomponenten
+
+| Komponente | Datei | Hauptfunktionen |
+|------------|-------|----------------|
+| **HTML-Struktur** | `index.html` | Definiert die grundlegende Seitenstruktur mit drei Hauptbereichen: Sidebar-Navigation, Code-Editor und Inhaltsbereich |
+| **Styling** | `styles.css` | Implementiert responsives Design mit CSS Grid und Flexbox, definiert Farbschema und UI-Komponenten |
+| **Standalone Editor** | `script.js` | Initialisiert und verwaltet den eigenständigen Code-Editor, implementiert Resize-Funktionalität und UI-Interaktionen |
+| **Markdown-Verarbeitung** | `markdown-loader.js` | Lädt und verarbeitet Markdown-Dateien, extrahiert Code-Blöcke, verwaltet Fortschritt |
+
+#### Technische Implementierungsdetails
+
+1. **Markdown-Verarbeitung**:
+   - Verwendet reguläre Ausdrücke zur Extraktion von Code-Blöcken und Umwandlung von Markdown in HTML
+   - Implementiert einen Pfad-Cache für effizientes Auffinden von Markdown-Dateien
+   - Korrigiert relative Pfade in Markdown-Links für korrekte Navigation
+
+2. **Code-Editor-Integration**:
+   - Monaco Editor wird für Syntax-Highlighting und Code-Bearbeitung verwendet
+   - Editoren werden dynamisch für jeden Code-Block erstellt
+   - Unterstützt verschiedene Programmiersprachen mit entsprechendem Syntax-Highlighting
+
+3. **Python-Ausführung**:
+   - Pyodide wird lazy-loaded, um die initiale Ladezeit zu verbessern
+   - Standard-Output wird umgeleitet, um Konsolenausgaben zu erfassen
+   - Fehlerbehandlung für Python-Ausführungsfehler
+
+4. **Responsive Design**:
+   - Mobile-First-Ansatz mit drei Breakpoints (Mobile, Tablet, Desktop)
+   - Anpassbare Layouts mit ein-/ausklappbaren Seitenleisten
+   - Resize-Funktionalität für den Code-Editor
+
+5. **Deployment-Prozess**:
+   - GitHub Actions Workflow wird durch Pushes zum Hauptbranch ausgelöst
+   - Wrangler (Cloudflare CLI) deployt die Anwendung auf Cloudflare Pages
+   - Statische Dateien werden direkt aus dem Repository-Root bereitgestellt
+
+### Herausforderungen und Lösungen
+
+Bei der Entwicklung der Python-Lernplattform wurden mehrere technische Herausforderungen gelöst:
+
+| Herausforderung | Lösung | Implementierung |
+|-----------------|--------|----------------|
+| **Python im Browser ausführen** | Integration von Pyodide | Lazy-Loading von Pyodide, Umleitung der Standardausgabe, asynchrone Ausführung |
+| **Dynamische Markdown-Verarbeitung** | Eigener Markdown-Parser | Reguläre Ausdrücke für Markdown-Elemente, Extraktion von Code-Blöcke, Pfadkorrektur für Links |
+| **Responsive Layout** | CSS Grid mit dynamischen Bereichen | Anpassbare Grid-Template-Columns, Media Queries für verschiedene Geräte, ein-/ausklappbare Seitenleisten |
+| **Performance-Optimierung** | Caching und Lazy-Loading | Markdown-Datei-Cache, verzögerte Initialisierung von Pyodide, Debouncing für Layout-Aktualisierungen |
+| **Fortschrittsverfolgung** | Client-seitiges Speichern | localStorage für Benutzerdaten, dynamische Aktualisierung der UI basierend auf Fortschritt |
+
+### Architekturprinzipien
+
+Die Architektur der Python-Lernplattform folgt mehreren wichtigen Prinzipien:
+
+1. **Modularität**: Klare Trennung von Verantwortlichkeiten zwischen den Dateien
+   - `index.html`: Struktur und Einbindung von Ressourcen
+   - `styles.css`: Styling und Layout
+   - `script.js`: UI-Interaktionen und eigenständiger Editor
+   - `markdown-loader.js`: Inhaltsverarbeitung und Code-Block-Funktionalität
+
+2. **Progressive Enhancement**: Die Anwendung funktioniert auch mit eingeschränkten Funktionen
+   - Grundlegende Inhalte sind auch ohne JavaScript zugänglich
+   - Responsive Design passt sich an verschiedene Geräte an
+   - Fallback-Optionen für nicht unterstützte Funktionen
+
+3. **Clientseitige Verarbeitung**: Keine Serverabhängigkeit für die Kernfunktionalität
+   - Alle Inhalte werden statisch bereitgestellt
+   - Python-Code wird vollständig im Browser ausgeführt
+   - Benutzerdaten werden lokal gespeichert
+
+4. **Erweiterbarkeit**: Die Architektur ermöglicht einfache Erweiterungen
+   - Neue Kapitel können durch Hinzufügen von Markdown-Dateien erstellt werden
+   - Unterstützung für verschiedene Programmiersprachen im Code-Editor
+   - Modulare Struktur für einfache Erweiterung der Funktionalität
+
+### Zukünftige Erweiterungsmöglichkeiten
+
+Die Architektur der Python-Lernplattform wurde mit Blick auf zukünftige Erweiterungen entwickelt. Hier sind einige mögliche Erweiterungen:
+
+#### Funktionale Erweiterungen
+
+| Erweiterung | Beschreibung | Implementierungsansatz |
+|-------------|--------------|------------------------|
+| **Benutzerkonten** | Synchronisierung des Fortschritts zwischen Geräten | Integration mit Auth-Diensten, Backend-API für Fortschrittsspeicherung |
+| **Interaktive Übungen** | Automatisch bewertete Programmieraufgaben | Testfälle in Pyodide ausführen, Ergebnisse validieren und Feedback geben |
+| **Kollaborative Features** | Gemeinsames Bearbeiten von Code | Integration von WebSockets oder ähnlichen Technologien für Echtzeit-Kollaboration |
+| **Offline-Unterstützung** | Nutzung ohne Internetverbindung | Service Worker für Caching, IndexedDB für lokale Datenspeicherung |
+| **Erweiterte Visualisierungen** | Visualisierung von Algorithmen und Datenstrukturen | Integration von Visualisierungsbibliotheken wie D3.js oder Python-Bibliotheken in Pyodide |
+
+#### Technische Verbesserungen
+
+1. **Performance-Optimierungen**:
+   - Lazy-Loading von Markdown-Inhalten
+   - Virtualisierung für lange Listen in der Navigation
+   - Optimierung der Pyodide-Ladezeit und -Speichernutzung
+
+2. **Erweiterte Code-Editor-Funktionen**:
+   - Intellisense und Autovervollständigung
+   - Debugging-Funktionalität
+   - Unterstützung für mehrere Dateien in einem Projekt
+
+3. **Verbesserte Barrierefreiheit**:
+   - Vollständige Tastaturnavigation
+   - Screenreader-Unterstützung
+   - Hoher Kontrast und anpassbare Schriftgrößen
+
+4. **Erweiterte Inhaltsformate**:
+   - Unterstützung für interaktive Diagramme
+   - Einbettung von Videos und anderen Medien
+   - Interaktive Quizze und Assessments
+
+Diese Erweiterungsmöglichkeiten können schrittweise implementiert werden, ohne die bestehende Architektur grundlegend zu ändern, dank des modularen Aufbaus der Plattform.
+
 ## Deployment auf Cloudflare Pages
 
 Diese Anwendung wird automatisch auf Cloudflare Pages deployt, wenn Änderungen zum Hauptbranch gepusht werden. Das Deployment wird durch GitHub Actions und Wrangler (Cloudflare's CLI-Tool) gesteuert.
