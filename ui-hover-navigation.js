@@ -41,6 +41,14 @@ function updateSectionHeadings() {
     const headings = content.querySelectorAll('h1, h2, h3');
     
     headings.forEach((heading, index) => {
+        // Skip headings with text "Ausgabe:" or within code output containers
+        if (heading.textContent.trim() === "Ausgabe:" ||
+            heading.closest('.output-container') ||
+            heading.closest('.code-editor-container')) {
+            console.log('Skipping output heading:', heading.textContent);
+            return;
+        }
+        
         // Add an ID to the heading if it doesn't have one
         if (!heading.id) {
             heading.id = 'section-' + index;
@@ -57,6 +65,8 @@ function updateSectionHeadings() {
     
     // Sort by position
     sectionHeadings.sort((a, b) => a.position - b.position);
+    
+    console.log('Found', sectionHeadings.length, 'valid section headings');
 }
 
 /**
