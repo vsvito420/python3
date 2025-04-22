@@ -1,6 +1,22 @@
 # Python-Lernplattform: Architektur und Wartungsanleitung
 
-Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern.
+Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern. Die Plattform ermöglicht interaktives Lernen von Python direkt im Browser ohne Installation von Software.
+
+## Schnellstart
+
+1. **Lokale Entwicklung starten:**
+   ```bash
+   # Lokalen Entwicklungsserver starten
+   node js/server.js
+   ```
+
+2. **Neue Inhalte hinzufügen:**
+   - Erstelle neue Markdown-Dateien im Verzeichnis `python-docs/`
+   - Füge Links zu neuen Dateien in `python-docs/Kapitel_0/Anfang_Lese_Mich.md` hinzu
+
+3. **Deployment:**
+   - Push zum Hauptbranch löst automatisches Deployment auf Cloudflare Pages aus
+   - Oder manuell mit `wrangler pages publish .`
 
 ## Architekturübersicht
 
@@ -18,39 +34,39 @@ graph TD
         A --> C6[js/markdown-*.js]
         A --> C7[js/script.js]
     end
-    
+
     subgraph "Externe Bibliotheken"
         E[Monaco Editor] -.-> C3
         F[Pyodide] -.-> C5
     end
-    
+
     subgraph "Daten & Inhalte"
         G[python-docs/] -.-> C6
     end
-    
+
     subgraph "Hauptfunktionen"
         C6 --> H[Markdown Laden]
         C6 --> I[Markdown Parsen]
         C3 --> J[Code-Block Verarbeitung]
         C4 --> K[Fortschrittsverfolgung]
         C4 --> K2[Hover-Navigation]
-        
+
         C3 --> L[Standalone Editor]
         C4 --> M[UI-Interaktionen]
         C3 --> N[Resize-Funktionalität]
         C7 --> O[Hilfsfunktionen]
-        
+
         H --> I
         I --> J
         J --> E
         L --> F
     end
-    
+
     subgraph "Deployment"
         P1[GitHub Actions] --> P2[Wrangler]
         P2 --> P3[Cloudflare Pages]
     end
-    
+
     A --> E
     A --> F
     C6 --> G
@@ -72,11 +88,11 @@ graph TD
         main --> buttons[css/buttons.css]
         main --> utilities[css/utilities.css]
     end
-    
+
     subgraph "Optimierungen"
         buttons --> touch[Touch-Optimierungen]
         buttons --> perf[Performance-Verbesserungen]
-        
+
         touch --> active["Active-State für Touch"]
         perf --> backdrop["Entfernung von backdrop-filter"]
         perf --> gpu["will-change für GPU-Beschleunigung"]
@@ -117,7 +133,7 @@ sequenceDiagram
     participant MarkdownParser
     participant CodeEditor
     participant Pyodide
-    
+
     User->>Browser: Öffnet Anwendung
     Browser->>MarkdownLoader: Lädt Startseite
     MarkdownLoader->>MarkdownParser: Verarbeitet Markdown
@@ -186,21 +202,21 @@ graph TD
         kap2[Kapitel_2/]
         kap3[Kapitel_3/]
         projekt[z_Projekt_Daten/]
-        
+
         docs --> kap0
         docs --> kap1
         docs --> kap2
         docs --> kap3
         docs --> projekt
     end
-    
+
     subgraph "Hover-Navigation"
         hover[js/ui-hover-navigation.js]
-        
+
         hover --> sections[Abschnittsnavigation]
         hover --> progress[Fortschrittsanzeige]
         hover --> chapter[Kapitelübergänge]
-        
+
         sections --> prev[Vorheriger Abschnitt]
         sections --> next[Nächster Abschnitt]
         chapter --> prevChap[Vorheriges Kapitel]
@@ -498,34 +514,67 @@ Für neue Funktionen:
 
 ## Wartungstipps
 
-### Häufige Probleme
+### Häufige Probleme und Fehlerbehebung
 
-| Problem | Lösung |
-|---------|--------|
-| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache in `js/markdown-cache.js` |
-| **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung in `js/editor-standalone.js` und `js/editor-codeblocks.js` |
-| **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration in `js/python-pyodide.js` und `js/python-executor.js` |
-| **CORS-Fehler bei lokalem Testen** | Verwende den lokalen Entwicklungsserver mit `node js/server.js` |
-| **Markdown-Tabellen werden nicht korrekt angezeigt** | Die Tabellen-Verarbeitung ist noch nicht vollständig implementiert |
+| Problem | Lösung | Weitere Schritte |
+|---------|--------|----------------|
+| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache in `js/markdown-cache.js` | Prüfe die Konsole auf Fehler bei der Pfadauflösung |
+| **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung in `js/editor-standalone.js` und `js/editor-codeblocks.js` | Stelle sicher, dass die Monaco-Editor-CDN erreichbar ist |
+| **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration in `js/python-pyodide.js` und `js/python-executor.js` | Prüfe die Konsole auf Fehler bei der Pyodide-Initialisierung |
+| **CORS-Fehler bei lokalem Testen** | Verwende den lokalen Entwicklungsserver mit `node js/server.js` | Alternativ einen Browser mit deaktivierten CORS-Einschränkungen verwenden |
+| **Markdown-Tabellen werden nicht korrekt angezeigt** | Die Tabellen-Verarbeitung ist implementiert, aber kann bei komplexen Tabellen Probleme haben | Vereinfache die Tabellenstruktur oder verwende HTML-Tabellen |
+| **Langsame Ladezeiten** | Überprüfe die Netzwerkaktivität in den Browser-DevTools | Reduziere die Anzahl der externen Ressourcen oder implementiere Lazy-Loading |
+| **Mobile Darstellungsprobleme** | Überprüfe die CSS-Media-Queries in den entsprechenden CSS-Modulen | Teste mit verschiedenen Geräten und Bildschirmgrößen |
 
 ### Performance-Optimierung
 
 Die Plattform verwendet mehrere Techniken zur Performance-Optimierung:
 
-| Technik | Beschreibung |
-|---------|-------------|
-| **Lazy Loading** | Pyodide wird erst geladen, wenn es benötigt wird |
-| **Debouncing** | Verhindert zu häufige Layout-Aktualisierungen |
-| **Caching** | Markdown-Dateien werden gecacht |
-| **Touch-Optimierungen** | Entfernung von backdrop-filter, will-change für GPU-Beschleunigung |
-| **Optimierte CSS-Effekte** | Reduzierung von aufwändigen CSS-Effekten wie backdrop-filter und box-shadow |
-| **Dynamisches Padding** | Anpassung des Container-Paddings beim Ein-/Ausblenden des Editors |
+| Technik | Beschreibung | Implementierungsort |
+|---------|-------------|---------------------|
+| **Lazy Loading** | Pyodide wird erst geladen, wenn es benötigt wird | `js/python-pyodide.js` |
+| **Debouncing** | Verhindert zu häufige Layout-Aktualisierungen | `js/core-utils.js` |
+| **Caching** | Markdown-Dateien werden gecacht | `js/markdown-cache.js` |
+| **Touch-Optimierungen** | Entfernung von backdrop-filter, will-change für GPU-Beschleunigung | `css/buttons.css`, `css/content.css` |
+| **Optimierte CSS-Effekte** | Reduzierung von aufwändigen CSS-Effekten wie backdrop-filter und box-shadow | Alle CSS-Module |
+| **Dynamisches Padding** | Anpassung des Container-Paddings beim Ein-/Ausblenden des Editors | `js/editor-resize.js` |
+| **Reduzierte Animationen** | Respektiert `prefers-reduced-motion` für Benutzer, die Animationen reduzieren möchten | `css/base.css` |
+| **Code-Splitting** | Modulare JavaScript-Dateien für bessere Caching-Möglichkeiten | Alle JS-Module |
 
 ### Browser-Kompatibilität
 
 Die Plattform wurde für moderne Browser optimiert. Bei Problemen mit älteren Browsern:
 
-| Überprüfung | Details |
-|-------------|---------|
-| CSS-Kompatibilität | Grid, Flexbox |
-| JavaScript-Kompatibilität | async/await, ES6-Features |
+| Überprüfung | Details | Mindestanforderungen |
+|-------------|---------|----------------------|
+| CSS-Kompatibilität | Grid, Flexbox, CSS-Variablen | Chrome 60+, Firefox 54+, Safari 10.1+, Edge 16+ |
+| JavaScript-Kompatibilität | async/await, ES6-Features, Modules | Chrome 63+, Firefox 58+, Safari 11.1+, Edge 79+ |
+| Pyodide-Kompatibilität | WebAssembly-Unterstützung | Chrome 57+, Firefox 52+, Safari 11+, Edge 16+ |
+
+## Lokale Entwicklung
+
+### Voraussetzungen
+
+- Node.js (für den lokalen Entwicklungsserver)
+- Moderner Browser mit WebAssembly-Unterstützung
+
+### Entwicklungsserver starten
+
+```bash
+node js/server.js
+```
+
+Der Server läuft standardmäßig auf Port 3000. Öffne http://localhost:3000 im Browser.
+
+### Änderungen testen
+
+1. Bearbeite die Dateien im Editor deiner Wahl
+2. Aktualisiere den Browser, um die Änderungen zu sehen
+3. Überprüfe die Browser-Konsole auf Fehler oder Warnungen
+
+### Best Practices
+
+- Halte die modulare Struktur bei
+- Teste auf verschiedenen Geräten und Browsern
+- Optimiere Bilder und externe Ressourcen
+- Verwende die Browser-DevTools zur Performance-Analyse

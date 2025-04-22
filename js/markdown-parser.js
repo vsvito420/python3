@@ -3,11 +3,13 @@
  */
 
 /**
- * Parse markdown into HTML
+ * Parse markdown into HTML with improved performance and error handling
  * @param {string} markdown - The markdown content to parse
  * @returns {string} - The parsed HTML
  */
 function parseMarkdown(markdown) {
+    // Use performance measurement for debugging
+    const startTime = performance.now();
     console.log("Starting markdown parsing...");
 
     // Ensure codeBlocks array exists and reset it for this parsing operation
@@ -18,6 +20,12 @@ function parseMarkdown(markdown) {
         // Clear the array but keep the reference
         window.codeBlocks.length = 0;
         console.log("Reset existing codeBlocks array");
+    }
+
+    // Validate input
+    if (!markdown || typeof markdown !== 'string') {
+        console.error("Invalid markdown input:", markdown);
+        return '<div class="error">Error: Invalid markdown content</div>';
     }
 
     // Temporary placeholders for code blocks
@@ -311,7 +319,23 @@ function parseMarkdown(markdown) {
     // Wrap the entire content in a div with markdown-content class for proper styling
     processedMarkdown = `<div class="markdown-content">${processedMarkdown}</div>`;
 
+    // Log performance metrics
+    const endTime = performance.now();
+    console.log(`Markdown parsing completed in ${(endTime - startTime).toFixed(2)}ms`);
+
     return processedMarkdown;
+}
+
+/**
+ * Sanitize HTML content to prevent XSS attacks
+ * @param {string} html - The HTML content to sanitize
+ * @returns {string} - The sanitized HTML
+ */
+function sanitizeHtml(html) {
+    // Create a temporary element
+    const tempElement = document.createElement('div');
+    tempElement.textContent = html;
+    return tempElement.innerHTML;
 }
 
 // Export functions for global access

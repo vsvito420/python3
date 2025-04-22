@@ -114,8 +114,20 @@ async function loadMarkdownFile(filePath) {
             window.currentChapter = foundPath.split('/').pop().replace('.md', '');
 
             // Convert markdown to HTML and display it USING THE NEW PARSER
-            const html = window.parseMarkdown(markdown); // Uses the new function
-            document.getElementById('content').innerHTML = html;
+            try {
+                const html = window.parseMarkdown(markdown); // Uses the new function
+                document.getElementById('content').innerHTML = html;
+            } catch (parseError) {
+                console.error('Error parsing markdown:', parseError);
+                document.getElementById('content').innerHTML = `
+                    <div class="error-container">
+                        <h2>Error Loading Content</h2>
+                        <p>There was an error processing the markdown content. Please try again or contact support.</p>
+                        <pre>${parseError.message}</pre>
+                    </div>
+                `;
+                return false;
+            }
 
             // Initialize interactive code blocks (ensure initializeCodeBlocks and codeBlocks exist)
             if (window.initializeCodeBlocks && window.codeBlocks) {
