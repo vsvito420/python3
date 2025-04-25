@@ -1,6 +1,25 @@
 # Python-Lernplattform: Architektur und Wartungsanleitung
 
-Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern.
+Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern. Die Plattform ermöglicht interaktives Lernen von P
+Python direkt im Browser ohne Installation von Software.
+
+## Schnellstart
+
+1. **Lokale Entwicklung starten:**
+   ```bash
+   # Lokalen Entwicklungsserver starten
+   node js/server.js
+   ```
+
+2. **Neue Inhalte hinzufügen:**
+   - Erstelle neue Markdown-Dateien im Verzeichnis `python-docs/`
+   - Füge Links zu neuen Dateien in `python-docs/Kapitel_0/Anfang_Lese_Mich.md` hinzu
+
+3. **Deployment:**
+   - Push zum Hauptbranch löst automatisches Deployment auf Cloudflare Pages aus
+   - Oder manuell mit `wrangler pages publish .`
+
+## Architekturübersicht
 
 ## Architekturübersicht
 
