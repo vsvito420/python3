@@ -1,9 +1,10 @@
 /**
- * Markdown loader for the Python learning platform
- * Loads markdown files and converts them to interactive HTML content
+ * Markdown loading and parsing functionality for the Python learning platform
+ * Includes enhanced table and code block handling.
  */
 
-// No need to declare local variables that are already in window object
+// Global array to store code block information
+window.codeBlocks = [];
 
 /**
  * Parses Markdown text into HTML.
@@ -15,7 +16,7 @@
  * @returns {string} - The resulting HTML string.
  */
 // This function is now defined in markdown-parser.js
-window.parseMarkdown = window.parseMarkdown || function(markdown) {
+window.parseMarkdown = window.parseMarkdown || function (markdown) {
     console.warn("Using fallback parseMarkdown function. The main implementation should be in markdown-parser.js");
     return markdown;
 };
@@ -26,7 +27,8 @@ window.parseMarkdown = window.parseMarkdown || function(markdown) {
  * @param {string} filePath - The path of the markdown file to load
  * @returns {Promise<boolean>} - Whether the file was successfully loaded
  */
-async function loadMarkdownFile(filePath) {
+async function loadAndParseMarkdown(filePath) {
+    const startTime = performance.now(); // Start performance timer
     try {
         // If the cache is empty, initialize it (minimal mode)
         if (!window.markdownFileCache || Object.keys(window.markdownFileCache).length === 0) {
@@ -160,6 +162,11 @@ async function loadMarkdownFile(filePath) {
         } else {
             throw new Error(`Failed to load file: ${foundPath}`);
         }
+        const markdown = await response.text();
+        const parsedHtml = parseMarkdown(markdown);
+        const endTime = performance.now(); // End performance timer
+        console.log(`loadAndParseMarkdown completed in ${(endTime - startTime).toFixed(2)}ms`);
+        return parsedHtml;
     } catch (error) {
         console.error('Error loading markdown file:', error);
         const contentElement = document.getElementById('content');
@@ -183,7 +190,9 @@ async function loadMarkdownFile(filePath) {
 }
 
 /**
- * Initialize the application
+ * Parses markdown text into HTML.
+ * @param {string} markdown - The markdown text to parse.
+ * @returns {string} - The parsed HTML content.
  */
 async function initializeApp() {
     // Define DOCS_BASE_DIR if not already defined
@@ -193,7 +202,7 @@ async function initializeApp() {
     }
 
     // Load saved progress (ensure loadProgress exists)
-    if(window.loadProgress) {
+    if (window.loadProgress) {
         window.loadProgress();
     }
 
@@ -232,7 +241,7 @@ async function initializeApp() {
         if (success) {
             console.log("Main page successfully loaded, creating sidebar menu...");
             // Extract links from the table of contents and create sidebar menu (ensure createSidebarMenu exists)
-            if(window.createSidebarMenu) {
+            if (window.createSidebarMenu) {
                 window.createSidebarMenu();
             } else {
                 console.warn("window.createSidebarMenu not found. Cannot create sidebar.");
@@ -280,7 +289,7 @@ if (!window.correctPath) {
     window.correctPath = (path) => path; // Simple pass-through
 }
 if (!window.findFileInChapters) {
-     console.warn("Defining stub for window.findFileInChapters");
+    console.warn("Defining stub for window.findFileInChapters");
     window.findFileInChapters = async (fileName) => null; // Default: not found
 }
 if (!window.initializeMarkdownCache) {
@@ -289,7 +298,7 @@ if (!window.initializeMarkdownCache) {
 }
 if (!window.initializeCodeBlocks) {
     console.warn("Defining stub for window.initializeCodeBlocks");
-    window.initializeCodeBlocks = () => {};
+    window.initializeCodeBlocks = () => { };
 }
 if (!window.codeBlocks) {
     console.warn("Defining stub for window.codeBlocks");
@@ -297,19 +306,19 @@ if (!window.codeBlocks) {
 }
 if (!window.updateActiveMenuItem) {
     console.warn("Defining stub for window.updateActiveMenuItem");
-    window.updateActiveMenuItem = (path) => {};
+    window.updateActiveMenuItem = (path) => { };
 }
 if (!window.updateProgressUI) {
-     console.warn("Defining stub for window.updateProgressUI");
-    window.updateProgressUI = () => {};
+    console.warn("Defining stub for window.updateProgressUI");
+    window.updateProgressUI = () => { };
 }
 if (!window.loadProgress) {
     console.warn("Defining stub for window.loadProgress");
-    window.loadProgress = () => {};
+    window.loadProgress = () => { };
 }
 if (!window.createSidebarMenu) {
     console.warn("Defining stub for window.createSidebarMenu");
-    window.createSidebarMenu = () => {};
+    window.createSidebarMenu = () => { };
 }
 
 
