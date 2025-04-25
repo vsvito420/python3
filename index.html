@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,14 @@
 
     <!-- Preload critical resources -->
     <link rel="preload" href="css/main.css" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css" as="style">
+    <link rel="preload"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css" as="style">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/markdown-styles.css">
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
 
     <!-- Load Pyodide without defer to ensure it's available -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
@@ -22,25 +25,94 @@
 
     <style>
         /* Zusätzliche Styles für Markdown-Inhalte */
-        .markdown-content h1 { margin-bottom: 1rem; color: var(--secondary-color); }
-        .markdown-content h2 { margin: 1.5rem 0 1rem; color: var(--secondary-color); }
-        .markdown-content h3 { margin: 1.2rem 0 0.8rem; color: var(--secondary-color); }
-        .markdown-content p { margin-bottom: 1rem; line-height: 1.6; }
-        .markdown-content ul, .markdown-content ol { margin-bottom: 1rem; padding-left: 2rem; }
-        .markdown-content li { margin-bottom: 0.5rem; }
-        .markdown-content code { background-color: #f5f5f5; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Courier New', monospace; }
-        .markdown-content hr { margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-color); }
-        .markdown-content a { color: var(--primary-color); text-decoration: none; }
-        .markdown-content a:hover { text-decoration: underline; }
+        .markdown-content h1 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .markdown-content h2 {
+            margin: 1.5rem 0 1rem;
+            color: var(--secondary-color);
+        }
+
+        .markdown-content h3 {
+            margin: 1.2rem 0 0.8rem;
+            color: var(--secondary-color);
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-content code {
+            background-color: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .markdown-content hr {
+            margin: 1.5rem 0;
+            border: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .markdown-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
 
         /* Fortschritts-Tracker */
-        #progress-tracker { padding: 1rem; background-color: var(--light-gray); border-radius: var(--border-radius-sm); margin-bottom: 1rem; }
-        .progress-bar { height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 0.5rem; }
-        .progress-fill { height: 100%; background-color: var(--primary-color); width: 0%; transition: width 0.3s ease; }
-        .progress-text { font-size: 0.9rem; color: var(--secondary-color); text-align: center; }
+        #progress-tracker {
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
 
         /* Kapitel-Navigation */
-        .chapter-navigation { margin-top: 2rem; display: flex; justify-content: center; }
+        .chapter-navigation {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
         .mark-completed-button {
             background-color: var(--success-color);
             color: white;
@@ -50,11 +122,20 @@
             cursor: pointer;
             font-weight: bold;
         }
-        .mark-completed-button:hover { background-color: var(--success-hover); }
-        .mark-completed-button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+
+        .mark-completed-button:hover {
+            background-color: var(--success-hover);
+        }
+
+        .mark-completed-button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
 
         /* Abgeschlossene Kapitel in der Sidebar */
-        .sidebar-menu li.completed a { color: #2ecc71; }
+        .sidebar-menu li.completed a {
+            color: #2ecc71;
+        }
 
         /* Fehlermeldungen */
         .error-message {
@@ -66,6 +147,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Mobile sidebar toggle button -->
     <div class="sidebar-toggle-container" aria-hidden="true">
@@ -95,7 +177,8 @@
             <!-- Dynamisch generiertes Menü -->
             <ul class="sidebar-menu" role="menu">
                 <li class="active" role="menuitem">
-                    <a href="javascript:void(0)" onclick="loadMarkdownFile('python-docs/Kapitel_0/Anfang_Lese_Mich.md')" aria-current="page">Hauptseite</a>
+                    <a href="javascript:void(0)" onclick="loadMarkdownFile('python-docs/Kapitel_0/Anfang_Lese_Mich.md')"
+                        aria-current="page">Hauptseite</a>
                 </li>
                 <!-- Weitere Menüpunkte werden dynamisch hinzugefügt -->
             </ul>
@@ -116,7 +199,8 @@
             </div>
             <div class="editor-sidebar-content">
                 <div id="standalone-editor" class="code-editor" style="width: 60%;"></div>
-                <div class="output-container" id="standalone-output" style="position: absolute; right: 0; top: 50px; bottom: 0; width: 40%; background-color: rgba(44, 62, 80, 0.9); color: var(--light-gray); z-index: 10; border-radius: var(--border-radius-md) 0 0 0; margin: 0;">
+                <div class="output-container" id="standalone-output"
+                    style="position: absolute; right: 0; top: 50px; bottom: 0; width: 40%; background-color: rgba(44, 62, 80, 0.9); color: var(--light-gray); z-index: 10; border-radius: var(--border-radius-md) 0 0 0; margin: 0;">
                     <h3>Ausgabe:</h3>
                     <div class="output-content" style="height: calc(100% - 40px); max-height: none;"></div>
                 </div>
@@ -163,7 +247,8 @@
         };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
 
     <!-- Modular JavaScript files -->
@@ -178,9 +263,10 @@
     <script src="js/ui-hover-navigation.js"></script>
     <script src="js/markdown-cache.js"></script>
     <script src="js/markdown-parser.js"></script>
-    <script src="js/markdown-loader.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/markdown-loader.js"></script>
 
     <!-- Application is initialized in main.js -->
 </body>
+
 </html>
