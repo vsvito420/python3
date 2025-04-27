@@ -45,13 +45,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check window size and adjust resize handle display
     window.checkWindowSize();
     
-    // Standardmäßig den Code-Editor ausblenden
+    // Auf Desktop-Geräten den Code-Editor standardmäßig anzeigen (50/50-Aufteilung)
     const editorSidebar = document.getElementById('code-editor-sidebar');
     const container = document.querySelector('.container');
     if (editorSidebar && container) {
-        editorSidebar.classList.add('collapsed');
-        container.classList.add('editor-hidden');
-        container.style.paddingBottom = '50px';
+        if (window.innerWidth >= 992) {
+            // Auf Desktop-Geräten den Editor anzeigen
+            editorSidebar.classList.remove('collapsed');
+            container.classList.remove('editor-hidden');
+            
+            // 50/50-Aufteilung für Desktop
+            container.style.gridTemplateColumns = '50% 50%';
+            
+            // Horizontalen Resize-Handle positionieren
+            const horizontalResizeHandle = document.getElementById('horizontal-resize-handle');
+            if (horizontalResizeHandle) {
+                horizontalResizeHandle.style.left = '50%';
+            }
+        } else {
+            // Auf mobilen Geräten den Editor ausblenden
+            editorSidebar.classList.add('collapsed');
+            container.classList.add('editor-hidden');
+            container.style.paddingBottom = '50px';
+        }
     }
     
     // Handle window resize events
@@ -61,6 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check window size for resize handle
         window.checkWindowSize();
+        
+        // Aktualisiere die Position des horizontalen Resize-Handles
+        const horizontalResizeHandle = document.getElementById('horizontal-resize-handle');
+        const sidebar = document.getElementById('sidebar');
+        if (horizontalResizeHandle && sidebar && window.innerWidth >= 992) {
+            const sidebarRect = sidebar.getBoundingClientRect();
+            horizontalResizeHandle.style.left = `${sidebarRect.width}px`;
+        }
         
         // Update editor layouts
         window.debounce(function() {

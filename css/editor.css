@@ -52,6 +52,27 @@
     font-size: 0.8rem;
 }
 
+.fullscreen-button {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-button:hover {
+    color: white;
+}
+
+.fullscreen-icon {
+    font-size: 1.2rem;
+}
+
 #code-editor-sidebar h2 {
     margin: 0;
     font-size: 1.2rem;

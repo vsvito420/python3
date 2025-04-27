@@ -87,6 +87,60 @@ function initializeEditorResize() {
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
     }
+    
+    // Horizontal resize functionality for the boundary between sidebar and content
+    const horizontalResizeHandle = document.getElementById('horizontal-resize-handle');
+    let horizontalStartX, sidebarWidth, contentWidth, initialGridColumns;
+
+    // Only enable on desktop devices
+    if (horizontalResizeHandle) {
+        horizontalResizeHandle.addEventListener('mousedown', function(e) {
+            // Only proceed if we're on a desktop device
+            if (window.innerWidth < 992) return;
+            
+            horizontalStartX = e.clientX;
+            container = document.querySelector('.container');
+            const sidebar = document.getElementById('sidebar');
+            contentArea = document.getElementById('content');
+            
+            // Get current grid template columns
+            const computedStyle = window.getComputedStyle(container);
+            initialGridColumns = computedStyle.gridTemplateColumns;
+            
+            // Get current width of the sidebar
+            sidebarWidth = sidebar.offsetWidth;
+            contentWidth = contentArea.offsetWidth;
+            
+            document.addEventListener('mousemove', resizeHorizontal);
+            document.addEventListener('mouseup', stopHorizontalResize);
+            document.body.style.cursor = 'ew-resize';
+            document.body.style.userSelect = 'none';
+            e.preventDefault();
+        });
+    }
+
+    function resizeHorizontal(e) {
+        // Only proceed if we're on a desktop device
+        if (window.innerWidth < 992) return;
+        
+        const deltaX = e.clientX - horizontalStartX;
+        const newSidebarWidth = Math.max(200, Math.min(500, sidebarWidth + deltaX)); // Min 200px, Max 500px
+        
+        // Update the grid template columns
+        container.style.gridTemplateColumns = `${newSidebarWidth}px minmax(0, 1fr)`;
+        
+        // Update the editor layout if needed
+        if (window.editors && window.editors['standalone-editor']) {
+            window.editors['standalone-editor'].layout();
+        }
+    }
+
+    function stopHorizontalResize() {
+        document.removeEventListener('mousemove', resizeHorizontal);
+        document.removeEventListener('mouseup', stopHorizontalResize);
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+    }
 }
 
 /**
@@ -94,6 +148,8 @@ function initializeEditorResize() {
  */
 function checkWindowSize() {
     const verticalResizeHandle = document.getElementById('vertical-resize-handle');
+    const horizontalResizeHandle = document.getElementById('horizontal-resize-handle');
+    
     if (verticalResizeHandle) {
         if (window.innerWidth < 992) {
             verticalResizeHandle.style.display = 'none';
@@ -113,6 +169,23 @@ function checkWindowSize() {
                 } else {
                     editorSidebar.style.left = '0';
                 }
+            }
+        }
+    }
+    
+    // Handle horizontal resize handle visibility
+    if (horizontalResizeHandle) {
+        if (window.innerWidth < 992) {
+            horizontalResizeHandle.style.display = 'none';
+        } else {
+            horizontalResizeHandle.style.display = 'block';
+            // Position the resize handle between sidebar and content
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                const sidebarRect = sidebar.getBoundingClientRect();
+                horizontalResizeHandle.style.left = `${sidebarRect.width}px`;
+                horizontalResizeHandle.style.top = '0';
+                horizontalResizeHandle.style.height = '100%';
             }
         }
     }

@@ -112,6 +112,9 @@
                 <div class="editor-header-buttons">
                     <button id="standalone-run-button" class="run-button">Code ausführen</button>
                     <button id="standalone-reset-button" class="reset-button">Zurücksetzen</button>
+                    <a href="code-editor.html" class="fullscreen-button" aria-label="Vollbild-Editor öffnen">
+                        <span class="fullscreen-icon">⛶</span>
+                    </a>
                     <button id="toggle-editor-sidebar" aria-label="Code-Editor umschalten">
                         <span class="toggle-icon-open">▼</span>
                         <span class="toggle-icon-closed">▲</span>
@@ -132,6 +135,7 @@
         </aside>
 
         <!-- Main content area (jetzt nach dem Code-Editor) -->
+        <div class="horizontal-resize-handle" id="horizontal-resize-handle"></div>
         <main id="content" class="markdown-content">
             <!-- Markdown-Inhalte werden hier dynamisch geladen -->
             <div class="loading">
