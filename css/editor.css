@@ -96,7 +96,7 @@
 #code-editor-sidebar.collapsed {
     height: 50px;
     overflow: hidden;
-    transform: translateY(250px);
+    transform: translateY(calc(100% - 50px)); /* Nur die Titelleiste sichtbar lassen */
 }
 
 #code-editor-sidebar.collapsed .editor-sidebar-content {

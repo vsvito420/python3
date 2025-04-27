@@ -110,10 +110,8 @@ function initializeStandaloneEditor() {
             // If the editor is collapsed, set minimal padding
             container.style.paddingBottom = '50px';
             
-            // If the editor is collapsed, reset the container columns
-            if (window.innerWidth >= 992) {
-                document.querySelector('.container').style.gridTemplateColumns = '250px 50px 1fr';
-            }
+            // WICHTIG: Nicht das Grid-Layout ändern, wenn der Editor ausgeblendet wird
+            // Das verursacht das Layout-Problem
         }
     });
 }

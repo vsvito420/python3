@@ -62,6 +62,36 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid var(--macos-glass-border);
+    margin-right: 8px; /* Abstand zum Code-Editor-Button */
+}
+
+/* Code-Editor-Button neben dem Hamburger-Menü */
+.code-editor-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(44, 62, 80, 0.8);
+    color: var(--light-gray);
+    border: none;
+    border-radius: var(--border-radius-md);
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--macos-glass-shadow);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--macos-glass-border);
+    text-decoration: none;
+}
+
+.code-editor-button:hover {
+    background-color: rgba(52, 73, 94, 0.9);
+    color: white;
+}
+
+.code-icon {
+    font-weight: bold;
 }
 
 .container {

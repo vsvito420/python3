@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python Code-Editor zum Ausführen von Python-Code im Browser">
+    <meta name="theme-color" content="#2c3e50">
+    <title>Python Code-Editor</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/main.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
+
+    <!-- Load Pyodide without defer to ensure it's available -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 0;
+        }
+        
+        .header {
+            background-color: rgba(44, 62, 80, 0.95);
+            color: var(--light-gray);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .back-button {
+            background-color: rgba(52, 73, 94, 0.8);
+            color: var(--light-gray);
+            border: none;
+            border-radius: var(--border-radius-md);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .back-button:hover {
+            background-color: rgba(52, 73, 94, 0.9);
+        }
+        
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 1rem;
+            height: calc(100vh - 60px);
+        }
+        
+        @media (min-width: 992px) {
+            .editor-container {
+                flex-direction: row;
+            }
+        }
+        
+        .code-editor {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            height: 50%;
+        }
+        
+        .output-container {
+            flex: 1;
+            background-color: rgba(44, 62, 80, 0.9);
+            color: var(--light-gray);
+            border-radius: var(--border-radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+            overflow: auto;
+            height: 50%;
+        }
+        
+        @media (min-width: 992px) {
+            .code-editor {
+                height: auto;
+                margin-right: 1rem;
+            }
+            
+            .output-container {
+                height: auto;
+                margin-top: 0;
+            }
+        }
+        
+        .output-container h3 {
+            margin-top: 0;
+        }
+        
+        .output-content {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            height: calc(100% - 40px);
+            overflow: auto;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .run-button, .reset-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .run-button:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .reset-button {
+            background-color: var(--secondary-color);
+        }
+        
+        .reset-button:hover {
+            background-color: var(--secondary-hover);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Python Code-Editor</h1>
+            <a href="index.html" class="back-button">← Zurück zur Lernplattform</a>
+        </header>
+        
+        <div class="editor-container">
+            <div class="code-section">
+                <div class="button-container">
+                    <button id="run-button" class="run-button">Code ausführen</button>
+                    <button id="reset-button" class="reset-button">Zurücksetzen</button>
+                </div>
+                <div id="editor" class="code-editor"></div>
+            </div>
+            
+            <div class="output-container">
+                <h3>Ausgabe:</h3>
+                <div id="output" class="output-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts with optimized loading -->
+    <script>
+        // Configure Monaco Editor paths
+        var require = {
+            paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' },
+            // Reduce initial load time by disabling unused features
+            'vs/nls': {
+                availableLanguages: { '*': 'de' }
+            }
+        };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
+    
+    <!-- Python execution script -->
+    <script src="js/python-pyodide.js"></script>
+    
+    <script>
+        // Initialize the editor when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait until Monaco Editor is loaded
+            if (typeof monaco === 'undefined') {
+                setTimeout(initializeEditor, 100);
+                return;
+            }
+            
+            initializeEditor();
+        });
+        
+        function initializeEditor() {
+            // Create the editor
+            const editor = monaco.editor.create(document.getElementById('editor'), {
+                value: '# Schreibe deinen Python-Code hier\n\n# Beispiel:\nprint("Hallo, Welt!")',
+                language: 'python',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                fontSize: 14,
+                lineNumbers: 'on',
+                renderLineHighlight: 'all',
+                tabSize: 4,
+                insertSpaces: true
+            });
+            
+            // Event listener for the Run button
+            document.getElementById('run-button').addEventListener('click', async function() {
+                const code = editor.getValue();
+                const outputElement = document.getElementById('output');
+                
+                outputElement.textContent = 'Code wird ausgeführt...';
+                
+                try {
+                    // Initialize Pyodide if not already done
+                    if (!window.pyodide) {
+                        outputElement.textContent = 'Python-Interpreter wird geladen...';
+                        await window.loadPyodideIfNeeded();
+                    }
+                    
+                    // Redirect standard output
+                    window.pyodide.runPython(`
+                        import sys
+                        from io import StringIO
+                        sys.stdout = StringIO()
+                    `);
+                    
+                    // Execute the code
+                    await window.pyodide.runPythonAsync(code);
+                    
+                    // Get the output
+                    const stdout = window.pyodide.runPython('sys.stdout.getvalue()');
+                    
+                    // Display the output
+                    outputElement.textContent = stdout || 'Code erfolgreich ausgeführt (keine Ausgabe)';
+                    
+                    // Reset stdout
+                    window.pyodide.runPython('sys.stdout = sys.__stdout__');
+                } catch (error) {
+                    outputElement.textContent = `Fehler: ${error.message}`;
+                    console.error('Python execution error:', error);
+                }
+            });
+            
+            // Event listener for the Reset button
+            document.getElementById('reset-button').addEventListener('click', function() {
+                editor.setValue('# Schreibe deinen Python-Code hier\n\n# Beispiel:\nprint("Hallo, Welt!")');
+                document.getElementById('output').textContent = '';
+            });
+            
+            // Add keyboard shortcut (Ctrl+Enter or Cmd+Enter) to run code
+            editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function() {
+                document.getElementById('run-button').click();
+            });
+        }
+    </script>
+</body>
+</html>
