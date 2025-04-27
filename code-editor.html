@@ -73,11 +73,38 @@
             flex-grow: 1;
             padding: 1rem;
             height: calc(100vh - 60px);
+            position: relative;
         }
         
         @media (min-width: 992px) {
             .editor-container {
                 flex-direction: row;
+            }
+        }
+        
+        /* Resize handle for desktop view */
+        .resize-handle {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 8px;
+            height: 100%;
+            background-color: var(--border-color);
+            cursor: ew-resize;
+            z-index: 10;
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
+        }
+        
+        .resize-handle:hover {
+            opacity: 1;
+            background-color: var(--primary-color);
+        }
+        
+        @media (min-width: 992px) {
+            .resize-handle {
+                display: block;
             }
         }
         
@@ -168,6 +195,9 @@
                 <div id="editor" class="code-editor"></div>
             </div>
             
+            <!-- Resize handle -->
+            <div id="resize-handle" class="resize-handle"></div>
+            
             <div class="output-container">
                 <h3>Ausgabe:</h3>
                 <div id="output" class="output-content"></div>
@@ -203,11 +233,73 @@
             }
             
             initializeEditor();
+            initializeResizeHandle();
         });
+        
+        // Initialize resize handle functionality
+        function initializeResizeHandle() {
+            const resizeHandle = document.getElementById('resize-handle');
+            const editorContainer = document.querySelector('.editor-container');
+            const codeSection = document.querySelector('.code-section');
+            const outputContainer = document.querySelector('.output-container');
+            let startX, startWidthCode, startWidthOutput;
+            
+            if (resizeHandle) {
+                resizeHandle.addEventListener('mousedown', function(e) {
+                    startX = e.clientX;
+                    startWidthCode = codeSection.offsetWidth;
+                    startWidthOutput = outputContainer.offsetWidth;
+                    
+                    document.addEventListener('mousemove', resizeEditor);
+                    document.addEventListener('mouseup', stopResize);
+                    document.body.style.cursor = 'ew-resize';
+                    document.body.style.userSelect = 'none';
+                    e.preventDefault();
+                });
+            }
+            
+            function resizeEditor(e) {
+                // Calculate the new width based on mouse movement
+                const containerWidth = editorContainer.offsetWidth;
+                const deltaX = e.clientX - startX;
+                
+                // Calculate new widths as percentages
+                let newCodeWidth = ((startWidthCode + deltaX) / containerWidth) * 100;
+                let newOutputWidth = ((startWidthOutput - deltaX) / containerWidth) * 100;
+                
+                // Set minimum widths (20%)
+                if (newCodeWidth < 20) {
+                    newCodeWidth = 20;
+                    newOutputWidth = 80;
+                } else if (newOutputWidth < 20) {
+                    newCodeWidth = 80;
+                    newOutputWidth = 20;
+                }
+                
+                // Apply new widths
+                codeSection.style.flex = `0 0 ${newCodeWidth}%`;
+                outputContainer.style.flex = `0 0 ${newOutputWidth}%`;
+                
+                // Update resize handle position
+                resizeHandle.style.left = `${newCodeWidth}%`;
+                
+                // Update editor layout
+                if (window.editor) {
+                    window.editor.layout();
+                }
+            }
+            
+            function stopResize() {
+                document.removeEventListener('mousemove', resizeEditor);
+                document.removeEventListener('mouseup', stopResize);
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+        }
         
         function initializeEditor() {
             // Create the editor
-            const editor = monaco.editor.create(document.getElementById('editor'), {
+            window.editor = monaco.editor.create(document.getElementById('editor'), {
                 value: '# Schreibe deinen Python-Code hier\n\n# Beispiel:\nprint("Hallo, Welt!")',
                 language: 'python',
                 theme: 'vs-dark',

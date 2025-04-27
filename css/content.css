@@ -2,25 +2,6 @@
 
 /* content.css - Stile für den Inhaltsbereich */
 
-/* Horizontal resize handle styles */
-.horizontal-resize-handle {
-    position: absolute;
-    top: 0;
-    left: 250px; /* Default sidebar width */
-    width: 8px;
-    height: 100%;
-    background-color: var(--border-color);
-    cursor: ew-resize;
-    z-index: 15;
-    opacity: 0.5;
-    transition: opacity 0.2s ease, left 0.3s ease;
-}
-
-.horizontal-resize-handle:hover {
-    opacity: 1;
-    background-color: var(--primary-color);
-}
-
 /* Error container styles */
 .error-container {
     background-color: rgba(231, 76, 60, 0.1);
