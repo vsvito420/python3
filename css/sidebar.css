@@ -1,26 +1,29 @@
 /* sidebar.css - Stile für die Seitenleiste */
 
 /* Sidebar Styles */
+/* sidebar.css - Stile für die Seitenleiste */
+
+/* Sidebar Styles */
 #sidebar {
     grid-area: sidebar;
-    background-color: rgba(44, 62, 80, 0.85); /* Weniger transparent für bessere Lesbarkeit */
+    background-color: rgba(44, 62, 80, 0.95); /* Higher opacity for better performance */
     color: var(--light-gray);
-    transition: all 0.3s ease-out; /* More specific transition for better performance */
-    box-shadow: var(--macos-glass-shadow);
+    transition: border-color 0.3s ease-out; /* More specific transition for better performance */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Simplified shadow */
     overflow-y: auto;
     height: 100vh;
     position: sticky;
     top: 0;
     z-index: 10;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    /* Removed backdrop-filter for better performance */
     border-right: 1px solid var(--macos-glass-border);
     border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
     margin-right: var(--spacing-md);
+    will-change: transform; /* Hint for GPU acceleration */
 }
 
 #sidebar:hover {
-    box-shadow: var(--macos-glass-shadow);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); /* Simplified shadow */
     border-right-color: rgba(230, 126, 34, 0.2);
 }
 
@@ -116,8 +119,7 @@
     border-left: 4px solid var(--success-color);
     margin-top: var(--spacing-md);
     border-radius: var(--border-radius-sm);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    /* Removed backdrop-filter for better performance */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 

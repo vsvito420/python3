@@ -13,11 +13,13 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/markdown-styles.css">
     <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
-    
+
     <!-- Load Pyodide without defer to ensure it's available -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <style>
         /* Zusätzliche Styles für Markdown-Inhalte */
         .markdown-content h1 { margin-bottom: 1rem; color: var(--secondary-color); }
@@ -30,13 +32,13 @@
         .markdown-content hr { margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-color); }
         .markdown-content a { color: var(--primary-color); text-decoration: none; }
         .markdown-content a:hover { text-decoration: underline; }
-        
+
         /* Fortschritts-Tracker */
         #progress-tracker { padding: 1rem; background-color: var(--light-gray); border-radius: var(--border-radius-sm); margin-bottom: 1rem; }
         .progress-bar { height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 0.5rem; }
         .progress-fill { height: 100%; background-color: var(--primary-color); width: 0%; transition: width 0.3s ease; }
         .progress-text { font-size: 0.9rem; color: var(--secondary-color); text-align: center; }
-        
+
         /* Kapitel-Navigation */
         .chapter-navigation { margin-top: 2rem; display: flex; justify-content: center; }
         .mark-completed-button {
@@ -50,10 +52,10 @@
         }
         .mark-completed-button:hover { background-color: var(--success-hover); }
         .mark-completed-button:disabled { background-color: #95a5a6; cursor: not-allowed; }
-        
+
         /* Abgeschlossene Kapitel in der Sidebar */
         .sidebar-menu li.completed a { color: #2ecc71; }
-        
+
         /* Fehlermeldungen */
         .error-message {
             background-color: #f8d7da;
@@ -69,7 +71,7 @@
     <div class="sidebar-toggle-container" aria-hidden="true">
         <button id="toggle-sidebar-mobile" aria-label="Navigationsmenü umschalten">☰</button>
     </div>
-    
+
     <!-- Main container -->
     <div class="container">
         <!-- Sidebar navigation -->
@@ -81,7 +83,7 @@
                     <span class="toggle-icon-closed">☰</span>
                 </button>
             </header>
-            
+
             <!-- Fortschritts-Tracker -->
             <div id="progress-tracker">
                 <div class="progress-bar">
@@ -89,7 +91,7 @@
                 </div>
                 <div class="progress-text">0 von 0 Kapiteln abgeschlossen</div>
             </div>
-            
+
             <!-- Dynamisch generiertes Menü -->
             <ul class="sidebar-menu" role="menu">
                 <li class="active" role="menuitem">
@@ -122,7 +124,7 @@
             </div>
             <div class="vertical-resize-handle" id="vertical-resize-handle"></div>
         </aside>
-        
+
         <!-- Main content area (jetzt nach dem Code-Editor) -->
         <main id="content" class="markdown-content">
             <!-- Markdown-Inhalte werden hier dynamisch geladen -->
@@ -163,7 +165,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
-    
+
     <!-- Modular JavaScript files -->
     <script src="js/core-utils.js"></script>
     <script src="js/python-pyodide.js"></script>
@@ -178,7 +180,7 @@
     <script src="js/markdown-parser.js"></script>
     <script src="js/markdown-loader.js"></script>
     <script src="js/main.js"></script>
-    
+
     <!-- Application is initialized in main.js -->
 </body>
 </html>

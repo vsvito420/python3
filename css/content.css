@@ -1,21 +1,47 @@
 /* content.css - Stile für den Inhaltsbereich */
 
+/* content.css - Stile für den Inhaltsbereich */
+
+/* Error container styles */
+.error-container {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-left: 4px solid #e74c3c;
+    padding: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+    border-radius: var(--border-radius-md);
+}
+
+.error-container h2 {
+    color: #e74c3c;
+    margin-top: 0;
+}
+
+.error-container pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    overflow-x: auto;
+    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+}
+
 .lesson-container {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95); /* Increased opacity for better performance */
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Simplified shadow for better performance */
     padding: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    /* Removed backdrop-filter for better performance */
     border: 1px solid var(--macos-glass-border);
     position: relative;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* More specific transitions */
+    will-change: transform; /* Hint for GPU acceleration */
 }
 
 .lesson-container:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Simplified shadow for better performance */
     border-color: rgba(243, 156, 18, 0.2);
+    background-color: rgba(255, 255, 255, 1); /* Full opacity on hover */
 }
 
 .lesson-container h2 {
@@ -69,25 +95,26 @@
 }
 
 .output-container {
-    background-color: rgba(249, 249, 249, 0.7);
-    border: 1px solid var(--macos-glass-border);
+    margin-top: var(--spacing-md);
+    background-color: rgba(255, 255, 255, 0.95); /* Increased opacity for better performance */
     border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Simplified shadow */
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* More specific transitions */
+    display: none; /* Initially hidden */
 }
 
 .output-container:hover {
-    box-shadow: var(--shadow-md), var(--macos-yellow-glow);
-    border-color: rgba(243, 156, 18, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    border-color: rgba(243, 156, 18, 0.3);
 }
 
 .output-container h3 {
     margin-bottom: var(--spacing-md);
     color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .output-content {
@@ -96,7 +123,7 @@
     min-height: 50px;
     max-height: 200px;
     overflow-y: auto;
-    background-color: rgba(44, 62, 80, 0.9);
+    background-color: rgba(44, 62, 80, 0.95); /* Increased opacity */
     color: var(--light-gray);
     padding: var(--spacing-md);
     border-radius: var(--border-radius-md);
@@ -182,7 +209,7 @@
         flex-direction: row;
         gap: var(--spacing-md);
     }
-    
+
     .navigation-buttons button {
         width: auto;
     }
