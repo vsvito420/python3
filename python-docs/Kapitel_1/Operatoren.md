@@ -18,7 +18,7 @@ Arithmetische Operatoren werden für mathematische Berechnungen verwendet.
 | `/` | Division | `5 / 3` | `1.6666...` |
 | `//` | Ganzzahldivision | `5 // 3` | `1` |
 | `%` | Modulo (Rest) | `5 % 3` | `2` |
-| `\*\*` | Potenz | `5 ** 3` | `125` |
+| <code>**</code> | Potenz | `5 ** 3` | `125` |
 
 ```python
 # Beispiele für arithmetische Operatoren
