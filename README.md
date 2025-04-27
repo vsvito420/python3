@@ -87,6 +87,8 @@ graph TD
         main --> editor[css/editor.css]
         main --> buttons[css/buttons.css]
         main --> utilities[css/utilities.css]
+        main --> markdown[css/markdown-styles.css]
+        main --> output[css/output.css]
     end
 
     subgraph "Optimierungen"
@@ -96,6 +98,13 @@ graph TD
         touch --> active["Active-State für Touch"]
         perf --> backdrop["Entfernung von backdrop-filter"]
         perf --> gpu["will-change für GPU-Beschleunigung"]
+    end
+
+    subgraph "Markdown-Styling"
+        markdown --> tables[Tabellen-Styling]
+        markdown --> code[Code-Block-Styling]
+        markdown --> headings[Überschriften-Styling]
+        markdown --> lists[Listen-Styling]
     end
 ```
 
@@ -153,8 +162,9 @@ sequenceDiagram
 
 | Komponente | Dateien | Hauptfunktionen |
 |------------|--------|----------------|
-| **HTML-Struktur** | `index.html` | Definiert die grundlegende Seitenstruktur mit drei Hauptbereichen: Sidebar-Navigation, Code-Editor und Inhaltsbereich |
+| **HTML-Struktur** | `index.html`, `code-editor.html` | Definiert die grundlegende Seitenstruktur mit drei Hauptbereichen: Sidebar-Navigation, Code-Editor und Inhaltsbereich. `code-editor.html` bietet einen eigenständigen Python-Editor |
 | **Styling** | `css/main.css` und Module | Implementiert responsives Design mit CSS Grid und Flexbox, definiert Farbschema und UI-Komponenten |
+| **Markdown-Styling** | `css/markdown-styles.css` | Spezifische Stile für Markdown-Elemente wie Tabellen, Code-Blöcke, Überschriften und Listen |
 | **Core Utilities** | `js/core-utils.js` | Stellt grundlegende Hilfsfunktionen wie Debouncing bereit |
 | **Python Integration** | `js/python-pyodide.js`, `js/python-executor.js` | Lädt Pyodide und führt Python-Code aus |
 | **Editor-Funktionalität** | `js/editor-standalone.js`, `js/editor-codeblocks.js`, `js/editor-resize.js` | Verwaltet den eigenständigen Code-Editor und eingebettete Code-Blöcke, implementiert Resize-Funktionalität |
@@ -169,7 +179,7 @@ sequenceDiagram
    - Verwendet reguläre Ausdrücke zur Extraktion von Code-Blöcken und Umwandlung von Markdown in HTML
    - Implementiert einen Pfad-Cache für effizientes Auffinden von Markdown-Dateien
    - Korrigiert relative Pfade in Markdown-Links für korrekte Navigation
-   - **Hinweis**: Die Markdown-Tabellen-Verarbeitung ist noch nicht vollständig implementiert
+   - Verbesserte Markdown-Tabellen-Verarbeitung mit spezifischen Stilen in `css/markdown-styles.css`
 
 2. **Code-Editor-Integration**:
    - Monaco Editor wird für Syntax-Highlighting und Code-Bearbeitung verwendet
@@ -345,6 +355,7 @@ Die Plattform besteht aus folgenden Hauptdateien:
 | Datei | Beschreibung |
 |-------|-------------|
 | **index.html** | Hauptdatei mit der HTML-Struktur der Anwendung |
+| **code-editor.html** | Eigenständiger Python-Editor mit Vollbild-Interface |
 | **css/main.css** | Importiert alle CSS-Module |
 | **css/variables.css** | Enthält CSS-Variablen für Farben, Abstände, etc. |
 | **css/base.css** | Grundlegende Styling-Regeln |
@@ -354,6 +365,8 @@ Die Plattform besteht aus folgenden Hauptdateien:
 | **css/editor.css** | Styling für den Code-Editor |
 | **css/buttons.css** | Styling für Buttons mit Touch-Optimierungen |
 | **css/utilities.css** | Hilfsklassen für häufig verwendete Styles |
+| **css/markdown-styles.css** | Spezifische Stile für Markdown-Elemente |
+| **css/output.css** | Styling für den Ausgabebereich des Code-Editors |
 | **js/core-utils.js** | Grundlegende Hilfsfunktionen wie Debouncing |
 | **js/python-pyodide.js** | Laden und Initialisierung von Pyodide |
 | **js/python-executor.js** | Ausführung von Python-Code |
@@ -374,13 +387,14 @@ Die Plattform besteht aus folgenden Hauptdateien:
 
 ## Hauptkomponenten
 
-Die Anwendung besteht aus drei Hauptkomponenten:
+Die Anwendung besteht aus drei Hauptkomponenten in der Hauptansicht und einer separaten Vollbild-Editor-Ansicht:
 
 | Komponente | Beschreibung |
 |------------|-------------|
 | **Sidebar-Navigation** | Linke Seitenleiste mit Kapitelübersicht und Fortschrittsanzeige |
 | **Code-Editor** | Zentraler Bereich mit einem eigenständigen Python-Editor |
 | **Markdown-Inhalt** | Bereich unter dem Code-Editor, der die Lernmaterialien anzeigt |
+| **Vollbild-Editor** | Separate Seite (`code-editor.html`) mit einem eigenständigen Python-Editor im Vollbildmodus |
 
 ### Layout-Struktur
 
@@ -434,10 +448,11 @@ async function initializeMarkdownCache() {
 
 ## Code-Editor-Funktionalität
 
-Die Plattform bietet zwei Arten von Code-Editoren:
+Die Plattform bietet drei Arten von Code-Editoren:
 
 1. **Eingebettete Editoren**: In Markdown-Inhalten eingebettete Code-Blöcke werden zu interaktiven Editoren.
 2. **Eigenständiger Editor**: Ein separater Editor in der Seitenleiste für freies Experimentieren.
+3. **Vollbild-Editor**: Eine separate Seite (`code-editor.html`) mit einem eigenständigen Python-Editor im Vollbildmodus, optimiert für fokussiertes Programmieren.
 
 ### Monaco Editor Integration
 
@@ -522,7 +537,8 @@ Für neue Funktionen:
 | **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung in `js/editor-standalone.js` und `js/editor-codeblocks.js` | Stelle sicher, dass die Monaco-Editor-CDN erreichbar ist |
 | **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration in `js/python-pyodide.js` und `js/python-executor.js` | Prüfe die Konsole auf Fehler bei der Pyodide-Initialisierung |
 | **CORS-Fehler bei lokalem Testen** | Verwende den lokalen Entwicklungsserver mit `node js/server.js` | Alternativ einen Browser mit deaktivierten CORS-Einschränkungen verwenden |
-| **Markdown-Tabellen werden nicht korrekt angezeigt** | Die Tabellen-Verarbeitung ist implementiert, aber kann bei komplexen Tabellen Probleme haben | Vereinfache die Tabellenstruktur oder verwende HTML-Tabellen |
+| **Markdown-Tabellen werden nicht korrekt angezeigt** | Überprüfe die Tabellen-Stile in `css/markdown-styles.css` | Bei komplexen Tabellen HTML-Tabellen verwenden |
+| **Vollbild-Editor funktioniert nicht** | Überprüfe die Initialisierung in `code-editor.html` | Stelle sicher, dass alle erforderlichen Skripte geladen werden |
 | **Langsame Ladezeiten** | Überprüfe die Netzwerkaktivität in den Browser-DevTools | Reduziere die Anzahl der externen Ressourcen oder implementiere Lazy-Loading |
 | **Mobile Darstellungsprobleme** | Überprüfe die CSS-Media-Queries in den entsprechenden CSS-Modulen | Teste mit verschiedenen Geräten und Bildschirmgrößen |
 
