@@ -1,430 +1,280 @@
-+/**
- * Scroll Navigation für die Python-Lernplattform
- * Ermöglicht Navigation zwischen Abschnitten und Kapiteln durch Scrollen
+/**
+ * Vertikale Scroll-Navigation
+ * 
+ * Dieses Modul implementiert die vertikale Scroll-Navigation zwischen Abschnitten und Kapiteln.
+ * Es ersetzt die bisherige Hover-Navigation mit einem natürlicheren Leseerlebnis von oben nach unten.
  */
 
-/**
- * Store all section headings and their positions
- */
-let sectionHeadings = [];
+// Konfiguration
+const SCROLL_CONFIG = {
+    animationDuration: 500,
+    navigationOffset: 20,
+    sectionClass: 'content-section',
+    nextButtonClass: 'next-section-button',
+    prevButtonClass: 'prev-section-button',
+    nextChapterClass: 'next-chapter-button',
+    prevChapterClass: 'prev-chapter-button',
+    progressIndicatorClass: 'progress-indicator'
+};
+
+// Speichert den aktuellen Abschnitt
 let currentSectionIndex = 0;
-let isNavigating = false;
+let sections = [];
 
 /**
- * Initialize the scroll navigation
+ * Initialisiert die vertikale Scroll-Navigation
  */
-function initializeScrollNavigation() {
-    // Get all headings in the content
-    updateSectionHeadings();
+function initScrollNavigation() {
+    // Sammle alle Abschnitte
+    sections = document.querySelectorAll('.' + SCROLL_CONFIG.sectionClass);
     
-    // Add scroll navigation at the end of each section
-    addScrollNavigationElements();
+    if (sections.length === 0) return;
     
-    // Update navigation on scroll
-    window.addEventListener('scroll', debounce(updateNavigationOnScroll, 100));
+    // Füge Navigationsbuttons zu jedem Abschnitt hinzu
+    addNavigationButtons();
     
-    // Initial update of the navigation
-    updateNavigationState();
+    // Füge Scroll-Event-Listener hinzu
+    window.addEventListener('scroll', handleScroll);
     
-    console.log('Scroll navigation initialized with', sectionHeadings.length, 'sections');
+    // Füge Tastatur-Event-Listener hinzu
+    document.addEventListener('keydown', handleKeyNavigation);
+    
+    // Initialisiere den Fortschrittsindikator
+    initProgressIndicator();
+    
+    // Setze den initialen Abschnitt basierend auf der Scroll-Position
+    updateCurrentSection();
 }
 
 /**
- * Update the list of section headings
+ * Fügt Navigationsbuttons zu jedem Abschnitt hinzu
  */
-function updateSectionHeadings() {
-    const content = document.getElementById('content');
-    sectionHeadings = [];
-    
-    // Get all h1, h2, and h3 elements in the content
-    const headings = content.querySelectorAll('h1, h2, h3');
-    
-    headings.forEach((heading, index) => {
-        // Skip headings with text "Ausgabe:" or within code output containers
-        if (heading.textContent.trim() === "Ausgabe:" ||
-            heading.closest('.output-container') ||
-            heading.closest('.code-editor-container')) {
-            console.log('Skipping output heading:', heading.textContent);
-            return;
-        }
+function addNavigationButtons() {
+    sections.forEach((section, index) => {
+        const navigationContainer = document.createElement('div');
+        navigationContainer.className = 'section-navigation';
         
-        // Add an ID to the heading if it doesn't have one
-        if (!heading.id) {
-            heading.id = 'section-' + index;
-        }
-        
-        sectionHeadings.push({
-            element: heading,
-            id: heading.id,
-            text: heading.textContent,
-            level: parseInt(heading.tagName.substring(1)), // Extract the heading level (1, 2, or 3)
-            position: heading.offsetTop
-        });
-    });
-    
-    // Sort by position
-    sectionHeadings.sort((a, b) => a.position - b.position);
-    
-    console.log('Found', sectionHeadings.length, 'valid section headings');
-}
-
-/**
- * Add scroll navigation elements after each section
- */
-function addScrollNavigationElements() {
-    // Remove existing navigation elements
-    document.querySelectorAll('.scroll-navigation').forEach(nav => nav.remove());
-    
-    // Get the template
-    const template = document.getElementById('scroll-navigation-template');
-    if (!template) {
-        console.error('Scroll navigation template not found');
-        return;
-    }
-    
-    // Add navigation after each section
-    sectionHeadings.forEach((section, index) => {
-        // Skip the last section
-        if (index === sectionHeadings.length - 1) return;
-        
-        // Find the next element after this section
-        let nextElement = sectionHeadings[index + 1].element;
-        
-        // Create a new navigation element
-        const navElement = template.content.cloneNode(true);
-        
-        // Set up event listeners for navigation buttons
-        const prevButton = navElement.querySelector('#prev-section');
-        const nextButton = navElement.querySelector('#next-section');
-        
-        // Update IDs to make them unique
-        prevButton.id = 'prev-section-' + index;
-        nextButton.id = 'next-section-' + index;
-        
-        // Add event listeners
-        prevButton.addEventListener('click', () => navigateToPreviousSection(index));
-        nextButton.addEventListener('click', () => navigateToNextSection(index));
-        
-        // Disable previous button if we're at the first section
-        prevButton.disabled = index === 0;
-        
-        // Insert the navigation element before the next section
-        nextElement.parentNode.insertBefore(navElement, nextElement);
-    });
-    
-    // Add a final navigation element at the end of the content
-    if (sectionHeadings.length > 0) {
-        const content = document.getElementById('content');
-        const navElement = template.content.cloneNode(true);
-        
-        // Set up event listeners for navigation buttons
-        const prevButton = navElement.querySelector('#prev-section');
-        const nextButton = navElement.querySelector('#next-section');
-        
-        // Update IDs to make them unique
-        prevButton.id = 'prev-section-last';
-        nextButton.id = 'next-section-last';
-        
-        // Add event listeners
-        prevButton.addEventListener('click', () => navigateToPreviousSection(sectionHeadings.length - 1));
-        nextButton.addEventListener('click', () => navigateToNextSection(sectionHeadings.length - 1));
-        
-        // Disable next button since we're at the last section
-        nextButton.disabled = true;
-        
-        // Append the navigation element to the content
-        content.appendChild(navElement);
-    }
-    
-    // Update the progress indicators
-    updateNavigationState();
-}
-
-/**
- * Navigate to the previous section
- */
-function navigateToPreviousSection(currentIndex) {
-    if (currentIndex > 0) {
-        navigateToSection(currentIndex - 1);
-    } else {
-        // If we're at the first section, try to load the previous chapter
-        tryLoadPreviousChapter();
-    }
-}
-
-/**
- * Navigate to the next section
- */
-function navigateToNextSection(currentIndex) {
-    if (currentIndex < sectionHeadings.length - 1) {
-        navigateToSection(currentIndex + 1);
-    } else {
-        // If we're at the last section, try to load the next chapter
-        tryLoadNextChapter();
-    }
-}
-
-/**
- * Navigate to a specific section
- * @param {number} index - The index of the section to navigate to
- */
-function navigateToSection(index) {
-    if (index >= 0 && index < sectionHeadings.length && !isNavigating) {
-        isNavigating = true;
-        
-        // Remove highlight from current section
-        if (currentSectionIndex >= 0 && currentSectionIndex < sectionHeadings.length) {
-            sectionHeadings[currentSectionIndex].element.classList.remove('current-section');
-        }
-        
-        // Update current section index
-        currentSectionIndex = index;
-        
-        // Highlight the new current section
-        sectionHeadings[currentSectionIndex].element.classList.add('current-section');
-        
-        // Get the target element and its position
-        const targetElement = sectionHeadings[index].element;
-        const targetPosition = sectionHeadings[index].position - 20; // 20px offset for better visibility
-        
-        // Scroll to the section with a more reliable approach
-        try {
-            // First try scrollIntoView which works better for elements outside viewport
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+        // Vorheriger Abschnitt Button (außer beim ersten Abschnitt)
+        if (index > 0) {
+            const prevButton = createNavigationButton('Vorheriger Abschnitt', SCROLL_CONFIG.prevButtonClass, () => {
+                scrollToSection(index - 1);
             });
-            
-            // Then fine-tune with scrollTo for the offset
-            setTimeout(() => {
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }, 100);
-        } catch (e) {
-            // Fallback to direct scrollTo if scrollIntoView fails
-            console.warn('ScrollIntoView failed, using fallback:', e);
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
+            navigationContainer.appendChild(prevButton);
         }
         
-        // Update navigation state
-        updateNavigationState();
-        
-        // Reset navigation flag after animation completes
-        // Use a longer timeout to account for longer scrolling distances
-        setTimeout(() => {
-            isNavigating = false;
-        }, 1000);
-    }
-}
-
-/**
- * Update the navigation state based on the current section
- */
-function updateNavigationState() {
-    // Update all progress indicators
-    const progressIndicators = document.querySelectorAll('.nav-progress-indicator');
-    
-    if (sectionHeadings.length > 0) {
-        const progress = ((currentSectionIndex + 1) / sectionHeadings.length) * 100;
-        progressIndicators.forEach(indicator => {
-            indicator.style.width = progress + '%';
-        });
-    } else {
-        progressIndicators.forEach(indicator => {
-            indicator.style.width = '0%';
-        });
-    }
-}
-
-/**
- * Update the navigation on scroll
- */
-function updateNavigationOnScroll() {
-    if (isNavigating || sectionHeadings.length === 0) return;
-    
-    const scrollPosition = window.scrollY + 100; // 100px offset for better detection
-    
-    // Check if we're at the bottom of the page
-    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50;
-    
-    // Find the current section based on scroll position
-    let newIndex = 0;
-    for (let i = 0; i < sectionHeadings.length; i++) {
-        if (scrollPosition >= sectionHeadings[i].position) {
-            newIndex = i;
+        // Nächster Abschnitt Button (außer beim letzten Abschnitt)
+        if (index < sections.length - 1) {
+            const nextButton = createNavigationButton('Nächster Abschnitt', SCROLL_CONFIG.nextButtonClass, () => {
+                scrollToSection(index + 1);
+            });
+            navigationContainer.appendChild(nextButton);
         } else {
+            // Beim letzten Abschnitt: Button für nächstes Kapitel
+            const nextChapterButton = createNavigationButton('Nächstes Kapitel', SCROLL_CONFIG.nextChapterClass, () => {
+                navigateToNextChapter();
+            });
+            navigationContainer.appendChild(nextChapterButton);
+        }
+        
+        // Füge die Navigationsbuttons am Ende des Abschnitts hinzu
+        section.appendChild(navigationContainer);
+    });
+    
+    // Füge einen Button für das vorherige Kapitel am Anfang des ersten Abschnitts hinzu
+    if (sections.length > 0) {
+        const firstSection = sections[0];
+        const prevChapterContainer = document.createElement('div');
+        prevChapterContainer.className = 'chapter-navigation top';
+        
+        const prevChapterButton = createNavigationButton('Vorheriges Kapitel', SCROLL_CONFIG.prevChapterClass, () => {
+            navigateToPrevChapter();
+        });
+        
+        prevChapterContainer.appendChild(prevChapterButton);
+        firstSection.insertBefore(prevChapterContainer, firstSection.firstChild);
+    }
+}
+
+/**
+ * Erstellt einen Navigationsbutton
+ */
+function createNavigationButton(text, className, clickHandler) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.className = className;
+    button.addEventListener('click', clickHandler);
+    return button;
+}
+
+/**
+ * Scrollt zu einem bestimmten Abschnitt
+ */
+function scrollToSection(index) {
+    if (index < 0 || index >= sections.length) return;
+    
+    const section = sections[index];
+    const offsetTop = section.offsetTop - SCROLL_CONFIG.navigationOffset;
+    
+    // Smooth Scroll zu dem Abschnitt
+    window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+    });
+    
+    currentSectionIndex = index;
+    updateProgressIndicator();
+}
+
+/**
+ * Navigiert zum nächsten Kapitel
+ */
+function navigateToNextChapter() {
+    // Suche nach dem nächsten Kapitel-Link in der Sidebar
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    let currentChapterIndex = -1;
+    
+    // Finde den aktuellen Kapitel-Link
+    sidebarLinks.forEach((link, index) => {
+        if (link.classList.contains('active')) {
+            currentChapterIndex = index;
+        }
+    });
+    
+    // Navigiere zum nächsten Kapitel, wenn vorhanden
+    if (currentChapterIndex >= 0 && currentChapterIndex < sidebarLinks.length - 1) {
+        sidebarLinks[currentChapterIndex + 1].click();
+    }
+}
+
+/**
+ * Navigiert zum vorherigen Kapitel
+ */
+function navigateToPrevChapter() {
+    // Suche nach dem vorherigen Kapitel-Link in der Sidebar
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    let currentChapterIndex = -1;
+    
+    // Finde den aktuellen Kapitel-Link
+    sidebarLinks.forEach((link, index) => {
+        if (link.classList.contains('active')) {
+            currentChapterIndex = index;
+        }
+    });
+    
+    // Navigiere zum vorherigen Kapitel, wenn vorhanden
+    if (currentChapterIndex > 0) {
+        sidebarLinks[currentChapterIndex - 1].click();
+    }
+}
+
+/**
+ * Behandelt Scroll-Events
+ */
+function handleScroll() {
+    updateCurrentSection();
+    updateProgressIndicator();
+}
+
+/**
+ * Aktualisiert den aktuellen Abschnitt basierend auf der Scroll-Position
+ */
+function updateCurrentSection() {
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
+    
+    for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            currentSectionIndex = i;
             break;
         }
     }
-    
-    // If we're at the bottom of the page, select the last section
-    if (isAtBottom && sectionHeadings.length > 0) {
-        newIndex = sectionHeadings.length - 1;
+}
+
+/**
+ * Behandelt Tastatur-Navigation
+ */
+function handleKeyNavigation(event) {
+    // Pfeil nach unten oder Leertaste: Nächster Abschnitt
+    if (event.key === 'ArrowDown' || event.key === ' ') {
+        event.preventDefault();
+        scrollToSection(currentSectionIndex + 1);
     }
     
-    // If the section has changed, update the navigation
-    if (newIndex !== currentSectionIndex) {
-        // Remove highlight from current section
-        if (currentSectionIndex >= 0 && currentSectionIndex < sectionHeadings.length) {
-            sectionHeadings[currentSectionIndex].element.classList.remove('current-section');
-        }
-        
-        // Update current section index
-        currentSectionIndex = newIndex;
-        
-        // Highlight the new current section
-        sectionHeadings[currentSectionIndex].element.classList.add('current-section');
-        
-        // Update navigation state
-        updateNavigationState();
-        
-        console.log(`Navigation updated to section ${currentSectionIndex}: ${sectionHeadings[currentSectionIndex].text}`);
+    // Pfeil nach oben: Vorheriger Abschnitt
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        scrollToSection(currentSectionIndex - 1);
+    }
+    
+    // Pfeil nach rechts: Nächstes Kapitel
+    if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        navigateToNextChapter();
+    }
+    
+    // Pfeil nach links: Vorheriges Kapitel
+    if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        navigateToPrevChapter();
     }
 }
 
 /**
- * Try to load the previous chapter
+ * Initialisiert den Fortschrittsindikator
  */
-function tryLoadPreviousChapter() {
-    // Get all chapter links from the sidebar
-    const chapterLinks = document.querySelectorAll('.sidebar-menu li.chapter-item a');
-    const activeLink = document.querySelector('.sidebar-menu li.active a');
+function initProgressIndicator() {
+    const progressContainer = document.createElement('div');
+    progressContainer.className = SCROLL_CONFIG.progressIndicatorClass;
     
-    if (activeLink && chapterLinks.length > 0) {
-        // Find the index of the active link
-        let activeIndex = -1;
-        for (let i = 0; i < chapterLinks.length; i++) {
-            if (chapterLinks[i] === activeLink) {
-                activeIndex = i;
-                break;
-            }
-        }
-        
-        // If we found the active link and it's not the first one, load the previous chapter
-        if (activeIndex > 0) {
-            const prevLink = chapterLinks[activeIndex - 1];
-            const onclickAttr = prevLink.getAttribute('onclick');
-            if (onclickAttr) {
-                // Extract the file path from the onclick attribute
-                const match = onclickAttr.match(/loadMarkdownFile\('([^']+)'\)/);
-                if (match && match[1]) {
-                    console.log(`Navigating to previous chapter: ${match[1]}`);
-                    
-                    // Add visual feedback for chapter transition
-                    const scrollNavs = document.querySelectorAll('.scroll-navigation');
-                    if (scrollNavs.length > 0) {
-                        // Add a temporary class for transition effect
-                        scrollNavs.forEach(nav => {
-                            nav.classList.add('chapter-transition');
-                            
-                            // Reset after transition
-                            setTimeout(() => {
-                                nav.classList.remove('chapter-transition');
-                            }, 1500);
-                        });
-                    }
-                    
-                    // Load the previous chapter
-                    window.loadMarkdownFile(match[1]);
-                    
-                    // Reset navigation state after loading
-                    setTimeout(() => {
-                        isNavigating = false;
-                    }, 1000);
-                    
-                    return true;
-                }
-            }
-        }
-    }
+    // Erstelle Indikatoren für jeden Abschnitt
+    sections.forEach((_, index) => {
+        const indicator = document.createElement('div');
+        indicator.className = 'indicator';
+        indicator.addEventListener('click', () => {
+            scrollToSection(index);
+        });
+        progressContainer.appendChild(indicator);
+    });
     
-    return false;
+    // Füge den Fortschrittsindikator zur Seite hinzu
+    document.body.appendChild(progressContainer);
+    
+    // Aktualisiere den Fortschrittsindikator
+    updateProgressIndicator();
 }
 
 /**
- * Try to load the next chapter
+ * Aktualisiert den Fortschrittsindikator
  */
-function tryLoadNextChapter() {
-    // Get all chapter links from the sidebar
-    const chapterLinks = document.querySelectorAll('.sidebar-menu li.chapter-item a');
-    const activeLink = document.querySelector('.sidebar-menu li.active a');
+function updateProgressIndicator() {
+    const indicators = document.querySelectorAll('.' + SCROLL_CONFIG.progressIndicatorClass + ' .indicator');
     
-    if (activeLink && chapterLinks.length > 0) {
-        // Find the index of the active link
-        let activeIndex = -1;
-        for (let i = 0; i < chapterLinks.length; i++) {
-            if (chapterLinks[i] === activeLink) {
-                activeIndex = i;
-                break;
-            }
+    indicators.forEach((indicator, index) => {
+        if (index === currentSectionIndex) {
+            indicator.classList.add('active');
+        } else {
+            indicator.classList.remove('active');
         }
         
-        // If we found the active link and it's not the last one, load the next chapter
-        if (activeIndex >= 0 && activeIndex < chapterLinks.length - 1) {
-            const nextLink = chapterLinks[activeIndex + 1];
-            const onclickAttr = nextLink.getAttribute('onclick');
-            if (onclickAttr) {
-                // Extract the file path from the onclick attribute
-                const match = onclickAttr.match(/loadMarkdownFile\('([^']+)'\)/);
-                if (match && match[1]) {
-                    console.log(`Navigating to next chapter: ${match[1]}`);
-                    
-                    // Add visual feedback for chapter transition
-                    const scrollNavs = document.querySelectorAll('.scroll-navigation');
-                    if (scrollNavs.length > 0) {
-                        // Add a temporary class for transition effect
-                        scrollNavs.forEach(nav => {
-                            nav.classList.add('chapter-transition');
-                            
-                            // Reset after transition
-                            setTimeout(() => {
-                                nav.classList.remove('chapter-transition');
-                            }, 1500);
-                        });
-                    }
-                    
-                    // Load the next chapter
-                    window.loadMarkdownFile(match[1]);
-                    
-                    // Reset navigation state after loading
-                    setTimeout(() => {
-                        isNavigating = false;
-                    }, 1000);
-                    
-                    return true;
-                }
-            }
+        // Markiere abgeschlossene Abschnitte
+        if (index < currentSectionIndex) {
+            indicator.classList.add('completed');
+        } else {
+            indicator.classList.remove('completed');
         }
-    }
-    
-    return false;
+    });
 }
 
-/**
- * Update the scroll navigation when a new markdown file is loaded
- */
-function updateScrollNavigationOnLoad() {
-    // Reset navigation state
-    currentSectionIndex = 0;
-    isNavigating = false;
-    
-    // Update section headings
-    setTimeout(() => {
-        updateSectionHeadings();
-        addScrollNavigationElements();
-        
-        // Highlight the first section
-        if (sectionHeadings.length > 0) {
-            sectionHeadings[0].element.classList.add('current-section');
-        }
-    }, 300); // Small delay to ensure the content is fully loaded
-}
+// Exportiere die Funktionen
+window.scrollNavigation = {
+    init: initScrollNavigation,
+    scrollToSection: scrollToSection,
+    navigateToNextChapter: navigateToNextChapter,
+    navigateToPrevChapter: navigateToPrevChapter
+};
 
-// Export functions for global access
-window.initializeScrollNavigation = initializeScrollNavigation;
-window.updateScrollNavigationOnLoad = updateScrollNavigationOnLoad;
+// Initialisiere die Scroll-Navigation, wenn das DOM geladen ist
+document.addEventListener('DOMContentLoaded', initScrollNavigation);

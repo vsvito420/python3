@@ -1,17 +1,24 @@
 /**
- * Quiz-System für die Python-Lernplattform
- * Ermöglicht das Erstellen und Durchführen von Tests zu verschiedenen Kapiteln
+ * Quiz-System
+ * 
+ * Dieses Modul implementiert ein interaktives Quiz-System zur Überprüfung des Lernfortschritts.
+ * Es bietet kapitelspezifische Tests mit Multiple-Choice-Fragen, automatische Bewertung
+ * und detaillierte Erklärungen.
  */
 
-// Globale Variablen für das Quiz-System
-window.quizzes = {};
-window.currentQuiz = null;
-window.quizResults = {};
+// Konfiguration
+const QUIZ_CONFIG = {
+    storageKey: 'python_quiz_results',
+    quizContainerId: 'quiz-container',
+    sidebarTestId: 'sidebar-tests',
+    activeClass: 'active',
+    completedClass: 'completed',
+    correctClass: 'correct',
+    incorrectClass: 'incorrect',
+    resultThresholdPercent: 70 // Prozentsatz für bestandenen Test
+};
 
-/**
- * Quiz-Daten für verschiedene Kapitel
- * Jedes Quiz enthält Fragen mit verschiedenen Antwortmöglichkeiten
- */
+// Quiz-Daten für verschiedene Kapitel
 const quizData = {
     'kapitel1': {
         title: 'Test: Grundlagen',
@@ -29,65 +36,109 @@ const quizData = {
                 explanation: 'In Python können Strings mit dem + Operator verkettet werden.'
             },
             {
-                question: 'Welcher Datentyp ist 42?',
+                question: 'Welche der folgenden Variablendeklarationen ist in Python korrekt?',
                 options: [
-                    'String',
-                    'Float',
-                    'Integer',
-                    'Boolean'
+                    'var x = 5;',
+                    'int x = 5;',
+                    'x = 5',
+                    'let x = 5;'
                 ],
                 correctAnswer: 2,
-                explanation: '42 ist eine ganze Zahl und damit vom Typ Integer.'
+                explanation: 'In Python werden Variablen ohne Typdeklaration zugewiesen.'
             },
             {
-                question: 'Wie definiert man eine Variable x mit dem Wert 10?',
+                question: 'Was ist der Wert von 7 // 2 in Python?',
                 options: [
-                    'x := 10',
-                    'var x = 10',
-                    'x = 10',
-                    'int x = 10'
+                    '3.5',
+                    '3',
+                    '3.0',
+                    'Error'
+                ],
+                correctAnswer: 1,
+                explanation: 'Der // Operator führt eine Ganzzahldivision durch und gibt das Ergebnis ohne Nachkommastellen zurück.'
+            },
+            {
+                question: 'Welche Funktion wird verwendet, um den Typ einer Variable zu ermitteln?',
+                options: [
+                    'typeof()',
+                    'type()',
+                    'getType()',
+                    'vartype()'
+                ],
+                correctAnswer: 1,
+                explanation: 'Die Funktion type() gibt den Typ eines Objekts zurück.'
+            },
+            {
+                question: 'Wie kommentiert man eine Zeile in Python?',
+                options: [
+                    '// Kommentar',
+                    '/* Kommentar */',
+                    '# Kommentar',
+                    '-- Kommentar'
                 ],
                 correctAnswer: 2,
-                explanation: 'In Python werden Variablen ohne Typdeklaration mit dem = Operator zugewiesen.'
+                explanation: 'In Python werden Kommentare mit dem # Zeichen eingeleitet.'
             }
         ]
     },
     'kapitel2': {
         title: 'Test: Kontrollstrukturen',
-        description: 'Teste dein Wissen über Bedingungen und Schleifen',
+        description: 'Teste dein Wissen über bedingte Anweisungen und Schleifen',
         questions: [
             {
-                question: 'Welche Schleife wird mindestens einmal ausgeführt?',
+                question: 'Welches Schlüsselwort wird in Python für bedingte Anweisungen verwendet?',
                 options: [
-                    'for-Schleife',
-                    'while-Schleife',
-                    'do-while-Schleife',
-                    'Keine der genannten'
-                ],
-                correctAnswer: 3,
-                explanation: 'Python hat keine do-while-Schleife. Sowohl for- als auch while-Schleifen können 0-mal ausgeführt werden.'
-            },
-            {
-                question: 'Was ist die Ausgabe von: if True: print("A") else: print("B")',
-                options: [
-                    'A',
-                    'B',
-                    'A und B',
-                    'Syntaxfehler'
-                ],
-                correctAnswer: 0,
-                explanation: 'Da die Bedingung True ist, wird nur der if-Block ausgeführt.'
-            },
-            {
-                question: 'Wie oft wird die Schleife ausgeführt: for i in range(5):',
-                options: [
-                    '4 mal',
-                    '5 mal',
-                    '6 mal',
-                    'Unendlich oft'
+                    'switch',
+                    'if',
+                    'when',
+                    'case'
                 ],
                 correctAnswer: 1,
-                explanation: 'range(5) erzeugt die Sequenz 0, 1, 2, 3, 4, also 5 Werte.'
+                explanation: 'In Python werden bedingte Anweisungen mit dem Schlüsselwort "if" eingeleitet.'
+            },
+            {
+                question: 'Wie wird eine for-Schleife in Python korrekt geschrieben?',
+                options: [
+                    'for (i = 0; i < 10; i++) { ... }',
+                    'for i in range(10): ...',
+                    'for (i in range(10)) { ... }',
+                    'foreach (i in range(10)) { ... }'
+                ],
+                correctAnswer: 1,
+                explanation: 'In Python wird eine for-Schleife mit "for i in range(10):" geschrieben, gefolgt von einem eingerückten Codeblock.'
+            },
+            {
+                question: 'Was ist die Ausgabe von: for i in range(5): print(i)',
+                options: [
+                    '1 2 3 4 5',
+                    '0 1 2 3 4',
+                    '0 1 2 3 4 5',
+                    '1 2 3 4'
+                ],
+                correctAnswer: 1,
+                explanation: 'Die Funktion range(5) erzeugt eine Sequenz von 0 bis 4.'
+            },
+            {
+                question: 'Welches Schlüsselwort wird verwendet, um eine Schleife vorzeitig zu beenden?',
+                options: [
+                    'exit',
+                    'stop',
+                    'break',
+                    'end'
+                ],
+                correctAnswer: 2,
+                explanation: 'Das Schlüsselwort "break" beendet eine Schleife vorzeitig.'
+            },
+            {
+                question: 'Was bewirkt das Schlüsselwort "continue" in einer Schleife?',
+                options: [
+                    'Es beendet die Schleife',
+                    'Es springt zur nächsten Iteration',
+                    'Es pausiert die Schleife',
+                    'Es startet die Schleife neu'
+                ],
+                correctAnswer: 1,
+                explanation: 'Das Schlüsselwort "continue" überspringt den Rest des aktuellen Schleifendurchlaufs und springt zur nächsten Iteration.'
             }
         ]
     },
@@ -96,441 +147,463 @@ const quizData = {
         description: 'Teste dein Wissen über Listen und andere Datenstrukturen',
         questions: [
             {
-                question: 'Wie erstellt man eine leere Liste?',
+                question: 'Wie erstellt man eine leere Liste in Python?',
                 options: [
                     'list()',
                     '[]',
                     'new List()',
-                    'Beide A und B sind korrekt'
+                    '{}'
                 ],
-                correctAnswer: 3,
-                explanation: 'In Python kann eine leere Liste sowohl mit list() als auch mit [] erstellt werden.'
-            },
-            {
-                question: 'Was ist der Wert von [1, 2, 3] + [4, 5]?',
-                options: [
-                    '[1, 2, 3, 4, 5]',
-                    '[5, 7, 8]',
-                    'Error',
-                    '[1, 2, 3, [4, 5]]'
-                ],
-                correctAnswer: 0,
-                explanation: 'Der + Operator verkettet Listen in Python.'
+                correctAnswer: 1,
+                explanation: 'Eine leere Liste wird mit [] erstellt.'
             },
             {
                 question: 'Wie greift man auf das erste Element einer Liste zu?',
                 options: [
+                    'list.first()',
                     'list[0]',
                     'list[1]',
-                    'list.first()',
                     'list.get(0)'
                 ],
-                correctAnswer: 0,
-                explanation: 'In Python beginnt die Indexierung bei 0, daher ist das erste Element an Index 0.'
+                correctAnswer: 1,
+                explanation: 'In Python beginnt die Indizierung bei 0, daher ist list[0] das erste Element.'
+            },
+            {
+                question: 'Welche Methode fügt ein Element am Ende einer Liste hinzu?',
+                options: [
+                    'list.add(item)',
+                    'list.append(item)',
+                    'list.insert(item)',
+                    'list.push(item)'
+                ],
+                correctAnswer: 1,
+                explanation: 'Die Methode append() fügt ein Element am Ende einer Liste hinzu.'
+            },
+            {
+                question: 'Was ist der Unterschied zwischen einer Liste und einem Tupel in Python?',
+                options: [
+                    'Listen können mehr Elemente enthalten als Tupel',
+                    'Listen sind schneller als Tupel',
+                    'Listen sind veränderbar, Tupel sind unveränderbar',
+                    'Es gibt keinen Unterschied'
+                ],
+                correctAnswer: 2,
+                explanation: 'Listen sind veränderbar (mutable), während Tupel unveränderbar (immutable) sind.'
+            },
+            {
+                question: 'Wie erstellt man ein Dictionary in Python?',
+                options: [
+                    'dict(key=value)',
+                    '{key: value}',
+                    'new Dict(key, value)',
+                    'Dictionary(key, value)'
+                ],
+                correctAnswer: 1,
+                explanation: 'Ein Dictionary wird mit geschweiften Klammern und Schlüssel-Wert-Paaren erstellt: {key: value}'
             }
         ]
     }
 };
 
+// Speichert die Quiz-Ergebnisse
+let quizResults = {};
+
 /**
- * Initialisiere das Quiz-System
+ * Initialisiert das Quiz-System
  */
-function initializeQuizSystem() {
-    // Speichere die Quiz-Daten
-    window.quizzes = quizData;
-    
-    // Lade gespeicherte Quiz-Ergebnisse
+function initQuizSystem() {
+    // Lade gespeicherte Ergebnisse
     loadQuizResults();
     
-    // Füge Quiz-Links zur Sidebar hinzu
-    addQuizLinksToSidebar();
+    // Erstelle den Test-Bereich in der Seitenleiste
+    createSidebarTestSection();
     
-    console.log('Quiz-System initialisiert');
+    // Füge Event-Listener für Quiz-Links hinzu
+    addQuizLinkListeners();
+    
+    // Zeige das Quiz an, wenn ein Test-Parameter in der URL vorhanden ist
+    const urlParams = new URLSearchParams(window.location.search);
+    const testParam = urlParams.get('test');
+    
+    if (testParam && quizData[testParam]) {
+        showQuiz(testParam);
+    }
 }
 
 /**
- * Lade gespeicherte Quiz-Ergebnisse aus dem localStorage
+ * Lädt die gespeicherten Quiz-Ergebnisse aus dem localStorage
  */
 function loadQuizResults() {
-    const savedResults = localStorage.getItem('quizResults');
+    const savedResults = localStorage.getItem(QUIZ_CONFIG.storageKey);
+    
     if (savedResults) {
-        window.quizResults = JSON.parse(savedResults);
+        try {
+            quizResults = JSON.parse(savedResults);
+        } catch (e) {
+            console.error('Fehler beim Laden der Quiz-Ergebnisse:', e);
+            quizResults = {};
+        }
     }
 }
 
 /**
- * Speichere Quiz-Ergebnisse im localStorage
+ * Speichert die Quiz-Ergebnisse im localStorage
  */
 function saveQuizResults() {
-    localStorage.setItem('quizResults', JSON.stringify(window.quizResults));
+    try {
+        localStorage.setItem(QUIZ_CONFIG.storageKey, JSON.stringify(quizResults));
+    } catch (e) {
+        console.error('Fehler beim Speichern der Quiz-Ergebnisse:', e);
+    }
 }
 
 /**
- * Füge Quiz-Links zur Sidebar hinzu
+ * Erstellt den Test-Bereich in der Seitenleiste
  */
-function addQuizLinksToSidebar() {
-    // Finde die Sidebar-Menü-Liste
-    const sidebarMenu = document.querySelector('.sidebar-menu');
-    if (!sidebarMenu) {
-        console.error('Sidebar-Menü nicht gefunden');
-        return;
+function createSidebarTestSection() {
+    // Finde die Sidebar
+    const sidebar = document.querySelector('.sidebar-nav');
+    
+    if (!sidebar) return;
+    
+    // Erstelle den Test-Bereich
+    const testSection = document.createElement('div');
+    testSection.id = QUIZ_CONFIG.sidebarTestId;
+    testSection.className = 'sidebar-section';
+    
+    // Erstelle den Titel
+    const title = document.createElement('h3');
+    title.textContent = 'TESTS';
+    testSection.appendChild(title);
+    
+    // Erstelle die Liste der Tests
+    const testList = document.createElement('ul');
+    testList.className = 'test-list';
+    
+    // Füge Tests für jedes Kapitel hinzu
+    for (const quizId in quizData) {
+        const quiz = quizData[quizId];
+        const listItem = document.createElement('li');
+        
+        const link = document.createElement('a');
+        link.href = `?test=${quizId}`;
+        link.textContent = quiz.title;
+        link.dataset.quizId = quizId;
+        
+        // Füge Fortschrittsanzeige hinzu
+        const progress = document.createElement('span');
+        progress.className = 'test-progress';
+        
+        // Aktualisiere die Fortschrittsanzeige basierend auf den gespeicherten Ergebnissen
+        updateTestProgress(quizId, progress);
+        
+        listItem.appendChild(link);
+        listItem.appendChild(progress);
+        testList.appendChild(listItem);
     }
     
-    // Erstelle einen neuen Abschnitt für Tests
-    const testSection = document.createElement('li');
-    testSection.className = 'chapter-item test-section';
-    testSection.innerHTML = `
-        <span class="chapter-title">TEST</span>
-        <ul class="quiz-menu">
-            ${Object.keys(window.quizzes).map(quizId => {
-                const quiz = window.quizzes[quizId];
-                const completed = window.quizResults[quizId] && window.quizResults[quizId].completed;
-                const score = completed ? `${window.quizResults[quizId].score}/${window.quizResults[quizId].total}` : '';
-                return `
-                    <li class="quiz-item ${completed ? 'completed' : ''}">
-                        <a href="javascript:void(0)" onclick="loadQuiz('${quizId}')">
-                            ${quiz.title} ${score ? `<span class="quiz-score">${score}</span>` : ''}
-                        </a>
-                    </li>
-                `;
-            }).join('')}
-        </ul>
-    `;
+    testSection.appendChild(testList);
     
-    // Füge den Test-Abschnitt zur Sidebar hinzu
-    sidebarMenu.appendChild(testSection);
-    
-    // Füge CSS für die Quiz-Menü-Elemente hinzu
-    addQuizStyles();
+    // Füge den Test-Bereich zur Sidebar hinzu
+    sidebar.appendChild(testSection);
 }
 
 /**
- * Füge CSS-Stile für das Quiz-System hinzu
+ * Aktualisiert die Fortschrittsanzeige für einen Test
  */
-function addQuizStyles() {
-    // Erstelle ein neues Style-Element
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-        .test-section {
-            margin-top: 20px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 10px;
-        }
+function updateTestProgress(quizId, progressElement) {
+    if (quizResults[quizId]) {
+        const result = quizResults[quizId];
+        const percentage = Math.round((result.score / result.total) * 100);
         
-        .chapter-title {
-            font-weight: bold;
-            color: var(--secondary-color);
-            display: block;
-            padding: 5px 15px;
-            font-size: 1.1em;
-        }
+        progressElement.textContent = `${result.score}/${result.total}`;
         
-        .quiz-menu {
-            list-style: none;
-            padding-left: 15px;
+        // Markiere bestandene Tests
+        if (percentage >= QUIZ_CONFIG.resultThresholdPercent) {
+            progressElement.classList.add(QUIZ_CONFIG.completedClass);
+        } else {
+            progressElement.classList.remove(QUIZ_CONFIG.completedClass);
         }
-        
-        .quiz-item {
-            margin: 5px 0;
-        }
-        
-        .quiz-item a {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 10px;
-            border-radius: var(--border-radius-sm);
-            transition: background-color 0.2s ease;
-        }
-        
-        .quiz-item a:hover {
-            background-color: rgba(44, 62, 80, 0.1);
-        }
-        
-        .quiz-item.completed a {
-            color: var(--success-color);
-        }
-        
-        .quiz-score {
-            font-size: 0.9em;
-            background-color: var(--success-color);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-        }
-        
-        .quiz-container {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: var(--border-radius-lg);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            padding: var(--spacing-xl);
-            margin-bottom: var(--spacing-xl);
-            border: 1px solid var(--macos-glass-border);
-        }
-        
-        .quiz-header {
-            margin-bottom: var(--spacing-lg);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: var(--spacing-md);
-        }
-        
-        .quiz-description {
-            margin-bottom: var(--spacing-lg);
-            font-style: italic;
-            color: var(--secondary-color);
-        }
-        
-        .quiz-question {
-            margin-bottom: var(--spacing-xl);
-            padding: var(--spacing-lg);
-            background-color: rgba(44, 62, 80, 0.05);
-            border-radius: var(--border-radius-md);
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .quiz-question-text {
-            font-weight: bold;
-            margin-bottom: var(--spacing-md);
-            color: var(--secondary-color);
-        }
-        
-        .quiz-options {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .quiz-option {
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .quiz-option label {
-            display: flex;
-            align-items: center;
-            padding: var(--spacing-sm);
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .quiz-option label:hover {
-            background-color: rgba(44, 62, 80, 0.1);
-        }
-        
-        .quiz-option input[type="radio"] {
-            margin-right: var(--spacing-sm);
-        }
-        
-        .quiz-submit {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: var(--spacing-md) var(--spacing-lg);
-            border-radius: var(--border-radius-md);
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.2s ease;
-        }
-        
-        .quiz-submit:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .quiz-result {
-            margin-top: var(--spacing-xl);
-            padding: var(--spacing-lg);
-            background-color: rgba(44, 62, 80, 0.05);
-            border-radius: var(--border-radius-md);
-            border-left: 4px solid var(--success-color);
-        }
-        
-        .quiz-score-display {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: var(--spacing-md);
-        }
-        
-        .quiz-feedback {
-            margin-top: var(--spacing-lg);
-        }
-        
-        .quiz-feedback-item {
-            margin-bottom: var(--spacing-md);
-            padding: var(--spacing-md);
-            border-radius: var(--border-radius-sm);
-        }
-        
-        .quiz-feedback-item.correct {
-            background-color: rgba(46, 204, 113, 0.1);
-            border-left: 3px solid var(--success-color);
-        }
-        
-        .quiz-feedback-item.incorrect {
-            background-color: rgba(231, 76, 60, 0.1);
-            border-left: 3px solid var(--error-color);
-        }
-        
-        .quiz-explanation {
-            font-style: italic;
-            margin-top: var(--spacing-sm);
-            color: var(--secondary-color);
-        }
-    `;
-    
-    // Füge das Style-Element zum Dokument hinzu
-    document.head.appendChild(styleElement);
+    } else {
+        progressElement.textContent = '';
+    }
 }
 
 /**
- * Lade ein Quiz und zeige es im Inhaltsbereich an
- * @param {string} quizId - Die ID des zu ladenden Quiz
+ * Fügt Event-Listener für Quiz-Links hinzu
  */
-function loadQuiz(quizId) {
-    // Setze das aktuelle Quiz
-    window.currentQuiz = quizId;
+function addQuizLinkListeners() {
+    document.addEventListener('click', function(event) {
+        // Prüfe, ob ein Quiz-Link geklickt wurde
+        if (event.target.tagName === 'A' && event.target.dataset.quizId) {
+            event.preventDefault();
+            
+            const quizId = event.target.dataset.quizId;
+            showQuiz(quizId);
+            
+            // Aktualisiere die URL
+            const url = new URL(window.location);
+            url.searchParams.set('test', quizId);
+            window.history.pushState({}, '', url);
+        }
+    });
+}
+
+/**
+ * Zeigt ein Quiz an
+ */
+function showQuiz(quizId) {
+    const quiz = quizData[quizId];
     
-    // Hole das Quiz-Objekt
-    const quiz = window.quizzes[quizId];
-    if (!quiz) {
-        console.error(`Quiz mit ID ${quizId} nicht gefunden`);
-        return;
+    if (!quiz) return;
+    
+    // Erstelle oder finde den Quiz-Container
+    let quizContainer = document.getElementById(QUIZ_CONFIG.quizContainerId);
+    
+    if (!quizContainer) {
+        quizContainer = document.createElement('div');
+        quizContainer.id = QUIZ_CONFIG.quizContainerId;
+        
+        // Füge den Quiz-Container zum Inhaltsbereich hinzu
+        const contentArea = document.querySelector('.content-area');
+        if (contentArea) {
+            contentArea.appendChild(quizContainer);
+        } else {
+            document.body.appendChild(quizContainer);
+        }
     }
     
-    // Erstelle das Quiz-HTML
-    const quizHtml = `
-        <div class="quiz-container">
-            <div class="quiz-header">
-                <h2>${quiz.title}</h2>
-                <div class="quiz-description">${quiz.description}</div>
-            </div>
-            
-            <form id="quiz-form">
-                ${quiz.questions.map((question, questionIndex) => `
-                    <div class="quiz-question" id="question-${questionIndex}">
-                        <div class="quiz-question-text">${questionIndex + 1}. ${question.question}</div>
-                        <ul class="quiz-options">
-                            ${question.options.map((option, optionIndex) => `
-                                <li class="quiz-option">
-                                    <label>
-                                        <input type="radio" name="question-${questionIndex}" value="${optionIndex}">
-                                        ${option}
-                                    </label>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                `).join('')}
-                
-                <button type="submit" class="quiz-submit">Test abschließen</button>
-            </form>
-            
-            <div id="quiz-result" class="quiz-result" style="display: none;"></div>
-        </div>
-    `;
+    // Leere den Container
+    quizContainer.innerHTML = '';
     
-    // Zeige das Quiz im Inhaltsbereich an
-    document.getElementById('content').innerHTML = quizHtml;
+    // Erstelle den Quiz-Header
+    const header = document.createElement('div');
+    header.className = 'quiz-header';
     
-    // Füge Event-Listener für das Formular hinzu
-    document.getElementById('quiz-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        submitQuiz(quizId);
+    const title = document.createElement('h2');
+    title.textContent = quiz.title;
+    header.appendChild(title);
+    
+    const description = document.createElement('p');
+    description.textContent = quiz.description;
+    header.appendChild(description);
+    
+    quizContainer.appendChild(header);
+    
+    // Erstelle das Quiz-Formular
+    const form = document.createElement('form');
+    form.className = 'quiz-form';
+    form.dataset.quizId = quizId;
+    
+    // Füge Fragen hinzu
+    quiz.questions.forEach((question, questionIndex) => {
+        const questionElement = createQuestionElement(question, questionIndex);
+        form.appendChild(questionElement);
     });
     
-    // Aktualisiere die aktive Menüposition
-    updateActiveMenuItem(quizId);
+    // Füge Submit-Button hinzu
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.textContent = 'Test auswerten';
+    submitButton.className = 'quiz-submit-button';
+    form.appendChild(submitButton);
+    
+    // Füge Event-Listener für das Formular hinzu
+    form.addEventListener('submit', handleQuizSubmit);
+    
+    quizContainer.appendChild(form);
+    
+    // Scrolle zum Quiz
+    quizContainer.scrollIntoView({ behavior: 'smooth' });
+    
+    // Markiere den aktiven Test in der Seitenleiste
+    updateActiveSidebarTest(quizId);
 }
 
 /**
- * Reiche ein Quiz ein und zeige die Ergebnisse an
- * @param {string} quizId - Die ID des eingereichten Quiz
+ * Erstellt ein Element für eine Frage
  */
-function submitQuiz(quizId) {
-    // Hole das Quiz-Objekt
-    const quiz = window.quizzes[quizId];
-    if (!quiz) {
-        console.error(`Quiz mit ID ${quizId} nicht gefunden`);
-        return;
-    }
+function createQuestionElement(question, questionIndex) {
+    const questionElement = document.createElement('div');
+    questionElement.className = 'quiz-question';
+    questionElement.dataset.questionIndex = questionIndex;
     
-    // Sammle die Antworten
-    const answers = [];
-    for (let i = 0; i < quiz.questions.length; i++) {
-        const selectedOption = document.querySelector(`input[name="question-${i}"]:checked`);
-        answers.push(selectedOption ? parseInt(selectedOption.value) : -1);
-    }
+    const questionText = document.createElement('h3');
+    questionText.textContent = `${questionIndex + 1}. ${question.question}`;
+    questionElement.appendChild(questionText);
     
-    // Berechne das Ergebnis
-    let score = 0;
-    const feedback = [];
+    // Erstelle die Optionen
+    const optionsContainer = document.createElement('div');
+    optionsContainer.className = 'quiz-options';
     
-    for (let i = 0; i < quiz.questions.length; i++) {
-        const question = quiz.questions[i];
-        const userAnswer = answers[i];
-        const isCorrect = userAnswer === question.correctAnswer;
+    question.options.forEach((option, optionIndex) => {
+        const optionContainer = document.createElement('div');
+        optionContainer.className = 'quiz-option';
         
-        if (isCorrect) {
-            score++;
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = `question-${questionIndex}`;
+        radio.id = `question-${questionIndex}-option-${optionIndex}`;
+        radio.value = optionIndex;
+        
+        const label = document.createElement('label');
+        label.htmlFor = `question-${questionIndex}-option-${optionIndex}`;
+        label.textContent = option;
+        
+        optionContainer.appendChild(radio);
+        optionContainer.appendChild(label);
+        optionsContainer.appendChild(optionContainer);
+    });
+    
+    questionElement.appendChild(optionsContainer);
+    
+    // Erstelle den Bereich für die Erklärung (wird nach der Auswertung angezeigt)
+    const explanation = document.createElement('div');
+    explanation.className = 'quiz-explanation';
+    explanation.style.display = 'none';
+    questionElement.appendChild(explanation);
+    
+    return questionElement;
+}
+
+/**
+ * Behandelt das Absenden eines Quiz-Formulars
+ */
+function handleQuizSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const quizId = form.dataset.quizId;
+    const quiz = quizData[quizId];
+    
+    if (!quiz) return;
+    
+    let score = 0;
+    const total = quiz.questions.length;
+    
+    // Werte jede Frage aus
+    quiz.questions.forEach((question, questionIndex) => {
+        const questionElement = form.querySelector(`.quiz-question[data-question-index="${questionIndex}"]`);
+        const selectedOption = form.querySelector(`input[name="question-${questionIndex}"]:checked`);
+        const explanationElement = questionElement.querySelector('.quiz-explanation');
+        
+        // Zeige die Erklärung an
+        explanationElement.textContent = question.explanation;
+        explanationElement.style.display = 'block';
+        
+        if (selectedOption) {
+            const selectedValue = parseInt(selectedOption.value);
+            
+            // Prüfe, ob die Antwort korrekt ist
+            if (selectedValue === question.correctAnswer) {
+                score++;
+                questionElement.classList.add(QUIZ_CONFIG.correctClass);
+            } else {
+                questionElement.classList.add(QUIZ_CONFIG.incorrectClass);
+                
+                // Markiere die richtige Antwort
+                const correctOptionElement = form.querySelector(`#question-${questionIndex}-option-${question.correctAnswer}`).parentNode;
+                correctOptionElement.classList.add('correct-option');
+            }
+        } else {
+            // Keine Antwort ausgewählt
+            questionElement.classList.add(QUIZ_CONFIG.incorrectClass);
+            
+            // Markiere die richtige Antwort
+            const correctOptionElement = form.querySelector(`#question-${questionIndex}-option-${question.correctAnswer}`).parentNode;
+            correctOptionElement.classList.add('correct-option');
         }
         
-        feedback.push({
-            question: question.question,
-            userAnswer: userAnswer >= 0 ? question.options[userAnswer] : 'Keine Antwort',
-            correctAnswer: question.options[question.correctAnswer],
-            isCorrect: isCorrect,
-            explanation: question.explanation
+        // Deaktiviere die Optionen
+        const options = questionElement.querySelectorAll('input[type="radio"]');
+        options.forEach(option => {
+            option.disabled = true;
         });
-    }
+    });
     
     // Speichere das Ergebnis
-    window.quizResults[quizId] = {
-        completed: true,
+    quizResults[quizId] = {
         score: score,
-        total: quiz.questions.length,
-        answers: answers,
-        timestamp: new Date().toISOString()
+        total: total,
+        date: new Date().toISOString()
     };
     
-    // Speichere die Ergebnisse im localStorage
     saveQuizResults();
     
     // Zeige das Ergebnis an
-    const resultHtml = `
-        <div class="quiz-score-display">
-            Dein Ergebnis: ${score} von ${quiz.questions.length} Punkten (${Math.round(score / quiz.questions.length * 100)}%)
-        </div>
-        
-        <div class="quiz-feedback">
-            ${feedback.map((item, index) => `
-                <div class="quiz-feedback-item ${item.isCorrect ? 'correct' : 'incorrect'}">
-                    <div class="quiz-question-text">${index + 1}. ${item.question}</div>
-                    <div>Deine Antwort: ${item.userAnswer}</div>
-                    ${!item.isCorrect ? `<div>Richtige Antwort: ${item.correctAnswer}</div>` : ''}
-                    <div class="quiz-explanation">${item.explanation}</div>
-                </div>
-            `).join('')}
-        </div>
-        
-        <button onclick="window.location.reload()" class="quiz-submit">Zurück zur Übersicht</button>
-    `;
+    showQuizResult(form, score, total);
     
-    // Verstecke das Formular und zeige das Ergebnis an
-    document.getElementById('quiz-form').style.display = 'none';
-    const resultElement = document.getElementById('quiz-result');
-    resultElement.innerHTML = resultHtml;
-    resultElement.style.display = 'block';
-    
-    // Aktualisiere die Quiz-Links in der Sidebar
-    addQuizLinksToSidebar();
+    // Aktualisiere die Fortschrittsanzeige in der Seitenleiste
+    const progressElement = document.querySelector(`.test-list a[data-quiz-id="${quizId}"]`).nextElementSibling;
+    updateTestProgress(quizId, progressElement);
 }
 
-// Exportiere Funktionen für globalen Zugriff
-window.initializeQuizSystem = initializeQuizSystem;
-window.loadQuiz = loadQuiz;
-window.submitQuiz = submitQuiz;
+/**
+ * Zeigt das Ergebnis eines Quiz an
+ */
+function showQuizResult(form, score, total) {
+    // Erstelle das Ergebnis-Element
+    const resultElement = document.createElement('div');
+    resultElement.className = 'quiz-result';
+    
+    const percentage = Math.round((score / total) * 100);
+    
+    // Bestimme, ob der Test bestanden wurde
+    const passed = percentage >= QUIZ_CONFIG.resultThresholdPercent;
+    
+    resultElement.classList.add(passed ? QUIZ_CONFIG.correctClass : QUIZ_CONFIG.incorrectClass);
+    
+    const resultText = document.createElement('h3');
+    resultText.textContent = passed ? 'Test bestanden!' : 'Test nicht bestanden';
+    resultElement.appendChild(resultText);
+    
+    const scoreText = document.createElement('p');
+    scoreText.textContent = `Du hast ${score} von ${total} Fragen richtig beantwortet (${percentage}%).`;
+    resultElement.appendChild(scoreText);
+    
+    // Füge einen Button zum Wiederholen des Tests hinzu
+    const retryButton = document.createElement('button');
+    retryButton.textContent = 'Test wiederholen';
+    retryButton.className = 'quiz-retry-button';
+    retryButton.addEventListener('click', function() {
+        // Hole die Quiz-ID aus dem Formular
+        const quizId = form.dataset.quizId;
+        showQuiz(quizId);
+    });
+    
+    resultElement.appendChild(retryButton);
+    
+    // Füge das Ergebnis-Element vor dem Submit-Button ein
+    const submitButton = form.querySelector('.quiz-submit-button');
+    submitButton.style.display = 'none';
+    form.insertBefore(resultElement, submitButton);
+    
+    // Scrolle zum Ergebnis
+    resultElement.scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Aktualisiert den aktiven Test in der Seitenleiste
+ */
+function updateActiveSidebarTest(quizId) {
+    // Entferne die aktive Klasse von allen Test-Links
+    const testLinks = document.querySelectorAll(`.test-list a`);
+    testLinks.forEach(link => {
+        link.classList.remove(QUIZ_CONFIG.activeClass);
+    });
+    
+    // Füge die aktive Klasse zum ausgewählten Test-Link hinzu
+    const activeLink = document.querySelector(`.test-list a[data-quiz-id="${quizId}"]`);
+    if (activeLink) {
+        activeLink.classList.add(QUIZ_CONFIG.activeClass);
+    }
+}
+
+// Exportiere die Funktionen
+window.quizSystem = {
+    init: initQuizSystem,
+    showQuiz: showQuiz
+};
 
 // Initialisiere das Quiz-System, wenn das DOM geladen ist
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeQuizSystem);
-} else {
-    initializeQuizSystem();
-}
+document.addEventListener('DOMContentLoaded', initQuizSystem);

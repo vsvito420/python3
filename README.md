@@ -129,10 +129,12 @@ graph TD
    - Abgeschlossene Kapitel werden im localStorage gespeichert
    - Fortschrittsanzeige wird aktualisiert
 
-5. **Hover-Navigation**:
-   - Ermöglicht Navigation zwischen Abschnitten und Kapiteln
+5. **Vertikale Scroll-Navigation**:
+   - Ermöglicht Navigation zwischen Abschnitten und Kapiteln durch vertikales Scrollen
+   - Navigationselemente am Ende jeder Sektion
    - Zeigt Fortschrittsindikator an
    - Unterstützt Tastaturnavigation
+   - Natürlicheres Leseerlebnis von oben nach unten
 
 ```mermaid
 sequenceDiagram
@@ -220,17 +222,29 @@ graph TD
         docs --> projekt
     end
 
-    subgraph "Hover-Navigation"
-        hover[js/ui-hover-navigation.js]
+    subgraph "Scroll-Navigation"
+        scroll[js/ui-scroll-navigation.js]
 
-        hover --> sections[Abschnittsnavigation]
-        hover --> progress[Fortschrittsanzeige]
-        hover --> chapter[Kapitelübergänge]
+        scroll --> sections[Abschnittsnavigation]
+        scroll --> progress[Fortschrittsanzeige]
+        scroll --> chapter[Kapitelübergänge]
 
         sections --> prev[Vorheriger Abschnitt]
         sections --> next[Nächster Abschnitt]
         chapter --> prevChap[Vorheriges Kapitel]
         chapter --> nextChap[Nächstes Kapitel]
+    end
+    
+    subgraph "Quiz-System"
+        quiz[js/quiz-system.js]
+        
+        quiz --> quizData[Kapitel-Tests]
+        quiz --> quizUI[Test-Interface]
+        quiz --> quizResults[Ergebnisspeicherung]
+        
+        quizData --> questions[Multiple-Choice-Fragen]
+        quizUI --> feedback[Automatisches Feedback]
+        quizResults --> progress[Fortschrittsanzeige]
     end
 ```
 
@@ -257,7 +271,7 @@ Die Architektur der Python-Lernplattform folgt mehreren wichtigen Prinzipien:
      - Core-Module: `js/core-utils.js`
      - Python-Module: `js/python-pyodide.js`, `js/python-executor.js`
      - Editor-Module: `js/editor-standalone.js`, `js/editor-codeblocks.js`, `js/editor-resize.js`
-     - UI-Module: `js/ui-navigation.js`, `js/ui-progress.js`, `js/ui-hover-navigation.js`
+     - UI-Module: `js/ui-navigation.js`, `js/ui-progress.js`, `js/ui-scroll-navigation.js`, `js/quiz-system.js`
      - Markdown-Module: `js/markdown-loader.js`, `js/markdown-parser.js`, `js/markdown-cache.js`
      - Hilfsfunktionen: `js/script.js`
      - Hauptmodul: `js/main.js`
@@ -314,7 +328,7 @@ Die Architektur der Python-Lernplattform wurde mit Blick auf zukünftige Erweite
 4. **Erweiterte Inhaltsformate**:
    - Unterstützung für interaktive Diagramme
    - Einbettung von Videos und anderen Medien
-   - Interaktive Quizze und Assessments
+   - Erweiterte interaktive Quizze mit zusätzlichen Fragetypen (bereits grundlegende Quiz-Funktionalität implementiert)
 
 Diese Erweiterungsmöglichkeiten können schrittweise implementiert werden, ohne die bestehende Architektur grundlegend zu ändern, dank des modularen Aufbaus der Plattform.
 
@@ -375,7 +389,8 @@ Die Plattform besteht aus folgenden Hauptdateien:
 | **js/editor-resize.js** | Größenänderungsfunktionalität für Editoren |
 | **js/ui-navigation.js** | Navigation und Sidebar-Funktionalität |
 | **js/ui-progress.js** | Fortschrittsverfolgung |
-| **js/ui-hover-navigation.js** | Hover-Navigation zwischen Abschnitten und Kapiteln |
+| **js/ui-scroll-navigation.js** | Vertikale Scroll-Navigation zwischen Abschnitten und Kapiteln |
+| **js/quiz-system.js** | Quiz-System für interaktive Tests zu verschiedenen Kapiteln |
 | **js/markdown-cache.js** | Caching von Markdown-Dateien |
 | **js/markdown-parser.js** | Parsing von Markdown zu HTML |
 | **js/markdown-loader.js** | Laden von Markdown-Dateien |
@@ -395,6 +410,7 @@ Die Anwendung besteht aus drei Hauptkomponenten in der Hauptansicht und einer se
 | **Code-Editor** | Zentraler Bereich mit einem eigenständigen Python-Editor |
 | **Markdown-Inhalt** | Bereich unter dem Code-Editor, der die Lernmaterialien anzeigt |
 | **Vollbild-Editor** | Separate Seite (`code-editor.html`) mit einem eigenständigen Python-Editor im Vollbildmodus |
+| **Quiz-System** | Interaktive Tests zu verschiedenen Kapiteln mit automatischer Bewertung und Feedback |
 
 ### Layout-Struktur
 
@@ -510,6 +526,50 @@ document.getElementById('toggle-editor-sidebar').addEventListener('click', funct
 });
 ```
 
+## Quiz-System
+
+Die Plattform bietet ein interaktives Quiz-System zur Überprüfung des Lernfortschritts:
+
+1. **Quiz-Struktur**:
+   - Kapitelspezifische Tests mit Multiple-Choice-Fragen
+   - Automatische Bewertung und detaillierte Erklärungen
+   - Speicherung der Ergebnisse im localStorage
+
+2. **Integration in die Seitenleiste**:
+   - Eigener "TEST"-Bereich in der Seitenleiste
+   - Anzeige des Fortschritts mit Punktzahlen
+   - Farbliche Hervorhebung abgeschlossener Tests
+
+3. **Implementierung**:
+   - Definiert in `js/quiz-system.js`
+   - Dynamische Erstellung von Quiz-Formularen
+   - Responsive Design für alle Bildschirmgrößen
+
+```javascript
+// Beispiel für die Quiz-Datenstruktur
+const quizData = {
+    'kapitel1': {
+        title: 'Test: Grundlagen',
+        description: 'Teste dein Wissen über Python-Grundlagen',
+        questions: [
+            {
+                question: 'Was ist der Ausgabewert von print("Hello" + " " + "World")?',
+                options: [
+                    'Hello World',
+                    '"Hello World"',
+                    'Hello + World',
+                    'Error'
+                ],
+                correctAnswer: 0,
+                explanation: 'In Python können Strings mit dem + Operator verkettet werden.'
+            },
+            // Weitere Fragen...
+        ]
+    }
+    // Weitere Kapitel-Tests...
+};
+```
+
 ## Erweiterungsmöglichkeiten
 
 ### Neue Kapitel hinzufügen
@@ -541,6 +601,7 @@ Für neue Funktionen:
 | **Vollbild-Editor funktioniert nicht** | Überprüfe die Initialisierung in `code-editor.html` | Stelle sicher, dass alle erforderlichen Skripte geladen werden |
 | **Langsame Ladezeiten** | Überprüfe die Netzwerkaktivität in den Browser-DevTools | Reduziere die Anzahl der externen Ressourcen oder implementiere Lazy-Loading |
 | **Mobile Darstellungsprobleme** | Überprüfe die CSS-Media-Queries in den entsprechenden CSS-Modulen | Teste mit verschiedenen Geräten und Bildschirmgrößen |
+| **Quiz-System funktioniert nicht** | Überprüfe die Initialisierung in `js/quiz-system.js` | Stelle sicher, dass localStorage verfügbar ist und die Quiz-Daten korrekt definiert sind |
 
 ### Performance-Optimierung
 

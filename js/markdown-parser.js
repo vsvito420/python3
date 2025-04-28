@@ -310,15 +310,77 @@ function parseMarkdown(markdown) {
         }
     });
 
-    // Add navigation buttons
-    processedMarkdown += `
-        <div class="chapter-navigation">
-            <button id="mark-completed" class="mark-completed-button">Kapitel als abgeschlossen markieren</button>
-        </div>
-    `;
+    // Navigation buttons are now added to each section
 
+    // Split content into sections based on headings for vertical scroll navigation
+    let sections = [];
+    let currentSection = '';
+    
+    // Split by h1, h2, and h3 headings
+    const lines = processedMarkdown.split('\n');
+    let currentHeading = 'Einleitung';
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Check if this line is a heading
+        if (line.match(/<h[1-3][^>]*>(.*?)<\/h[1-3]>/)) {
+            // If we have content in the current section, add it to sections
+            if (currentSection.trim()) {
+                sections.push({
+                    heading: currentHeading,
+                    content: currentSection
+                });
+            }
+            
+            // Extract the heading text
+            const headingMatch = line.match(/<h[1-3][^>]*>(.*?)<\/h[1-3]>/);
+            currentHeading = headingMatch ? headingMatch[1] : 'Abschnitt';
+            
+            // Start a new section with this heading
+            currentSection = line;
+        } else {
+            // Add this line to the current section
+            currentSection += '\n' + line;
+        }
+    }
+    
+    // Add the last section
+    if (currentSection.trim()) {
+        sections.push({
+            heading: currentHeading,
+            content: currentSection
+        });
+    }
+    
+    // If no sections were created (no headings), create a single section
+    if (sections.length === 0 && processedMarkdown.trim()) {
+        sections.push({
+            heading: 'Inhalt',
+            content: processedMarkdown
+        });
+    }
+    
+    // Build the final HTML with sections
+    let sectionedContent = '';
+    
+    sections.forEach((section, index) => {
+        const isLastSection = index === sections.length - 1;
+        
+        // Create a section with the content-section class for scroll navigation
+        sectionedContent += `<div class="content-section" id="section-${index}">
+            ${section.content}
+            
+            ${isLastSection ? `
+            <div class="chapter-navigation">
+                <button id="mark-completed" class="mark-completed-button">Kapitel als abgeschlossen markieren</button>
+            </div>
+            ` : ''}
+        </div>`;
+    });
+    
     // Wrap the entire content in a div with markdown-content class for proper styling
-    processedMarkdown = `<div class="markdown-content">${processedMarkdown}</div>`;
+    processedMarkdown = `<div class="markdown-content">${sectionedContent}</div>`;
 
     // Log performance metrics
     const endTime = performance.now();

@@ -1,0 +1,329 @@
+/**
+ * Stile für das Quiz-System und die vertikale Scroll-Navigation
+ */
+
+/* ===== Vertikale Scroll-Navigation ===== */
+
+.section-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.chapter-navigation {
+    display: flex;
+    justify-content: flex-start;
+    margin: 1rem 0;
+    padding: 0.5rem;
+}
+
+.chapter-navigation.top {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.next-section-button,
+.prev-section-button,
+.next-chapter-button,
+.prev-chapter-button {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.next-section-button:hover,
+.prev-section-button:hover,
+.next-chapter-button:hover,
+.prev-chapter-button:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
+.next-section-button:active,
+.prev-section-button:active,
+.next-chapter-button:active,
+.prev-chapter-button:active {
+    transform: translateY(0);
+}
+
+.progress-indicator {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+}
+
+.progress-indicator .indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.progress-indicator .indicator.active {
+    background-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+.progress-indicator .indicator.completed {
+    background-color: var(--success-color);
+}
+
+.content-section {
+    min-height: 80vh;
+    padding-bottom: 2rem;
+    position: relative;
+}
+
+/* ===== Quiz-System ===== */
+
+/* Sidebar Test-Bereich */
+#sidebar-tests {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+#sidebar-tests h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.test-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.test-list li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.test-list a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    flex-grow: 1;
+    transition: background-color 0.2s;
+}
+
+.test-list a:hover {
+    background-color: var(--hover-color);
+}
+
+.test-list a.active {
+    background-color: var(--primary-color-light);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.test-progress {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+}
+
+.test-progress.completed {
+    background-color: var(--success-color-light);
+    color: var(--success-color);
+}
+
+/* Quiz-Container */
+#quiz-container {
+    background-color: var(--background-color-light);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.quiz-header {
+    margin-bottom: 2rem;
+}
+
+.quiz-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.quiz-header p {
+    color: var(--text-color-light);
+    font-size: 1rem;
+}
+
+/* Quiz-Fragen */
+.quiz-question {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.quiz-question h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.quiz-option {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    border-radius: 4px;
+    background-color: var(--background-color-light);
+    transition: background-color 0.2s;
+}
+
+.quiz-option:hover {
+    background-color: var(--hover-color);
+}
+
+.quiz-option input[type="radio"] {
+    margin-right: 1rem;
+}
+
+.quiz-option label {
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+/* Quiz-Erklärungen */
+.quiz-explanation {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--info-color-light);
+    border-left: 4px solid var(--info-color);
+    border-radius: 0 4px 4px 0;
+    color: var(--text-color);
+}
+
+/* Quiz-Ergebnisse */
+.quiz-result {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.quiz-result.correct {
+    background-color: var(--success-color-light);
+    border: 1px solid var(--success-color);
+}
+
+.quiz-result.incorrect {
+    background-color: var(--error-color-light);
+    border: 1px solid var(--error-color);
+}
+
+.quiz-result h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.quiz-result.correct h3 {
+    color: var(--success-color);
+}
+
+.quiz-result.incorrect h3 {
+    color: var(--error-color);
+}
+
+/* Quiz-Buttons */
+.quiz-submit-button,
+.quiz-retry-button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.quiz-submit-button:hover,
+.quiz-retry-button:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
+.quiz-submit-button:active,
+.quiz-retry-button:active {
+    transform: translateY(0);
+}
+
+/* Korrekte und falsche Antworten */
+.quiz-question.correct {
+    border-left: 4px solid var(--success-color);
+}
+
+.quiz-question.incorrect {
+    border-left: 4px solid var(--error-color);
+}
+
+.quiz-option.correct-option {
+    background-color: var(--success-color-light);
+    border: 1px solid var(--success-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .progress-indicator {
+        display: none;
+    }
+    
+    #quiz-container {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .quiz-question {
+        padding: 1rem;
+    }
+    
+    .section-navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .next-section-button,
+    .prev-section-button,
+    .next-chapter-button,
+    .prev-chapter-button {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -50,4 +50,17 @@
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
     --border-radius-lg: 16px;
+    
+    /* Quiz und Scroll-Navigation Farben */
+    --primary-color-light: rgba(74, 111, 165, 0.15);
+    --primary-color-dark: #3a5683;
+    --success-color-light: rgba(39, 174, 96, 0.15);
+    --error-color: #e74c3c;
+    --error-color-light: rgba(231, 76, 60, 0.15);
+    --info-color: #3498db;
+    --info-color-light: rgba(52, 152, 219, 0.15);
+    --hover-color: rgba(0, 0, 0, 0.05);
+    --text-color: #333;
+    --text-color-light: #666;
+    --background-color-light: #f8f9fa;
 }

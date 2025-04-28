@@ -10,3 +10,5 @@
 @import 'output.css'; /* New module for output styling */
 @import 'buttons.css';
 @import 'utilities.css';
+@import 'markdown-styles.css';
+@import 'quiz-and-scroll.css'; /* Stile für Quiz-System und vertikale Scroll-Navigation */
