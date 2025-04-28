@@ -83,8 +83,8 @@
 }
 
 .sidebar-menu li.active {
-    background-color: rgba(243, 156, 18, 0.7); /* Gelb statt Blau */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background-color: rgba(74, 111, 165, 0.7); /* Dezentes Blau statt Gelb */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-menu a {
@@ -92,13 +92,13 @@
     text-decoration: none;
     display: block;
     font-weight: 600;
-    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
+    /* Entfernt starke Textschatten für ein dezenteres Design */
 }
 
 .sidebar-menu a:hover {
     color: white;
     text-decoration: underline;
-    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black; /* Stärkere schwarze Umrandung */
+    /* Entfernt starke Textschatten für ein dezenteres Design */
 }
 
 /* Hauptseite-Stil */
@@ -107,7 +107,7 @@
     border-left: 4px solid var(--primary-color);
     font-weight: bold;
     border-radius: var(--border-radius-sm);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Kapitelüberschriften-Stil */
@@ -144,9 +144,9 @@
 }
 
 .sidebar-menu li.chapter-item.active {
-    background-color: rgba(243, 156, 18, 0.6); /* Gelb statt Blau */
+    background-color: rgba(74, 111, 165, 0.6); /* Dezentes Blau statt Gelb */
     border-left: 2px solid var(--white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Abgeschlossene Kapitel */

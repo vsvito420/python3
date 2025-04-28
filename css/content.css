@@ -1,4 +1,4 @@
- /* content.css - Stile für den Inhaltsbereich */
+ //* content.css - Stile für den Inhaltsbereich */
 
 /* content.css - Stile für den Inhaltsbereich */
 
@@ -52,23 +52,23 @@
 }
 
 .lesson-container a {
-    color: white;
-    background-color: rgba(41, 128, 185, 0.9); /* Blauer Hintergrund */
+    color: var(--primary-color);
+    background-color: var(--link-bg);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.2s ease;
     padding: 2px 5px;
     border-radius: 3px;
-    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Entfernt starke Textschatten für ein dezenteres Design */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(230, 230, 230, 0.5);
 }
 
 .lesson-container a:hover {
-    background-color: rgba(52, 152, 219, 1); /* Vollständig deckender blauer Hintergrund */
-    color: white;
+    background-color: var(--link-bg-hover);
+    color: var(--primary-dark);
     text-decoration: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .task-description {
@@ -157,7 +157,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    background-color: rgba(211, 84, 0, 0.9); /* Orange statt Dunkelblau */
+    background-color: rgba(74, 111, 165, 0.8); /* Dezentes Blau statt Orange */
     color: white;
     padding: 2px 8px;
     font-size: 12px;
@@ -167,7 +167,7 @@
 
 /* Highlight current section in content */
 .current-section {
-    background-color: rgba(243, 156, 18, 0.1); /* Gelb statt Blau */
+    background-color: rgba(74, 111, 165, 0.1); /* Dezentes Blau statt Gelb */
     border-left: 3px solid var(--primary-color);
     padding-left: 10px;
     margin-left: -13px;
@@ -176,21 +176,22 @@
 
 /* Allgemeine Regel für alle Links im Content-Bereich */
 #content a {
-    color: white;
-    background-color: rgba(41, 128, 185, 0.9);
+    color: var(--primary-color);
+    background-color: var(--link-bg);
     text-decoration: none;
     font-weight: 600;
     padding: 2px 5px;
     border-radius: 3px;
-    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; /* Starke schwarze Umrandung */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Entfernt starke Textschatten für ein dezenteres Design */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(230, 230, 230, 0.5);
     transition: all 0.2s ease;
 }
 
 #content a:hover {
-    background-color: rgba(52, 152, 219, 1);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    background-color: var(--link-bg-hover);
+    color: var(--primary-dark);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 /* Mobile Styles */

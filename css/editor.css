@@ -25,13 +25,13 @@
 }
 
 #code-editor-sidebar:hover {
-    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.15);
-    border-color: rgba(230, 126, 34, 0.2);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    border-color: rgba(74, 111, 165, 0.2);
 }
 
 #code-editor-sidebar .sidebar-header {
     padding: var(--spacing-md);
-    background-color: rgba(44, 62, 80, 0.8);
+    background-color: rgba(44, 62, 80, 0.7);
     color: var(--light-gray);
     display: flex;
     justify-content: space-between;
@@ -113,7 +113,7 @@
 /* Stile für die Ausgabe im Container */
 .editor-output-container #standalone-output {
     flex: 2; /* 40% der Breite */
-    background-color: rgba(44, 62, 80, 0.9);
+    background-color: rgba(44, 62, 80, 0.8);
     color: var(--light-gray);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-md);

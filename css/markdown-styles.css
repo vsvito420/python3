@@ -5,7 +5,7 @@
     overflow-x: auto;
     margin: 1.5rem 0;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .markdown-table {
@@ -17,12 +17,12 @@
 }
 
 .markdown-table th {
-    background-color: #2c3e50;
+    background-color: var(--secondary-color);
     color: white;
     font-weight: bold;
     padding: 0.75rem 1rem;
     text-align: left;
-    border-bottom: 2px solid #1a2530;
+    border-bottom: 2px solid var(--secondary-dark);
 }
 
 .markdown-table td {
@@ -40,7 +40,7 @@
 }
 
 .markdown-table tr:hover td {
-    background-color: #e6f7ff;
+    background-color: rgba(74, 111, 165, 0.1);
 }
 
 /* Code block styles */
@@ -50,7 +50,7 @@ pre {
     padding: 1rem;
     overflow-x: auto;
     margin: 1.5rem 0;
-    border-left: 4px solid #2c3e50;
+    border-left: 4px solid var(--primary-color);
 }
 
 pre code {
@@ -87,7 +87,7 @@ code {
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
-    color: #d63384;
+    color: var(--primary-dark);
 }
 
 /* Headings */
@@ -97,7 +97,7 @@ code {
 .markdown-heading {
     margin-top: 2rem;
     margin-bottom: 1rem;
-    color: #2c3e50;
+    color: var(--secondary-color);
 }
 
 .markdown-content h1,
@@ -141,8 +141,8 @@ code {
 
 /* Blockquotes */
 .markdown-content blockquote {
-    border-left: 4px solid #dfe2e5;
-    color: #6a737d;
+    border-left: 4px solid var(--border-color);
+    color: var(--secondary-light);
     padding: 0 1rem;
     margin: 1rem 0;
 }
