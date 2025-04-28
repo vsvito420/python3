@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize sidebar toggle functionality
     window.initializeSidebarToggle();
     
-    // Initialize hover navigation
-    if (typeof window.initializeHoverNavigation === 'function') {
-        window.initializeHoverNavigation();
+    // Initialize scroll navigation
+    if (typeof window.initializeScrollNavigation === 'function') {
+        window.initializeScrollNavigation();
     } else {
-        console.warn('initializeHoverNavigation function not found. Hover navigation will not be available.');
+        console.warn('initializeScrollNavigation function not found. Scroll navigation will not be available.');
     }
     
     // Check window size and adjust resize handle display

@@ -143,22 +143,24 @@
         </main>
     </div>
 
-    <!-- Hover Navigation Menu -->
-    <div id="hover-navigation" class="hover-navigation">
-        <div class="hover-navigation-inner">
-            <button id="prev-section" class="nav-button prev-button" aria-label="Vorherige Aufgabe">
-                <span class="nav-icon">←</span>
-                <span class="nav-text">Vorherige Aufgabe</span>
-            </button>
+    <!-- Vertikale Scroll-Navigation wird am Ende jeder Seite angezeigt -->
+    <template id="scroll-navigation-template">
+        <div class="scroll-navigation">
             <div class="nav-progress">
                 <div class="nav-progress-indicator"></div>
             </div>
-            <button id="next-section" class="nav-button next-button" aria-label="Nächste Aufgabe">
-                <span class="nav-text">Nächste Aufgabe</span>
-                <span class="nav-icon">→</span>
-            </button>
+            <div class="scroll-navigation-buttons">
+                <button id="prev-section" class="nav-button prev-button" aria-label="Vorherige Aufgabe">
+                    <span class="nav-icon">←</span>
+                    <span class="nav-text">Vorherige Aufgabe</span>
+                </button>
+                <button id="next-section" class="nav-button next-button" aria-label="Nächste Aufgabe">
+                    <span class="nav-text">Nächste Aufgabe</span>
+                    <span class="nav-icon">→</span>
+                </button>
+            </div>
         </div>
-    </div>
+    </template>
 
     <!-- Scripts with optimized loading -->
     <script>
@@ -184,10 +186,11 @@
     <script src="js/editor-resize.js"></script>
     <script src="js/ui-progress.js"></script>
     <script src="js/ui-navigation.js"></script>
-    <script src="js/ui-hover-navigation.js"></script>
+    <script src="js/ui-scroll-navigation.js"></script>
     <script src="js/markdown-cache.js"></script>
     <script src="js/markdown-parser.js"></script>
     <script src="js/markdown-loader.js"></script>
+    <script src="js/quiz-system.js"></script>
     <script src="js/main.js"></script>
 
     <!-- Application is initialized in main.js -->
