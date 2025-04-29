@@ -189,6 +189,29 @@ print("~a:", ~a)          # -11 (Komplement)
 print("a << 2:", a << 2)  # 40 (101000 in Binär)
 print("a >> 2:", a >> 2)  # 2 (10 in Binär)
 ```
+## Spezielle Operatoren
+
+Python hat auch einige spezielle Operatoren, die in bestimmten Kontexten verwendet werden.
+
+### Formatierungsoperator `:`
+
+Der Doppelpunkt (`:`) wird häufig in f-Strings verwendet, um das Format von Werten zu steuern, z. B. für die Präzision von Gleitkommazahlen oder die Ausrichtung von Text.
+
+```python
+# Beispiel für den Formatierungsoperator in f-Strings
+import math
+
+print(f'Der Wert von Pi ist ungefähr {math.pi:.3f}.')
+# Ausgabe: Der Wert von Pi ist ungefähr 3.142.
+
+table = {'Sjoerd': 4127, 'Jack': 4098, 'Dcab': 7678}
+for name, phone in table.items():
+    print(f'{name:10} ==> {phone:10d}')
+# Ausgabe:
+# Sjoerd     ==>       4127
+# Jack       ==>       4098
+# Dcab       ==>       7678
+```
 
 ## Operatorrangfolge
 
