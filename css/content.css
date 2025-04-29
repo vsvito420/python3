@@ -50,6 +50,42 @@
     border: 1px solid var(--border-color);
 }
 
+/* Hierarchische Einrückung für Dokumentation */
+.content-section h2 {
+    margin-left: 0;
+}
+
+.content-section h3 {
+    margin-left: 20px;
+}
+
+.content-section h4 {
+    margin-left: 40px;
+}
+
+.content-section h5, .content-section h6 {
+    margin-left: 60px;
+}
+
+/* Einrückung für Listen und Paragraphen unter Überschriften */
+.content-section h2 + p,
+.content-section h2 + ul,
+.content-section h2 + ol {
+    margin-left: 20px;
+}
+
+.content-section h3 + p,
+.content-section h3 + ul,
+.content-section h3 + ol {
+    margin-left: 40px;
+}
+
+.content-section h4 + p,
+.content-section h4 + ul,
+.content-section h4 + ol {
+    margin-left: 60px;
+}
+
 /* Neues responsives Layout für Markdown-Inhalte */
 .content-section {
     display: flex;
@@ -73,14 +109,43 @@
     display: none;
 }
 
-/* Überschriften sollen immer die volle Breite haben */
+/* Überschriften sollen immer die volle Breite haben, aber mit hierarchischer Einrückung */
 .content-section h1,
 .content-section h2,
 .content-section h3,
 .content-section h4,
 .content-section h5,
 .content-section h6 {
-    width: 100%;
+    width: calc(100% - var(--indent-offset, 0px));
+    position: relative;
+}
+
+/* Visuelle Indikatoren für die Hierarchie */
+.content-section h2::before,
+.content-section h3::before,
+.content-section h4::before,
+.content-section h5::before,
+.content-section h6::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--primary-color);
+    opacity: 0.7;
+}
+
+.content-section h3::before {
+    left: -15px;
+    width: 2px;
+}
+
+.content-section h4::before,
+.content-section h5::before,
+.content-section h6::before {
+    left: -20px;
+    width: 1px;
 }
 
 /* Kapitelnavigation soll immer die volle Breite haben */
@@ -88,7 +153,7 @@
     width: 100%;
 }
 
-/* Überschriften im Lesson-Container */
+/* Überschriften im Lesson-Container mit hierarchischer Struktur */
 .lesson-container h1,
 .lesson-container h2,
 .lesson-container h3 {
@@ -97,6 +162,32 @@
     padding: var(--spacing-md);
     border-left: 4px solid var(--primary-color);
     margin-bottom: 0;
+}
+
+/* Hierarchische Einrückung für Überschriften im Lesson-Container */
+.lesson-container h1 {
+    margin-left: 0;
+}
+
+.lesson-container h2 {
+    margin-left: 15px;
+    border-left-width: 3px;
+}
+
+.lesson-container h3 {
+    margin-left: 30px;
+    border-left-width: 2px;
+}
+
+/* Einrückung für Code-Blöcke basierend auf Hierarchieebene */
+.lesson-container h2 + pre,
+.content-section h2 + pre {
+    margin-left: 20px;
+}
+
+.lesson-container h3 + pre,
+.content-section h3 + pre {
+    margin-left: 40px;
 }
 
 .lesson-container:hover {
