@@ -98,6 +98,8 @@ code {
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--border-color);
     background-color: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    overflow-x: auto;
 }
 
 /* Headings */
@@ -184,4 +186,43 @@ code {
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--border-color);
+}
+
+/* Anpassungen für responsives Layout */
+.markdown-content .content-section {
+    margin-bottom: var(--spacing-md);
+}
+
+/* Tabellen, Code-Blöcke und andere Elemente im responsiven Layout */
+.markdown-content pre,
+.markdown-content .markdown-table-container,
+.markdown-content ul,
+.markdown-content ol,
+.markdown-content blockquote {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Überschriften sollen immer die volle Breite haben */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+/* Code-Blöcke im responsiven Layout */
+.markdown-content pre {
+    flex: 1;
+    margin: 0;
+}
+
+/* Tabellen im responsiven Layout */
+.markdown-content .markdown-table {
+    width: 100%;
+    margin: 0;
 }

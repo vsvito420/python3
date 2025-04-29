@@ -367,7 +367,7 @@ function parseMarkdown(markdown) {
     sections.forEach((section, index) => {
         const isLastSection = index === sections.length - 1;
         
-        // Wrap each paragraph, list, and code block in a grid-item div
+        // Verwende den ursprünglichen Inhalt ohne Grid-Layout
         let gridContent = section.content;
         
         // Create a section with the content-section class for scroll navigation

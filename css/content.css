@@ -50,6 +50,45 @@
     border: 1px solid var(--border-color);
 }
 
+/* Neues responsives Layout für Markdown-Inhalte */
+.content-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+}
+
+/* Tablet-Ansicht: Flexibles Layout für bestimmte Elemente */
+@media (min-width: 768px) {
+    /* Tabellen und Code-Blöcke nebeneinander anzeigen, wenn genug Platz ist */
+    .content-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--spacing-md);
+    }
+    
+    /* Überschriften sollen immer die volle Breite haben */
+    .content-section h1,
+    .content-section h2,
+    .content-section h3,
+    .content-section h4,
+    .content-section h5,
+    .content-section h6 {
+        grid-column: 1 / -1;
+    }
+    
+    /* Kapitelnavigation soll immer die volle Breite haben */
+    .chapter-navigation {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Desktop-Ansicht: Mehr Elemente nebeneinander */
+@media (min-width: 1200px) {
+    .content-section {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
 /* Überschriften im Lesson-Container */
 .lesson-container h1,
 .lesson-container h2,
