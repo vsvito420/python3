@@ -3,8 +3,8 @@
 /* Table styles */
 .markdown-table-container {
     overflow-x: auto;
-    margin: 1.5rem 0;
-    border-radius: 5px;
+    margin: 0.8rem 0;
+    border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -20,13 +20,13 @@
     background-color: var(--secondary-color);
     color: white;
     font-weight: bold;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.8rem;
     text-align: left;
     border-bottom: 2px solid var(--secondary-dark);
 }
 
 .markdown-table td {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 0.8rem;
     border-bottom: 1px solid #e0e0e0;
     background-color: #f9f9f9;
 }
@@ -46,10 +46,10 @@
 /* Code block styles */
 pre {
     background-color: #f5f5f5;
-    border-radius: 5px;
-    padding: 1rem;
+    border-radius: 4px;
+    padding: 0.8rem;
     overflow-x: auto;
-    margin: 1.5rem 0;
+    margin: 0.8rem 0;
     border-left: 4px solid var(--primary-color);
 }
 
@@ -83,7 +83,7 @@ pre code.language-css {
 /* Inline code */
 code {
     background-color: #f0f0f0;
-    padding: 0.2rem 0.4rem;
+    padding: 0.1rem 0.3rem;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
@@ -95,8 +95,8 @@ code {
 .markdown-content h2,
 .markdown-content h3,
 .markdown-heading {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
     color: var(--secondary-color);
 }
 
@@ -131,27 +131,27 @@ code {
 /* Lists */
 .markdown-content ul,
 .markdown-content ol {
-    padding-left: 2rem;
-    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .markdown-content li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 /* Blockquotes */
 .markdown-content blockquote {
     border-left: 4px solid var(--border-color);
     color: var(--secondary-light);
-    padding: 0 1rem;
-    margin: 1rem 0;
+    padding: 0 0.8rem;
+    margin: 0.5rem 0;
 }
 
 /* Horizontal rule */
 .markdown-content hr {
     height: 0.25rem;
     padding: 0;
-    margin: 1.5rem 0;
+    margin: 0.8rem 0;
     background-color: #e1e4e8;
     border: 0;
 }

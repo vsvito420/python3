@@ -1,4 +1,4 @@
- //* content.css - Stile für den Inhaltsbereich */
+/* content.css - Stile für den Inhaltsbereich */
 
 /* content.css - Stile für den Inhaltsbereich */
 
@@ -6,8 +6,8 @@
 .error-container {
     background-color: rgba(231, 76, 60, 0.1);
     border-left: 4px solid #e74c3c;
-    padding: var(--spacing-lg);
-    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
     border-radius: var(--border-radius-md);
 }
 
@@ -27,15 +27,18 @@
 
 .lesson-container {
     background-color: rgba(255, 255, 255, 0.95); /* Increased opacity for better performance */
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Simplified shadow for better performance */
-    padding: var(--spacing-xl);
-    margin-bottom: var(--spacing-xl);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Simplified shadow for better performance */
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
     /* Removed backdrop-filter for better performance */
     border: 1px solid var(--macos-glass-border);
     position: relative;
     transition: background-color 0.3s ease, box-shadow 0.3s ease; /* More specific transitions */
     will-change: transform; /* Hint for GPU acceleration */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
 }
 
 .lesson-container:hover {
@@ -45,10 +48,10 @@
 }
 
 .lesson-container h2 {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
     color: var(--secondary-color);
     border-bottom: 2px solid var(--primary-color);
-    padding-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
 }
 
 .lesson-container a {
@@ -72,12 +75,12 @@
 }
 
 .task-description {
-    margin-bottom: var(--spacing-xl);
-    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.4;
 }
 
 .editor-container {
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
 }
 
 .code-editor {
@@ -133,12 +136,12 @@
 .navigation-buttons {
     display: flex;
     justify-content: space-between;
-    margin-top: var(--spacing-xl);
+    margin-top: var(--spacing-md);
 }
 
 /* Code-Editor-Container */
 .code-editor-container {
-    margin: 20px 0;
+    margin: 10px 0;
     border: 1px solid var(--macos-glass-border);
     border-radius: var(--border-radius-md);
     overflow: hidden;

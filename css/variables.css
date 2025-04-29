@@ -36,11 +36,11 @@
     --macos-light-glow: 0 0 8px rgba(233, 236, 239, 0.3);
     
     /* Spacing variables */
-    --spacing-xs: 5px;
-    --spacing-sm: 8px;
-    --spacing-md: 10px;
-    --spacing-lg: 15px;
-    --spacing-xl: 20px;
+    --spacing-xs: 3px;
+    --spacing-sm: 5px;
+    --spacing-md: 8px;
+    --spacing-lg: 10px;
+    --spacing-xl: 15px;
     
     /* Shadow variables */
     --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
