@@ -6,6 +6,18 @@
     margin: 0.8rem 0;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: block; /* Verhindert Flex-Verhalten */
+    width: 100%;
+}
+
+/* Verstecke leere Paragraphen in Tabellen-Containern */
+.markdown-table-container p:empty {
+    display: none;
+}
+
+/* Verstecke alle Paragraphen in Tabellen-Containern */
+.markdown-table-container p {
+    display: none;
 }
 
 .markdown-table {
@@ -14,6 +26,16 @@
     margin: 0;
     font-size: 0.95rem;
     overflow: hidden;
+    display: table; /* Erzwingt Tabellen-Layout */
+    table-layout: fixed; /* Verbessert die Darstellung */
+}
+
+.markdown-table thead {
+    display: table-header-group; /* Erzwingt Tabellenkopf-Layout */
+}
+
+.markdown-table tbody {
+    display: table-row-group; /* Erzwingt Tabellenkörper-Layout */
 }
 
 .markdown-table th {
@@ -23,12 +45,18 @@
     padding: 0.5rem 0.8rem;
     text-align: left;
     border-bottom: 2px solid var(--secondary-dark);
+    display: table-cell; /* Erzwingt Tabellenzellen-Layout */
 }
 
 .markdown-table td {
     padding: 0.5rem 0.8rem;
     border-bottom: 1px solid #e0e0e0;
     background-color: #f9f9f9;
+    display: table-cell; /* Erzwingt Tabellenzellen-Layout */
+}
+
+.markdown-table tr {
+    display: table-row; /* Erzwingt Tabellenzeilen-Layout */
 }
 
 .markdown-table tr:nth-child(even) td {
@@ -91,7 +119,7 @@ code {
     color: var(--primary-dark);
 }
 
-/* Tabellen im Grid-Layout */
+/* Tabellen im Layout */
 .markdown-table-container {
     margin: 0;
     padding: 0;
@@ -100,6 +128,7 @@ code {
     background-color: rgba(255, 255, 255, 0.7);
     width: 100%;
     overflow-x: auto;
+    display: block; /* Verhindert Flex-Verhalten */
 }
 
 /* Headings */
@@ -193,15 +222,23 @@ code {
     margin-bottom: var(--spacing-md);
 }
 
-/* Tabellen, Code-Blöcke und andere Elemente im responsiven Layout */
+/* Code-Blöcke und andere Elemente im responsiven Layout */
 .markdown-content pre,
-.markdown-content .markdown-table-container,
 .markdown-content ul,
 .markdown-content ol,
 .markdown-content blockquote {
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+/* Tabellen im responsiven Layout - keine flex-Darstellung */
+.markdown-content .markdown-table-container {
+    overflow-x: auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    grid-column: 1 / -1; /* Stellt sicher, dass Tabellen nicht im Grid sind */
 }
 
 /* Überschriften sollen immer die volle Breite haben */
@@ -211,7 +248,6 @@ code {
 .markdown-content h4,
 .markdown-content h5,
 .markdown-content h6 {
-    grid-column: 1 / -1;
     width: 100%;
 }
 

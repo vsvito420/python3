@@ -52,41 +52,40 @@
 
 /* Neues responsives Layout für Markdown-Inhalte */
 .content-section {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-md);
 }
 
-/* Tablet-Ansicht: Flexibles Layout für bestimmte Elemente */
-@media (min-width: 768px) {
-    /* Tabellen und Code-Blöcke nebeneinander anzeigen, wenn genug Platz ist */
-    .content-section {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: var(--spacing-md);
-    }
-    
-    /* Überschriften sollen immer die volle Breite haben */
-    .content-section h1,
-    .content-section h2,
-    .content-section h3,
-    .content-section h4,
-    .content-section h5,
-    .content-section h6 {
-        grid-column: 1 / -1;
-    }
-    
-    /* Kapitelnavigation soll immer die volle Breite haben */
-    .chapter-navigation {
-        grid-column: 1 / -1;
-    }
+/* Spezielle Behandlung für Tabellen */
+.content-section .markdown-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: var(--spacing-md);
+    display: block; /* Verhindert Flex-Verhalten */
+    height: auto;
+    grid-column: 1 / -1; /* Stellt sicher, dass Tabellen nicht im Grid sind */
 }
 
-/* Desktop-Ansicht: Mehr Elemente nebeneinander */
-@media (min-width: 1200px) {
-    .content-section {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    }
+/* Verstecke leere Paragraphen in Tabellen-Containern */
+.content-section .markdown-table-container p:empty,
+.content-section .markdown-table-container p {
+    display: none;
+}
+
+/* Überschriften sollen immer die volle Breite haben */
+.content-section h1,
+.content-section h2,
+.content-section h3,
+.content-section h4,
+.content-section h5,
+.content-section h6 {
+    width: 100%;
+}
+
+/* Kapitelnavigation soll immer die volle Breite haben */
+.chapter-navigation {
+    width: 100%;
 }
 
 /* Überschriften im Lesson-Container */
