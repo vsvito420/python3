@@ -28,10 +28,9 @@ function updateActiveMenuItem(filePath) {
  * Create sidebar menu from the table of contents
  */
 function createSidebarMenu() {
-    const links = document.querySelectorAll('#content a[onclick*="loadMarkdownFile"]');
     const sidebarMenu = document.querySelector('.sidebar-menu');
     
-    if (!sidebarMenu || links.length === 0) return;
+    if (!sidebarMenu) return;
     
     // Empty the menu
     sidebarMenu.innerHTML = '';
@@ -42,60 +41,99 @@ function createSidebarMenu() {
     homeItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">Hauptseite</a>`;
     sidebarMenu.appendChild(homeItem);
     
-    // Group links by chapter
-    const chapters = {};
-    
-    links.forEach(link => {
-        const filePath = link.getAttribute('onclick').match(/'([^']+)'/)[1];
-        const text = link.textContent;
-        
-        // Skip links to the home page (but still include other Kapitel_0 files)
-        if (filePath.includes('Anfang_Lese_Mich.md')) return;
-        
-        // Extract chapter from file path
-        const pathParts = filePath.split('/');
-        const chapterDir = pathParts[pathParts.length - 2]; // e.g., "Kapitel_1"
-        
-        // Create chapter group if it doesn't exist
-        if (!chapters[chapterDir]) {
-            chapters[chapterDir] = [];
+    // Definiere die Kapitelstruktur
+    const menuStructure = [
+        {
+            id: 'Kapitel_0',
+            title: 'Kapitel 0',
+            items: [
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_0/Erste_Schritte_Win_PC.md`,
+                    text: 'Erste Schritte (Windows)',
+                    chapterId: 'Erste_Schritte_Win_PC'
+                },
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_0/Erste_Schritte_Mac.md`,
+                    text: 'Erste Schritte (Mac)',
+                    chapterId: 'Erste_Schritte_Mac'
+                },
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_0/Erste_Schritte_Mobile_Replit.md`,
+                    text: 'Erste Schritte (Mobile/Replit)',
+                    chapterId: 'Erste_Schritte_Mobile_Replit'
+                }
+            ]
+        },
+        {
+            id: 'Kapitel_1',
+            title: 'Kapitel 1',
+            items: [
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_1/Textausgabe_InDerKonsole.md`,
+                    text: 'Textausgabe in der Konsole',
+                    chapterId: 'Textausgabe_InDerKonsole'
+                },
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_1/Variablen_und_Datentypen.md`,
+                    text: 'Variablen und Datentypen',
+                    chapterId: 'Variablen_und_Datentypen'
+                },
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_1/Operatoren.md`,
+                    text: 'Operatoren',
+                    chapterId: 'Operatoren'
+                },
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_1/Strings.md`,
+                    text: 'Strings',
+                    chapterId: 'Strings'
+                }
+            ]
+        },
+        {
+            id: 'Kapitel_2',
+            title: 'Kapitel 2',
+            items: [
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_2/Bedingte_Anweisungen.md`,
+                    text: 'Bedingte Anweisungen',
+                    chapterId: 'Bedingte_Anweisungen'
+                },
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_2/Schleifen.md`,
+                    text: 'Schleifen',
+                    chapterId: 'Schleifen'
+                }
+            ]
+        },
+        {
+            id: 'Kapitel_3',
+            title: 'Kapitel 3',
+            items: [
+                {
+                    filePath: `${window.DOCS_BASE_DIR}/Kapitel_3/Listen.md`,
+                    text: 'Listen',
+                    chapterId: 'Listen'
+                }
+            ]
         }
-        
-        // Add link to chapter group
-        chapters[chapterDir].push({
-            filePath,
-            text,
-            chapterId: pathParts[pathParts.length - 1].replace('.md', '')
-        });
-    });
+    ];
     
-    // Sort chapters by name
-    const sortedChapterKeys = Object.keys(chapters).sort((a, b) => {
-        // Extract chapter numbers for sorting
-        const numA = parseInt(a.split('_')[1]);
-        const numB = parseInt(b.split('_')[1]);
-        return numA - numB;
-    });
-    
-    // Add chapters and their links to the menu
-    sortedChapterKeys.forEach(chapterKey => {
-        // Skip non-chapter directories like "z_Projekt_Daten"
-        if (!chapterKey.startsWith('Kapitel_')) return;
-        
-        // Create chapter header
-        const chapterNum = chapterKey.split('_')[1];
+    // Füge die Kapitel und ihre Links zum Menü hinzu
+    menuStructure.forEach(chapter => {
+        // Erstelle den Kapitel-Header
         const chapterHeader = document.createElement('li');
         chapterHeader.classList.add('chapter-header');
-        chapterHeader.innerHTML = `<span>Kapitel ${chapterNum}</span>`;
+        chapterHeader.innerHTML = `<span>${chapter.title}</span>`;
         sidebarMenu.appendChild(chapterHeader);
         
-        // Add chapter links
-        chapters[chapterKey].forEach(item => {
+        // Füge die Kapitel-Links hinzu
+        chapter.items.forEach(item => {
             const menuItem = document.createElement('li');
             menuItem.classList.add('chapter-item');
             menuItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${item.filePath}')">${item.text}</a>`;
             
-            // Mark as completed if applicable
+            // Markiere als abgeschlossen, falls zutreffend
             if (window.progress && window.progress[item.chapterId] && window.progress[item.chapterId].completed) {
                 menuItem.classList.add('completed');
                 menuItem.innerHTML += ' ✓';
