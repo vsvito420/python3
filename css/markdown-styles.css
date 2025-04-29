@@ -173,14 +173,70 @@ code {
     font-size: 1rem;
 }
 
-/* Lists */
+/* Lists mit hierarchischer Einrückung und rundem Block-Stil */
 .markdown-content ul,
 .markdown-content ol {
     padding: var(--spacing-md);
     margin: 0;
     background-color: rgba(255, 255, 255, 0.7);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
     border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Einrückung für Listen basierend auf vorhergehender Überschrift */
+.markdown-content h2 + ul,
+.markdown-content h2 + ol {
+    margin-left: 20px;
+}
+
+.markdown-content h3 + ul,
+.markdown-content h3 + ol {
+    margin-left: 40px;
+}
+
+.markdown-content h4 + ul,
+.markdown-content h4 + ol {
+    margin-left: 60px;
+}
+
+/* Verschachtelte Listen sollten zusätzliche Einrückung haben */
+.markdown-content ul ul,
+.markdown-content ol ol,
+.markdown-content ul ol,
+.markdown-content ol ul {
+    margin-left: 20px;
+    border-left: 2px solid var(--primary-color-light);
+    border-radius: var(--border-radius-sm);
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Listenpunkte stylen */
+.markdown-content ul li,
+.markdown-content ol li {
+    margin-bottom: var(--spacing-sm);
+    position: relative;
+}
+
+.markdown-content ul li:last-child,
+.markdown-content ol li:last-child {
+    margin-bottom: 0;
+}
+
+/* Spezielle Stile für ungeordnete Listen */
+.markdown-content ul {
+    list-style-type: none;
+}
+
+.markdown-content ul li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
 }
 
 .markdown-content li {
@@ -208,13 +264,45 @@ code {
     border-radius: var(--border-radius-sm);
 }
 
-/* Paragraphen im Grid-Layout */
+/* Paragraphen im Grid-Layout mit hierarchischer Einrückung */
 .markdown-content p {
     margin: 0;
     padding: var(--spacing-md);
     background-color: rgba(255, 255, 255, 0.7);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-md);
     border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Einrückung für Paragraphen basierend auf vorhergehender Überschrift */
+.markdown-content h2 + p {
+    margin-left: 20px;
+}
+
+.markdown-content h3 + p {
+    margin-left: 40px;
+}
+
+.markdown-content h4 + p {
+    margin-left: 60px;
+}
+
+/* Code-Blöcke mit hierarchischer Einrückung und rundem Block-Stil */
+.markdown-content pre {
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.markdown-content h2 + pre {
+    margin-left: 20px;
+}
+
+.markdown-content h3 + pre {
+    margin-left: 40px;
+}
+
+.markdown-content h4 + pre {
+    margin-left: 60px;
 }
 
 /* Anpassungen für responsives Layout */
