@@ -38,7 +38,7 @@ function createSidebarMenu() {
     // Add home page link
     const homeItem = document.createElement('li');
     homeItem.classList.add('active', 'menu-home');
-    homeItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">Hauptseite</a>`;
+    homeItem.innerHTML = `<a href="?doc=${encodeURIComponent(window.DOCS_BASE_DIR + '/Kapitel_0/Anfang_Lese_Mich.md')}" onclick="event.preventDefault(); loadMarkdownFile('${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">Hauptseite</a>`;
     sidebarMenu.appendChild(homeItem);
     
     // Definiere die Kapitelstruktur
@@ -131,7 +131,7 @@ function createSidebarMenu() {
         chapter.items.forEach(item => {
             const menuItem = document.createElement('li');
             menuItem.classList.add('chapter-item');
-            menuItem.innerHTML = `<a href="javascript:void(0)" onclick="loadMarkdownFile('${item.filePath}')">${item.text}</a>`;
+            menuItem.innerHTML = `<a href="?doc=${encodeURIComponent(item.filePath)}" onclick="event.preventDefault(); loadMarkdownFile('${item.filePath}')">${item.text}</a>`;
             
             // Markiere als abgeschlossen, falls zutreffend
             if (window.progress && window.progress[item.chapterId] && window.progress[item.chapterId].completed) {
@@ -143,11 +143,7 @@ function createSidebarMenu() {
         });
     });
     
-    // Add event listeners to all navigation links to ensure they load only when clicked
-    document.querySelectorAll('.sidebar-menu a').forEach(link => {
-        const originalOnclick = link.getAttribute('onclick');
-        link.setAttribute('onclick', `event.preventDefault(); ${originalOnclick}`);
-    });
+    // Die event.preventDefault() ist jetzt direkt in den onclick-Attributen enthalten
 }
 
 /**

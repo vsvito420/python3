@@ -10,7 +10,7 @@
  * @param {string} filePath - The path of the markdown file to load
  * @returns {Promise<boolean>} - Whether the file was successfully loaded
  */
-async function loadMarkdownFile(filePath) {
+async function loadMarkdownFile(filePath, updateHistory = true) {
     try {
         // If the cache is empty, initialize it (minimal mode)
         if (!window.markdownFileCache || Object.keys(window.markdownFileCache).length === 0) {
@@ -138,6 +138,21 @@ async function loadMarkdownFile(filePath) {
             if (window.updateScrollNavigationOnLoad) {
                 window.updateScrollNavigationOnLoad();
             }
+            
+            // Update browser URL using History API
+            if (updateHistory) {
+                const relativePath = foundPath.replace(/^\.\//, ''); // Remove leading ./ if present
+                const fileName = relativePath.split('/').pop();
+                const chapterName = fileName.replace('.md', '');
+                
+                // Create a clean URL path
+                const urlPath = `?doc=${encodeURIComponent(relativePath)}`;
+                
+                // Update browser history without reloading the page
+                const pageTitle = `Python Lernplattform - ${chapterName}`;
+                window.history.pushState({ path: relativePath }, pageTitle, urlPath);
+                document.title = pageTitle;
+            }
 
             console.log(`File successfully loaded: ${foundPath}`);
             return true;
@@ -156,14 +171,29 @@ async function loadMarkdownFile(filePath) {
                         <p>Versuchter Pfad: ${window.correctPath ? window.correctPath(filePath) : filePath}</p>
                         <p>Ursprünglicher Pfad: ${filePath}</p>
                     </div>
-                    <button onclick="window.loadMarkdownFile && window.loadMarkdownFile('${window.DOCS_BASE_DIR || '.'}/Kapitel_0/Anfang_Lese_Mich.md')">
+                    <a href="?doc=${encodeURIComponent((window.DOCS_BASE_DIR || '.') + '/Kapitel_0/Anfang_Lese_Mich.md')}" onclick="event.preventDefault(); window.loadMarkdownFile && window.loadMarkdownFile('${window.DOCS_BASE_DIR || '.'}/Kapitel_0/Anfang_Lese_Mich.md')">
                         Zurück zur Hauptseite
-                    </button>
+                    </a>
                 </div>
             `;
         }
         return false;
     }
+}
+
+/**
+ * Check URL for document parameter and load the specified document
+ */
+function checkUrlForDocument() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const docPath = urlParams.get('doc');
+    
+    if (docPath) {
+        // Load the document specified in the URL without updating history
+        loadMarkdownFile(docPath, false);
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -206,48 +236,53 @@ async function initializeApp() {
         }
     }
 
-    // Load the main page
-    try {
-        const mainPagePath = `${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`;
-        console.log(`Loading main page from: ${mainPagePath}`);
+    // Check if there's a document specified in the URL
+    const documentInUrl = checkUrlForDocument();
+    
+    // If no document is specified in the URL, load the main page
+    if (!documentInUrl) {
+        try {
+            const mainPagePath = `${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`;
+            console.log(`Loading main page from: ${mainPagePath}`);
 
-        const success = await loadMarkdownFile(mainPagePath);
+            const success = await loadMarkdownFile(mainPagePath);
 
-        if (success) {
-            console.log("Main page successfully loaded, creating sidebar menu...");
-            // Extract links from the table of contents and create sidebar menu (ensure createSidebarMenu exists)
-            if(window.createSidebarMenu) {
-                window.createSidebarMenu();
-            } else {
-                console.warn("window.createSidebarMenu not found. Cannot create sidebar.");
-            }
-        } else {
-            console.error("Error loading main page");
-            // Try to load with a direct fetch as a last resort
-            try {
-                const response = await fetch(mainPagePath);
-                if (response.ok) {
-                    const markdown = await response.text();
-                    const html = window.parseMarkdown ? window.parseMarkdown(markdown) : markdown;
-                    document.getElementById('content').innerHTML = html;
-                    console.log("Main page loaded with direct fetch");
+            if (success) {
+                console.log("Main page successfully loaded, creating sidebar menu...");
+                // Extract links from the table of contents and create sidebar menu (ensure createSidebarMenu exists)
+                if(window.createSidebarMenu) {
+                    window.createSidebarMenu();
+                } else {
+                    console.warn("window.createSidebarMenu not found. Cannot create sidebar.");
                 }
-            } catch (directError) {
-                console.error("Failed to load main page with direct fetch:", directError);
+            } else {
+                console.error("Error loading main page");
+                // Try to load with a direct fetch as a last resort
+                try {
+                    const response = await fetch(mainPagePath);
+                    if (response.ok) {
+                        const markdown = await response.text();
+                        const html = window.parseMarkdown ? window.parseMarkdown(markdown) : markdown;
+                        document.getElementById('content').innerHTML = html;
+                        console.log("Main page loaded with direct fetch");
+                    }
+                } catch (directError) {
+                    console.error("Failed to load main page with direct fetch:", directError);
+                }
             }
-        }
-    } catch (error) {
-        console.error("Error initializing application:", error);
-        // Display error message to the user
-        const contentElement = document.getElementById('content');
-        if (contentElement) {
-            contentElement.innerHTML = `
-                <div class="error-message">
-                    <h2>Fehler beim Initialisieren der Anwendung</h2>
-                    <p>${error.message || 'Unbekannter Fehler'}</p>
-                    <p>Bitte laden Sie die Seite neu oder kontaktieren Sie den Support.</p>
-                </div>
-            `;
+        } catch (error) {
+            console.error("Error initializing application:", error);
+            // Display error message to the user
+            const contentElement = document.getElementById('content');
+            if (contentElement) {
+                contentElement.innerHTML = `
+                    <div class="error-message">
+                        <h2>Fehler beim Initialisieren der Anwendung</h2>
+                        <p>${error.message || 'Unbekannter Fehler'}</p>
+                        <p>Bitte laden Sie die Seite neu oder kontaktieren Sie den Support.</p>
+                    </div>
+                `;
+            }
         }
     }
 }
@@ -255,6 +290,7 @@ async function initializeApp() {
 // Export functions for global access (if not already done implicitly by assigning to window)
 window.loadMarkdownFile = loadMarkdownFile;
 window.initializeApp = initializeApp;
+window.checkUrlForDocument = checkUrlForDocument;
 
 // --- Ensure essential dependencies are at least stubbed if not defined ---
 // These functions are called by the provided code but not defined within it.
@@ -305,3 +341,14 @@ if (document.readyState === 'loading') {
 } else {
     initializeApp(); // DOMContentLoaded has already fired
 }
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', function(event) {
+    if (event.state && event.state.path) {
+        // Load the document without updating history again
+        loadMarkdownFile(event.state.path, false);
+    } else {
+        // If no state, load the main page
+        loadMarkdownFile(`${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`, false);
+    }
+});
