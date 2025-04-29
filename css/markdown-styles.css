@@ -222,14 +222,19 @@ code {
     margin-bottom: var(--spacing-md);
 }
 
-/* Code-Blöcke und andere Elemente im responsiven Layout */
+/* Code-Blöcke im responsiven Layout */
 .markdown-content pre,
-.markdown-content ul,
-.markdown-content ol,
 .markdown-content blockquote {
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+/* Listen im responsiven Layout - keine flex-Darstellung */
+.markdown-content ul,
+.markdown-content ol {
+    height: auto;
+    display: block;
 }
 
 /* Tabellen im responsiven Layout - keine flex-Darstellung */

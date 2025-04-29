@@ -257,12 +257,23 @@ function parseMarkdown(markdown) {
         return `<a href="${url}" target="_blank">${text}</a>`;
     });
 
-    // Replace lists
-    processedMarkdown = processedMarkdown.replace(/^\s*-\s*(.*$)/gm, '<li>$1</li>');
-    processedMarkdown = processedMarkdown.replace(/(<li>.*<\/li>\n)+/g, '<ul>$&</ul>');
-
-    processedMarkdown = processedMarkdown.replace(/^\s*\d+\.\s*(.*$)/gm, '<li>$1</li>');
-    processedMarkdown = processedMarkdown.replace(/(<li>.*<\/li>\n)+/g, '<ol>$&</ol>');
+    // Replace lists - with improved handling to prevent nesting issues
+    
+    // First, mark unordered list items with a special class
+    processedMarkdown = processedMarkdown.replace(/^\s*-\s*(.*$)/gm, '<li class="ul-item">$1</li>');
+    
+    // Then, mark ordered list items with a different class
+    processedMarkdown = processedMarkdown.replace(/^\s*\d+\.\s*(.*$)/gm, '<li class="ol-item">$1</li>');
+    
+    // Now wrap consecutive unordered list items in ul tags
+    processedMarkdown = processedMarkdown.replace(/(<li class="ul-item">.*<\/li>\n)+/g, '<ul>$&</ul>');
+    
+    // And wrap consecutive ordered list items in ol tags
+    processedMarkdown = processedMarkdown.replace(/(<li class="ol-item">.*<\/li>\n)+/g, '<ol>$&</ol>');
+    
+    // Finally, remove the temporary classes
+    processedMarkdown = processedMarkdown.replace(/class="ul-item"/g, '');
+    processedMarkdown = processedMarkdown.replace(/class="ol-item"/g, '');
 
     // Replace paragraphs
     processedMarkdown = processedMarkdown.replace(/^(?!<[a-z]|\s*$)(.+)$/gm, '<p>$1</p>');
