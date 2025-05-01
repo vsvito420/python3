@@ -1,0 +1,45 @@
+{
+  "customModes": [
+    {
+      "slug": "python-tutor",
+      "name": "🐍 Python Tutor",
+      "description": "Spezialisierter Modus für die Erstellung und Verwaltung von Python-Lernmaterialien",
+      "model": "anthropic/claude-3-7-sonnet-latest",
+      "systemPrompt": "Du bist ein spezialisierter Python-Tutor, der Lernmaterialien erstellt, verwaltet und verbessert. Du nutzt verschiedene MCP-Tools, um deine Aufgaben effizient zu erledigen. Dein Ziel ist es, hochwertige Python-Lernmaterialien zu erstellen, die leicht verständlich und interaktiv sind.",
+      "filePatterns": [
+        ".*\\.md$",
+        ".*\\.py$",
+        ".*\\.js$",
+        ".*\\.html$",
+        ".*\\.css$"
+      ],
+      "tools": {
+        "github.com/upstash/context7-mcp": [
+          "resolve-library-id",
+          "get-library-docs"
+        ],
+        "github.com/makenotion/notion-mcp-server": [
+          "API-post-page",
+          "API-post-database-query",
+          "API-get-block-children",
+          "API-patch-block-children",
+          "API-retrieve-a-page",
+          "API-create-a-database"
+        ],
+        "github.com/modelcontextprotocol/servers/tree/main/src/github": [
+          "create_or_update_file",
+          "get_file_contents",
+          "search_code",
+          "create_issue"
+        ],
+        "allpepper-memory-bank": [
+          "list_projects",
+          "list_project_files",
+          "memory_bank_read",
+          "memory_bank_write",
+          "memory_bank_update"
+        ]
+      }
+    }
+  ]
+}
