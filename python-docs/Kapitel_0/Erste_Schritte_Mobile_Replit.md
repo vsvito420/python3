@@ -1,8 +1,8 @@
 # Erste Schritte mit Python auf Mobilgeräten mit Replit
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Nächstes Kapitel: Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
+[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
----
+[Nächstes Kapitel: Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
 
 Um auf einem Smartphone oder Tablet (oder sogar im Webbrowser am PC) mit Python zu arbeiten, ist [Replit](https://replit.com) eine hervorragende Option. Replit ist eine webbasierte Entwicklungsumgebung, die auf jedem Gerät mit einem Browser funktioniert.
 

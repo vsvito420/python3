@@ -1,8 +1,10 @@
-# Textausgabe in der Konsole [W3Schools Python Syntax](https://www.w3schools.com/python/python_syntax.asp)
+# Textausgabe in der Konsole
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Vorheriges Kapitel: Erste Schritte mit Python](/Projekte/Kapitel_0/Erste_Schritte_Win_PC.md) | [Nächstes Kapitel: Variablen und Datentypen](Variablen_und_Datentypen.md)
+[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
----
+[Vorheriges Kapitel: Erste Schritte mit Python](/Projekte/Kapitel_0/Erste_Schritte_Win_PC.md)
+ 
+[Nächstes Kapitel: Variablen und Datentypen](Variablen_und_Datentypen.md)
 
 In diesem Kapitel lernst du, wie du Text in der Python-Konsole ausgeben kannst. Die Textausgabe ist eine der grundlegendsten Funktionen in Python und wird mit der `print()`-Funktion realisiert.
 
@@ -138,7 +140,3 @@ Du kannst diesen Code in einer Datei mit der Endung `.py` speichern (z.B. `texta
 - Es gibt verschiedene Methoden zur Formatierung von Strings: f-Strings, format()-Methode und %-Operator
 - Mit Escape-Sequenzen wie `\n` können Sonderzeichen und Zeilenumbrüche eingefügt werden
 - Der `end`-Parameter kann verwendet werden, um das Verhalten am Ende der Ausgabe zu ändern
-
-## Beispielcode
-
-Den vollständigen Beispielcode zu diesem Kapitel findest du hier: [1-Textausgabe_InDerKonsole.py](/Projekte/1-Textausgabe_InDerKonsole.py)

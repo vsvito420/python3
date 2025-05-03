@@ -1,8 +1,10 @@
 # Operatoren in Python [W3Schools Python Operators](https://www.w3schools.com/python/python_operators.asp)
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Vorheriges Kapitel: Variablen und Datentypen](Variablen_und_Datentypen.md) | [Nächstes Kapitel: Strings](Strings.md)
+[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
----
+[Vorheriges Kapitel: Variablen und Datentypen](Variablen_und_Datentypen.md)
+
+[Nächstes Kapitel: Strings](Strings.md)
 
 In diesem Kapitel lernst du die verschiedenen Operatoren in Python kennen, mit denen du Berechnungen durchführen und Werte vergleichen kannst.
 
@@ -239,21 +241,24 @@ for name, phone in table.items():
 
 ## Operatorrangfolge
 
-Die Operatorrangfolge bestimmt die Reihenfolge, in der Operationen ausgeführt werden. Hier ist eine vereinfachte Rangfolge (von höchster zu niedrigster Priorität):
+Die Operatorrangfolge bestimmt die Reihenfolge, in der Operationen ausgeführt werden. 
 
-1. Klammern `()`
-2. Potenz `**`
-3. Unäre Operatoren `+x`, `-x`, `~x`
-4. Multiplikation, Division, Modulo `*`, `/`, `//`, `%`
-5. Addition, Subtraktion `+`, `-`
-6. Bitweise Verschiebungen `<<`, `>>`
-7. Bitweises AND `&`
-8. Bitweises XOR `^`
-9. Bitweises OR `|`
-10. Vergleichsoperatoren `==`, `!=`, `>`, `>=`, `<`, `<=`, `is`, `is not`, `in`, `not in`
-11. Logisches NOT `not`
-12. Logisches AND `and`
-13. Logisches OR `or`
+### Hier ist eine vereinfachte Rangfolge (von höchster zu niedrigster Priorität):
+
+
+#### Klammern `()`
+#### Potenz `**`
+#### Unäre Operatoren `+x`, `-x`, `~x`
+#### Multiplikation, Division, Modulo `*`, `/`, `//`, `%`
+#### Addition, Subtraktion `+`, `-`
+#### Bitweise Verschiebungen `<<`, `>>`
+#### Bitweises AND `&`
+#### Bitweises XOR `^`
+#### Bitweises OR `|`
+#### Vergleichsoperatoren `==`, `!=`, `>`, `>=`, `<`, `<=`, `is`, `is not`, `in`, `not in`
+#### Logisches NOT `not`
+#### Logisches AND `and`
+#### Logisches OR `or`
 
 ```python
 # Beispiel für Operatorrangfolge
@@ -265,13 +270,17 @@ print("(5 + 3) * 2 =", ergebnis)  # 16
 ```
 
 ## Übungen
+```python
+# 1. Berechne das Ergebnis von 15 // 4 und 15 % 4. Was bedeuten diese Ergebnisse?
 
-1. Berechne das Ergebnis von `15 // 4` und `15 % 4`. Was bedeuten diese Ergebnisse?
-2. Erstelle eine Variable `x` mit dem Wert 10 und verwende Zuweisungsoperatoren, um sie zu verdoppeln, dann 5 zu subtrahieren und schließlich durch 3 zu teilen.
-3. Schreibe einen Ausdruck, der prüft, ob eine Zahl zwischen 10 und 20 liegt (einschließlich).
-4. Verwende bitweise Operatoren, um zwei Zahlen zu vergleichen und das Ergebnis zu erklären.
-5. Schreibe einen Ausdruck mit mehreren Operatoren und erkläre die Rangfolge.
+# 2. Erstelle eine Variable x mit dem Wert 10 und verwende Zuweisungsoperatoren, um sie zu verdoppeln, dann 5 zu subtrahieren und schließlich durch 3 zu teilen.
 
+# 3. Schreibe einen Ausdruck, der prüft, ob eine Zahl zwischen 10 und 20 liegt (einschließlich).
+
+# 4. Verwende bitweise Operatoren, um zwei Zahlen zu vergleichen und das Ergebnis zu erklären.
+
+# 5. Schreibe einen Ausdruck mit mehreren Operatoren und erkläre die Rangfolge.
+```
 ## Zusammenfassung
 
 - Arithmetische Operatoren werden für mathematische Berechnungen verwendet

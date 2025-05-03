@@ -2,15 +2,15 @@
 
 [Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Nächstes Kapitel: Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
 
----
 
- - Um auf einem Mac mit Python zu arbeiten installiere: 
-    - **Python**
-    - **VSCode**
+#### Um auf einem Windows-PC mit Python zu arbeiten installiere: 
+##### **Python**
+##### **VSCode**
+
  
- - Ich empfehle auch die nutzung von 
-    - **Github**
-    - **Git**.
+### Ich empfehle auch die nutzung von 
+#### **Github**
+#### **Git**.
 
 
 ## 1. Python installieren
@@ -21,8 +21,6 @@
 
 ## 2. VSCode (Visual Studio Code) installieren
 1. Öffne diese anleitung [**VSCode** installieren unter **MacOS**](Installation_VSCode_Mac.md)
-
----
 
 ## Tipp: Terminal-Grundlagen für Mac
 1. Das Terminal findest du unter Applications > Utilities > Terminal.

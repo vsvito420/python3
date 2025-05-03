@@ -1,8 +1,9 @@
-# Variablen und Datentypen in Python [W3Schools Python Variables](https://www.w3schools.com/python/python_variables.asp) [W3Schools Python Data Types](https://www.w3schools.com/python/python_datatypes.asp)
+# Variablen und Datentypen in Python
+[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Vorheriges Kapitel: Textausgabe](Textausgabe_InDerKonsole.md) | [Nächstes Kapitel: Operatoren](Operatoren.md)
+[Vorheriges Kapitel: Textausgabe](Textausgabe_InDerKonsole.md)
 
----
+[Nächstes Kapitel: Operatoren](Operatoren.md)
 
 In diesem Kapitel lernst du, wie du Variablen in Python erstellst und verwendest, sowie die grundlegenden Datentypen kennenlernst.
 
@@ -42,17 +43,23 @@ KONSTANTE = 3.14
 
 ## Grundlegende Datentypen
 
-Python hat verschiedene eingebaute Datentypen:
+### Python hat verschiedene eingebaute Datentypen:
 
 ### 1. Zahlen
 
 #### Integer (Ganzzahlen)
+
+Ganzzahlen wie 1, 2, 3..
+
 ```python
 alter = 30
 anzahl = -5
 ```
 
 #### Float (Gleitkommazahlen)
+
+Kommazahlen wie 0,7
+
 ```python
 groesse = 1.75
 temperatur = -2.5
@@ -84,7 +91,7 @@ hat_bestanden = False
 
 ### 4. None
 
-`None` ist ein spezieller Wert, der "nichts" oder "keine Wert" repräsentiert.
+-`None` ist ein spezieller Wert, der "**nichts**" oder "**keine Wert**" repräsentiert.
 
 ```python
 ergebnis = None
@@ -129,13 +136,18 @@ wert_int = int(wert)  # 7 als Integer
 ```
 
 ## Übungen
+```python
+# 1. Erstelle Variablen für deinen Namen, dein Alter, deine Körpergröße und ob du Student bist.
 
-1. Erstelle Variablen für deinen Namen, dein Alter, deine Körpergröße und ob du Student bist.
-2. Gib den Typ jeder Variable aus.
-3. Wandle dein Alter in einen String um und füge " Jahre" hinzu.
-4. Wandle den String "3.14159" in eine Gleitkommazahl um.
-5. Erstelle eine Variable mit dem Wert `None` und überprüfe ihren Typ.
+# 2. Gib den Typ jeder Variable aus.
 
+# 3. Wandle dein Alter in einen String um und füge " Jahre" hinzu.
+
+# 4. Wandle den String "3.14159" in eine Gleitkommazahl um.
+
+# 5. Erstelle eine Variable mit dem Wert `None` und überprüfe ihren Typ.
+
+```
 ## Beispielprogramm
 
 ```python
