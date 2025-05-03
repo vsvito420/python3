@@ -54,6 +54,8 @@
 #content {
     grid-area: content;
     padding: var(--spacing-md);
+    padding-left: 25px; /* Mehr Abstand links */
+    padding-right: 40px; /* Noch mehr Abstand rechts für besseres Scrollen */
     overflow-y: auto;
     position: relative;
     margin-bottom: 0; /* No margin needed since we have padding on container */
@@ -126,6 +128,14 @@
 /* Hide vertical resize handle on mobile */
 .vertical-resize-handle {
     display: none;
+}
+
+/* Angepasste Abstände für mobile Geräte */
+@media (max-width: 767px) {
+    #content {
+        padding-left: 15px; /* Reduzierter Abstand links für mobile Geräte */
+        padding-right: 20px; /* Reduzierter Abstand rechts für mobile Geräte, aber immer noch mehr als links */
+    }
 }
 
 /* Tablet styles */
