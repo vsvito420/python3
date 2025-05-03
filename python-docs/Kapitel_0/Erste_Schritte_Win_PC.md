@@ -1,38 +1,32 @@
-# Erste Schritte mit Python auf Windows
+d# Erste Schritte mit Python auf Windows
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Nächstes Kapitel: Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
+[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) 
 
----
+[Nächstes Kapitel: Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
 
-Um auf einem Windows-PC mit Python zu arbeiten, folge diesen Schritten:
+
+ - Um auf einem Windows-PC mit Python zu arbeiten installiere: 
+    - **Python**
+    - **VSCode**
+ 
+ - Ich empfehle auch die nutzung von 
+    - **Github**
+    - **Git**.
 
 ## 1. Python installieren
 1. Besuche die [offizielle Python-Website](https://www.python.org/).
 2. Lade die neueste Version von Python herunter.
-3. WICHTIG - Während der Installation aktiviere die Option **"Add Python to PATH"**.
+3. **WICHTIG** - Während der Installation aktiviere die Option **"Add Python to PATH"**.
 
-## 2. Visual Studio Code (VS Code) installieren
-1. Lade [Visual Studio Code](https://code.visualstudio.com/) herunter und installiere es.
-2. Installiere die **Python-Erweiterung** in VS Code:
-    - Öffne den Extensions Marketplace (Strg+Shift+X).
-    - Suche nach "Python" und klicke auf **Install**.
+## 2. VSCode (Visual Studio Code) installieren
+1. Öffne diese anleitung [**VSCode** installieren unter **Windows**](Installation_VSCode_Win.md) 
 
-## 3. W3Schools Python-Tutorial nutzen
-1. Besuche [W3Schools Python-Tutorial](https://www.w3schools.com/python/).
-2. Lerne die Grundlagen von Python durch interaktive Beispiele.
+---
+## Tipp: Terminal-Grundlagen für Windows
+1. Die Eingabeaufforderung (CMD) findest du über **Windows-Taste** + **R**, dann "**cmd**" eingeben.
+2. Nützliche CMD-Befehle:
+   - `cd` zum Wechseln des Verzeichnisses (**c**hange **d**irectory)
+   - `dir` zum Anzeigen von Dateien im aktuellen Verzeichnis (list directory)
+   - `python --version` zum Überprüfen der installierten Python-Version
 
-## 4. Ein erstes Python-Skript erstellen
-1. Öffne VS Code und erstelle eine neue Datei mit der Endung `.py`, z. B. `hello_world.py`.
-2. Schreib deinen ersten Code:
-    ```python
-    print("Hallo, Welt!")
-    ```
-3. Speichere die Datei und führe sie aus:
-    - Öffne ein Terminal in VS Code (Strg+`).
-    - Gib `python hello_world.py` ein und drücke Enter.
 
-## 5. Weitere Ressourcen
-- [Python-Dokumentation](https://docs.python.org/3/)
-- [W3Schools Python](https://www.w3schools.com/python/)
-
-Viel Erfolg beim Lernen von Python!

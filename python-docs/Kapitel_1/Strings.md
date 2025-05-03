@@ -1,20 +1,20 @@
-# Strings in Python [W3Schools Python Strings](https://www.w3schools.com/python/python_strings.asp)
+# Strings in Python
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Vorheriges Kapitel: Operatoren](Operatoren.md) | [Nächstes Kapitel: Bedingte Anweisungen](/Projekte/Kapitel_2/Bedingte_Anweisungen.md)
+[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
----
+[Vorheriges Kapitel: Operatoren](Operatoren.md)
 
-In diesem Kapitel entdecken wir die Welt der Strings in Python! Stell dir Strings wie Textbausteine vor, mit denen du Wörter, Sätze oder sogar ganze Geschichten in deinem Programm speichern und bearbeiten kannst.
+[Nächstes Kapitel: Bedingte Anweisungen](/Projekte/Kapitel_2/Bedingte_Anweisungen.md)
+
 In diesem Kapitel entdecken wir die Welt der Strings in Python! Stell dir Strings wie Textbausteine vor, mit denen du Wörter, Sätze oder sogar ganze Geschichten in deinem Programm speichern und bearbeiten kannst.
 
 ## Was sind Strings?
 
-Strings sind einfach gesagt Text. Sie bestehen aus einer Reihenfolge von Buchstaben, Zahlen oder Symbolen. In Python schreibst du Strings, indem du den Text in einfache Anführungszeichen (`'`) oder doppelte Anführungszeichen (`"`) setzt.
+- Strings sind einfach gesagt Text. 
+Sie bestehen aus einer Reihenfolge von Buchstaben, Zahlen oder Symbolen. In Python schreibst du Strings, indem du den Text in einfache Anführungszeichen (`'`) oder doppelte Anführungszeichen (`"`) setzt.
 
-Ein wichtiger Punkt ist, dass Strings in Python "unveränderlich" sind. Das bedeutet, wenn du einen String einmal erstellt hast, kannst du einzelne Buchstaben darin nicht einfach ändern. Du kannst aber neue Strings erstellen, die auf dem alten basieren.
-Strings sind einfach gesagt Text. Sie bestehen aus einer Reihenfolge von Buchstaben, Zahlen oder Symbolen. In Python schreibst du Strings, indem du den Text in einfache Anführungszeichen (`'`) oder doppelte Anführungszeichen (`"`) setzt.
-
-Ein wichtiger Punkt ist, dass Strings in Python "unveränderlich" sind. Das bedeutet, wenn du einen String einmal erstellt hast, kannst du einzelne Buchstaben darin nicht einfach ändern. Du kannst aber neue Strings erstellen, die auf dem alten basieren.
+- Ein wichtiger Punkt ist, dass Strings in Python "unveränderlich" sind. 
+Das bedeutet, wenn du einen String einmal erstellt hast, kannst du einzelne Buchstaben darin nicht einfach ändern. Du kannst aber neue Strings erstellen, die auf dem alten basieren.
 
 ```python
 # Strings erstellen
@@ -24,7 +24,7 @@ adresse = 'Musterstraße 123'
 
 ## String-Erstellung
 
-Du kannst Strings auf verschiedene Arten erstellen:
+- Du kannst Strings auf verschiedene Arten erstellen:
 
 *   **Mit einfachen oder doppelten Anführungszeichen:** Das ist die häufigste Methode. Es spielt keine Rolle, ob du einfache (`'`) oder doppelte (`"`) Anführungszeichen verwendest, solange du am Anfang und Ende dieselbe Art benutzt.
 Du kannst Strings auf verschiedene Arten erstellen:
