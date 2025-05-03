@@ -8,7 +8,6 @@
 
 #### Um auf einem Windows-PC mit Python zu arbeiten installiere: 
 - **Python** & **VSCode**
-
  
 #### Ich empfehle auch die nutzung von 
 - **Github** & **Git**.

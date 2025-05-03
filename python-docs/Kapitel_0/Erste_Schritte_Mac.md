@@ -6,21 +6,17 @@
 
 [Windows Anleitung](../Kapitel_0/Erste_Schritte_Win_PC.md)
 
-#### Um auf einem Windows-PC mit Python zu arbeiten installiere: 
-##### **Python**
-##### **VSCode**
-
+#### Um auf einem Mac mit Python zu arbeiten installiere: 
+- **Python** & **VSCode**
  
-### Ich empfehle auch die nutzung von 
-#### **Github**
-#### **Git**.
-
+#### Ich empfehle auch die nutzung von 
+- **Github** & **Git**
 
 ## 1. Python installieren
-1. Neuere macOS-Versionen haben Python bereits vorinstalliert, aber es ist empfehlenswert, die neueste Version zu installieren.
-2. Besuche die [offizielle Python-Website](https://www.python.org/).
-3. Lade die neueste Version von Python für macOS herunter.
-4. Öffne die heruntergeladene .pkg-Datei und folge den Installationsanweisungen.
+#### Neuere macOS-Versionen haben Python bereits vorinstalliert, aber es ist empfehlenswert, die neueste Version zu installieren.
+#### Besuche die [offizielle Python-Website](https://www.python.org/).
+#### Lade die neueste Version von Python für macOS herunter.
+##### Öffne die heruntergeladene .pkg-Datei und folge den Installationsanweisungen.
 
 ## 2. VSCode (Visual Studio Code) installieren
 1. Öffne diese anleitung [**VSCode** installieren unter **MacOS**](Installation_VSCode_Mac.md)
