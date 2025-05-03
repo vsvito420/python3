@@ -2,9 +2,15 @@
 
 Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern. Die Plattform ermöglicht interaktives Lernen von Python direkt im Browser ohne Installation von Software.
 
+## Starte Hier wenn du Python Lernen willst: 
+
+# [**Startseite**](./python-docs/Kapitel_0/Anfang_Lese_Mich.md)
+
+
+## Code Doku
+
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/vsvito420/python3?utm_source=oss&utm_medium=github&utm_campaign=vsvito420%2Fpython3&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
-## Schnellstart
 
 1. **Lokale Entwicklung starten:**
    ```bash
