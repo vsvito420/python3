@@ -15,6 +15,8 @@
 
 >**Hinweis**: Beim ersten Start musst du möglicherweise bestätigen, dass du VS Code ausführen möchtest.
 
+---
+
 # gehe nun zu [**Kapitel 1**](../Kapitel_1/Kapitel_1.md)
 
 ## Überprüfung der Installation

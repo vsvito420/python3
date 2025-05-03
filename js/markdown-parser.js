@@ -199,9 +199,12 @@ function parseMarkdown(markdown) {
         processedMarkdown = processedMarkdown.replace(/<p>\s*(<(?:ul|ol|h[1-6]|div|pre|table)[^>]*>[\s\S]*?<\/(?:ul|ol|h[1-6]|div|pre|table)>)\s*<\/p>/g, '$1');
         processedMarkdown = processedMarkdown.replace(/<p>\s*<\/p>/g, ''); // Remove empty paragraphs
 
-        // 7. Wrap slide content and add to final HTML
+        // 7. Wrap slide content with the necessary wrapper and add to final HTML
         // Add data-index for potential JS targeting
-        finalHtml += `<div class="board-slide" data-index="${slideIndex}">${processedMarkdown.trim()}</div>\n`;
+        const slideContent = processedMarkdown.trim();
+        finalHtml += `<div class="board-slide" data-index="${slideIndex}">
+                       <div class="slide-content-wrapper">${slideContent}</div>
+                   </div>\n`;
     }); // End of slideMarkdownArray.forEach
 
     // Wrap the entire set of slides in the main content div

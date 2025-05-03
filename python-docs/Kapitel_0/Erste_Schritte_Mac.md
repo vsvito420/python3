@@ -12,6 +12,8 @@
 #### Ich empfehle auch die nutzung von 
 - **Github** & **Git**
 
+---
+
 ## 1. Python installieren
 #### Neuere macOS-Versionen haben Python bereits vorinstalliert, aber es ist empfehlenswert, die neueste Version zu installieren.
 #### Besuche die [offizielle Python-Website](https://www.python.org/).
@@ -20,6 +22,8 @@
 
 ## 2. VSCode (Visual Studio Code) installieren
 1. Öffne diese anleitung [**VSCode** installieren unter **MacOS**](Installation_VSCode_Mac.md)
+
+---
 
 ## Tipp: Terminal-Grundlagen für Mac
 #### Das Terminal findest du unter Applications > Utilities > Terminal.

@@ -15,6 +15,8 @@
 ##### [Kapitel 7: Dateiverarbeitung](../Kapitel_7/Kapitel_7.md)
 ##### [Kapitel 8: Fehlerbehandlung](../Kapitel_8/Kapitel_8.md)
 
+---
+
 ## Wo kann man Python verwenden
 
 Python ist eine vielseitige Programmiersprache, die in vielen Bereichen eingesetzt wird:
@@ -31,6 +33,8 @@ Python ist eine vielseitige Programmiersprache, die in vielen Bereichen eingeset
 - **IoT (Internet of Things)**: Auf Geräten wie Raspberry Pi
 
 Python ist besonders beliebt wegen seiner einfachen Syntax, Lesbarkeit und der großen Community, die zahlreiche Bibliotheken und Frameworks entwickelt hat.
+
+---
 
 ## Lernziele dieser Dokumentation
 

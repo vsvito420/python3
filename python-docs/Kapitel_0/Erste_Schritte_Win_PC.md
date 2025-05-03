@@ -14,6 +14,8 @@ Ich empfehle auch die Nutzung von:
 
   - **Github** & **Git**.
 
+---
+
 ## 1. Python installieren
 
   - Besuche die [offizielle Python-Website](https://www.python.org/).
@@ -23,6 +25,8 @@ Ich empfehle auch die Nutzung von:
 ## 2. VSCode (Visual Studio Code) installieren
 
   - Öffne diese Anleitung: [**VSCode** installieren unter **Windows**](Installation_VSCode_Win.md)
+
+---
 
 ## Tipp: Terminal-Grundlagen für Windows
 

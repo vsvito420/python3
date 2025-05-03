@@ -113,6 +113,16 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
                 return false;
             }
 
+            // Ensure slides are visible if board mode is NOT active
+            if (!window.isBoardModeActive) {
+                const slides = document.querySelectorAll('#content .board-slide');
+                slides.forEach(slide => {
+                    // Use 'block' as a sensible default display for divs in normal flow
+                    slide.style.display = 'block';
+                });
+                console.log("Ensured slides are visible in normal mode.");
+            }
+
             // Initialize interactive code blocks (ensure initializeCodeBlocks and codeBlocks exist)
             if (window.initializeCodeBlocks && window.codeBlocks) {
                 console.log(`Found ${window.codeBlocks.length} code blocks to initialize`);

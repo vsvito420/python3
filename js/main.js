@@ -125,11 +125,13 @@ function toggleBoardMode() {
         removeBoardNavButtons(contentElement); // Remove nav buttons
         console.log("Board mode deactivated");
         document.removeEventListener('keydown', handleBoardModeKeys);
-        // Reload the current markdown file to restore original content structure
-        const currentDoc = new URLSearchParams(window.location.search).get('doc');
-        if (currentDoc && window.loadMarkdownFile) {
-            window.loadMarkdownFile(currentDoc, false); // Reload without adding history entry
-        }
+        // Restore default display for all slides (CSS will handle visibility)
+        window.slides.forEach(slide => {
+            slide.style.display = ''; // Remove inline style, let CSS rule
+            slide.classList.remove('active-slide'); // Remove active class
+        });
+        // Ensure the main content area doesn't retain board-mode specific styles if any
+        contentElement.style.height = ''; // Reset any potential height overrides
     }
 }
 
@@ -142,24 +144,13 @@ function initializeSlides() {
     // markdown-parser.js now creates .board-slide elements directly.
     const slideElements = contentElement.querySelectorAll('.board-slide');
 
-    window.slides = Array.from(slideElements).map((slideElement, index) => {
-        // Wrap slide content for scaling
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('slide-content-wrapper');
-        // Move existing content into the wrapper
-        while (slideElement.firstChild) {
-            wrapper.appendChild(slideElement.firstChild);
-        }
-        slideElement.appendChild(wrapper);
+    window.slides = Array.from(slideElements); // Slides already have wrappers from parser
 
-        slideElement.style.display = 'none'; // Hide all slides initially
-        slideElement.dataset.index = index; // Ensure index is set
-        return slideElement;
+    // Just ensure they are hidden initially when board mode starts
+    window.slides.forEach((slide, index) => {
+        slide.style.display = 'none'; // Hide all slides initially
+        slide.dataset.index = index; // Ensure index is set
     });
-
-    // No need to clear and append, parser already structured it.
-    // Just ensure they are hidden initially.
-    window.slides.forEach(slide => slide.style.display = 'none');
 
     window.currentSlideIndex = 0; // Reset to first slide
     console.log(`Initialized ${window.slides.length} slides.`);

@@ -22,6 +22,7 @@ Bestätige abfragen mit **y** (yes) oder **j** (Ja) falls du gefragt wirst
     - Suche nach "**Python**"
     - Installiere die offizielle **Python-Erweiterung von Microsoft**
 
+---
 
 # gehe nun zu [**Kapitel 1**](../Kapitel_1/Kapitel_1.md)
 
