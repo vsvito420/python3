@@ -22,10 +22,10 @@
 1. Öffne diese anleitung [**VSCode** installieren unter **MacOS**](Installation_VSCode_Mac.md)
 
 ## Tipp: Terminal-Grundlagen für Mac
-1. Das Terminal findest du unter Applications > Utilities > Terminal.
-2. Nützliche Terminal-Befehle:
-   - `cd` zum Wechseln des Verzeichnisses (change directory)
-   - `ls` zum Anzeigen von Dateien im aktuellen Verzeichnis (list)
-   - `python3 --version` zum Überprüfen der installierten Python-Version
+#### Das Terminal findest du unter Applications > Utilities > Terminal.
+#### Nützliche Terminal-Befehle:
+##### `cd` zum Wechseln des Verzeichnisses (change directory)
+##### `ls` zum Anzeigen von Dateien im aktuellen Verzeichnis (list)
+##### `python3 --version` zum Überprüfen der installierten Python-Version
 
 
