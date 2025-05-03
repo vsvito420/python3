@@ -276,7 +276,10 @@ function parseMarkdown(markdown) {
     processedMarkdown = processedMarkdown.replace(/class="ol-item"/g, '');
 
     // Replace paragraphs
-    processedMarkdown = processedMarkdown.replace(/^(?!<[a-z]|\s*$)(.+)$/gm, '<p>$1</p>');
+    // Improved regex to avoid wrapping code block placeholders and HTML comments/tags in <p> tags
+    processedMarkdown = processedMarkdown.replace(/^(?!\s*(?:<[/!]?|__CODE_BLOCK_)|\s*$)(.+)$/gm, '<p>$1</p>');
+    // Remove paragraphs that might have become empty after processing or due to extra newlines
+    processedMarkdown = processedMarkdown.replace(/<p>\s*<\/p>/g, '');
 
     // Replace emphasis
     processedMarkdown = processedMarkdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
