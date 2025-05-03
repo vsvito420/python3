@@ -2,9 +2,25 @@
 
 Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern. Die Plattform ermöglicht interaktives Lernen von Python direkt im Browser ohne Installation von Software.
 
-## Starte Hier wenn du Python Lernen willst: 
+## Starte Hier wenn du Python Lernen willst:
 
 # [**Startseite**](./python-docs/Kapitel_0/Anfang_Lese_Mich.md)
+
+## Kapitelübersicht
+
+Die Python-Lernplattform umfasst folgende Kapitel:
+
+| Kapitel | Thema | Hauptinhalte |
+|---------|-------|--------------|
+| **Kapitel 0** | **Einführung und Installation** | Erste Schritte für Windows, Mac und mobile Geräte, VSCode-Installation |
+| **Kapitel 1** | **Grundlagen** | Textausgabe, Variablen und Datentypen, Strings, Operatoren, Quiz |
+| **Kapitel 2** | **Kontrollstrukturen** | Bedingte Anweisungen, Schleifen |
+| **Kapitel 3** | **Datenstrukturen** | Listen, Tupel, Sets, Dictionaries |
+| **Kapitel 4** | **Funktionen** | Funktionen definieren und aufrufen, Parameter und Rückgabewerte, Lambda-Funktionen |
+| **Kapitel 5** | **Module und Pakete** | Module importieren, eigene Module erstellen, Standardbibliotheken |
+| **Kapitel 6** | **Objektorientierte Programmierung** | Klassen und Objekte, Vererbung, Polymorphismus |
+| **Kapitel 7** | **Dateiverarbeitung** | Dateien lesen und schreiben, CSV- und JSON-Dateien verarbeiten |
+| **Kapitel 8** | **Fehlerbehandlung** | Try/Except/Finally, eigene Exceptions |
 
 
 ## Code Doku
@@ -28,7 +44,7 @@ Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsw
 
 ## Architekturübersicht
 
-Die Python-Lernplattform ist eine clientseitige Webanwendung, die Markdown-Dokumente lädt, interaktive Python-Code-Editoren bereitstellt und Python-Code direkt im Browser ausführt.
+Die Python-Lernplattform ist eine clientseitige Webanwendung, die Markdown-Dokumente lädt, interaktive Python-Code-Editoren bereitstellt und Python-Code direkt im Browser ausführt. Die Plattform bietet eine strukturierte Lernumgebung mit progressiven Kapiteln, interaktiven Quizzen und praktischen Übungen.
 
 ```mermaid
 graph TD
@@ -221,12 +237,22 @@ graph TD
         kap1[Kapitel_1/]
         kap2[Kapitel_2/]
         kap3[Kapitel_3/]
+        kap4[Kapitel_4/]
+        kap5[Kapitel_5/]
+        kap6[Kapitel_6/]
+        kap7[Kapitel_7/]
+        kap8[Kapitel_8/]
         projekt[z_Projekt_Daten/]
 
         docs --> kap0
         docs --> kap1
         docs --> kap2
         docs --> kap3
+        docs --> kap4
+        docs --> kap5
+        docs --> kap6
+        docs --> kap7
+        docs --> kap8
         docs --> projekt
     end
 
@@ -298,6 +324,7 @@ Die Architektur der Python-Lernplattform folgt mehreren wichtigen Prinzipien:
    - Neue Kapitel können durch Hinzufügen von Markdown-Dateien erstellt werden
    - Unterstützung für verschiedene Programmiersprachen im Code-Editor
    - Modulare Struktur für einfache Erweiterung der Funktionalität
+   - Bereits implementierte Kapitel 0-8 mit umfassenden Python-Lerninhalten
 
 ### Zukünftige Erweiterungsmöglichkeiten
 
@@ -313,6 +340,7 @@ Die Architektur der Python-Lernplattform wurde mit Blick auf zukünftige Erweite
 | **Offline-Unterstützung** | Nutzung ohne Internetverbindung | Service Worker für Caching, IndexedDB für lokale Datenspeicherung |
 | **Erweiterte Visualisierungen** | Visualisierung von Algorithmen und Datenstrukturen | Integration von Visualisierungsbibliotheken wie D3.js oder Python-Bibliotheken in Pyodide |
 | **Markdown-Tabellen** | Vollständige Unterstützung für Markdown-Tabellen | Implementierung einer eigenen Tabellen-Verarbeitung im Markdown-Parser |
+| **Weitere Kapitel** | Erweiterung um fortgeschrittene Python-Themen | Hinzufügen von Kapiteln zu Themen wie Datenanalyse, Web-Entwicklung, KI/ML |
 
 #### Technische Verbesserungen
 
@@ -372,7 +400,7 @@ Ihre Cloudflare Account ID finden Sie im Cloudflare Dashboard unter "Workers & P
 
 ## Dateistruktur
 
-Die Plattform besteht aus folgenden Hauptdateien:
+Die Plattform besteht aus folgenden Hauptdateien und Verzeichnissen:
 
 | Datei | Beschreibung |
 |-------|-------------|
@@ -406,7 +434,7 @@ Die Plattform besteht aus folgenden Hauptdateien:
 | **js/main.js** | Haupteinstiegspunkt und Initialisierung |
 | **js/server.js** | Lokaler Entwicklungsserver |
 | **wrangler.toml** | Konfiguration für Cloudflare Pages mit Worker-Namen "python3" |
-| **python-docs/** | Verzeichnis mit den Markdown-Dokumentationen, nach Kapiteln organisiert |
+| **python-docs/** | Verzeichnis mit den Markdown-Dokumentationen, nach Kapiteln organisiert (Kapitel_0 bis Kapitel_8) |
 
 ## Hauptkomponenten
 
@@ -419,6 +447,7 @@ Die Anwendung besteht aus drei Hauptkomponenten in der Hauptansicht und einer se
 | **Markdown-Inhalt** | Bereich unter dem Code-Editor, der die Lernmaterialien anzeigt |
 | **Vollbild-Editor** | Separate Seite (`code-editor.html`) mit einem eigenständigen Python-Editor im Vollbildmodus |
 | **Quiz-System** | Interaktive Tests zu verschiedenen Kapiteln mit automatischer Bewertung und Feedback |
+| **Kapitelstruktur** | Strukturierte Lernpfade von Kapitel 0 bis Kapitel 8 mit progressivem Schwierigkeitsgrad |
 
 ### Layout-Struktur
 
@@ -573,8 +602,8 @@ const quizData = {
             },
             // Weitere Fragen...
         ]
-    }
-    // Weitere Kapitel-Tests...
+    },
+    // Weitere Kapitel-Tests für Kapitel 2-8...
 };
 ```
 
@@ -584,8 +613,9 @@ const quizData = {
 
 Um neue Kapitel hinzuzufügen:
 
-1. Erstelle eine neue Markdown-Datei im entsprechenden Kapitel-Verzeichnis
-2. Füge einen Link zur neuen Datei in der Hauptseite (`Anfang_Lese_Mich.md`) hinzu
+1. Erstelle eine neue Markdown-Datei im entsprechenden Kapitel-Verzeichnis (Kapitel_0 bis Kapitel_8)
+2. Füge einen Link zur neuen Datei in der Hauptseite (`Anfang_Lese_Mich.md`) oder im entsprechenden Kapitel-Index hinzu
+3. Für neue Kapitel (Kapitel_9 und höher) erstelle ein neues Verzeichnis und folge dem bestehenden Strukturmuster
 
 ### Neue Funktionen hinzufügen
 
@@ -601,7 +631,7 @@ Für neue Funktionen:
 
 | Problem | Lösung | Weitere Schritte |
 |---------|--------|----------------|
-| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache in `js/markdown-cache.js` | Prüfe die Konsole auf Fehler bei der Pfadauflösung |
+| **Markdown-Dateien werden nicht gefunden** | Überprüfe die Pfade und den Markdown-Cache in `js/markdown-cache.js` | Prüfe die Konsole auf Fehler bei der Pfadauflösung, überprüfe die Kapitelstruktur (Kapitel_0 bis Kapitel_8) |
 | **Code-Editor wird nicht angezeigt** | Überprüfe die Monaco-Editor-Initialisierung in `js/editor-standalone.js` und `js/editor-codeblocks.js` | Stelle sicher, dass die Monaco-Editor-CDN erreichbar ist |
 | **Python-Code kann nicht ausgeführt werden** | Überprüfe die Pyodide-Integration in `js/python-pyodide.js` und `js/python-executor.js` | Prüfe die Konsole auf Fehler bei der Pyodide-Initialisierung |
 | **CORS-Fehler bei lokalem Testen** | Verwende den lokalen Entwicklungsserver mit `node js/server.js` | Alternativ einen Browser mit deaktivierten CORS-Einschränkungen verwenden |
@@ -609,7 +639,7 @@ Für neue Funktionen:
 | **Vollbild-Editor funktioniert nicht** | Überprüfe die Initialisierung in `code-editor.html` | Stelle sicher, dass alle erforderlichen Skripte geladen werden |
 | **Langsame Ladezeiten** | Überprüfe die Netzwerkaktivität in den Browser-DevTools | Reduziere die Anzahl der externen Ressourcen oder implementiere Lazy-Loading |
 | **Mobile Darstellungsprobleme** | Überprüfe die CSS-Media-Queries in den entsprechenden CSS-Modulen | Teste mit verschiedenen Geräten und Bildschirmgrößen |
-| **Quiz-System funktioniert nicht** | Überprüfe die Initialisierung in `js/quiz-system.js` | Stelle sicher, dass localStorage verfügbar ist und die Quiz-Daten korrekt definiert sind |
+| **Quiz-System funktioniert nicht** | Überprüfe die Initialisierung in `js/quiz-system.js` | Stelle sicher, dass localStorage verfügbar ist und die Quiz-Daten für alle Kapitel korrekt definiert sind |
 
 ### Performance-Optimierung
 
