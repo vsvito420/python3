@@ -85,61 +85,179 @@ Verwende dafür den folgenden Code-Block:
 
 ## Bewertung mit der Gemini API
 
-Wenn du beide Teile des Quiz bearbeitet hast, kannst du deine Antworten mit der Gemini API bewerten lassen. Führe dazu den folgenden Code-Block aus:
+Wenn du beide Teile des Quiz bearbeitet hast, kannst du deine Antworten mit der Gemini API bewerten lassen. Klicke auf den Button unten, um deine Antworten zu bewerten:
 
-```bash
-#!/bin/bash
-set -e -E
+<div id="quiz-evaluation">
+  <button id="evaluate-quiz" onclick="evaluateQuiz()">Quiz bewerten</button>
+  <div id="evaluation-result" style="display: none; margin-top: 20px; padding: 15px; border-radius: 4px;"></div>
+</div>
 
-
-MODEL_ID="gemini-2.5-flash-preview-04-17"
-GENERATE_CONTENT_API="streamGenerateContent"
-
-# Sammle die Quizergebnisse
-QUIZ_RESULTS=$(cat << EOF
+<script>
+async function evaluateQuiz() {
+  // API-Konfiguration
+  // Der API-Key wird aus der Umgebungsvariable geladen
+  const MODEL_ID = "gemini-2.5-flash-preview-04-17";
+  
+  // Funktion zum Abrufen des API-Keys
+  async function getApiKey() {
+    try {
+      // Versuche, den API-Key aus dem Server zu laden
+      const response = await fetch('/api/get-gemini-key');
+      if (response.ok) {
+        const data = await response.json();
+        return data.apiKey;
+      }
+    } catch (error) {
+      console.error("Fehler beim Laden des API-Keys vom Server:", error);
+    }
+    
+    // Fallback: Verwende einen Platzhalter und informiere den Benutzer
+    alert("Der API-Key konnte nicht geladen werden. Bitte kontaktiere den Administrator.");
+    return null;
+  }
+  
+  // Hole den API-Key
+  const GEMINI_API_KEY = await getApiKey();
+  if (!GEMINI_API_KEY) {
+    return; // Breche ab, wenn kein API-Key verfügbar ist
+  }
+  
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:generateContent?key=${GEMINI_API_KEY}`;
+  
+  // Sammle die Multiple-Choice-Antworten
+  let mcAnswers = {};
+  try {
+    // Versuche, die Antworten aus dem ersten Code-Block zu extrahieren
+    const codeBlocks = document.querySelectorAll('pre code');
+    if (codeBlocks.length > 0) {
+      const answerCodeText = codeBlocks[0].textContent;
+      // Extrahiere die Antworten mit einem regulären Ausdruck
+      const answerRegex = /"Frage (\d+)":\s*"([A-D])"/g;
+      let match;
+      while ((match = answerRegex.exec(answerCodeText)) !== null) {
+        mcAnswers[`Frage ${match[1]}`] = match[2];
+      }
+    }
+  } catch (error) {
+    console.error("Fehler beim Extrahieren der Multiple-Choice-Antworten:", error);
+  }
+  
+  // Sammle den Code aus dem zweiten Code-Block
+  let userCode = "";
+  try {
+    const codeBlocks = document.querySelectorAll('pre code');
+    if (codeBlocks.length > 1) {
+      userCode = codeBlocks[1].textContent;
+    }
+  } catch (error) {
+    console.error("Fehler beim Extrahieren des Codes:", error);
+  }
+  
+  // Sammle die Konsolenausgabe, falls vorhanden
+  let consoleOutput = "";
+  try {
+    const outputElements = document.querySelectorAll('.output');
+    if (outputElements.length > 0) {
+      consoleOutput = outputElements[0].textContent;
+    }
+  } catch (error) {
+    console.error("Fehler beim Extrahieren der Konsolenausgabe:", error);
+  }
+  
+  // Bereite die Anfrage an die Gemini API vor
+  const quizResults = `
 Multiple-Choice-Antworten:
-$(python -c "
-antworten = {
-    'Frage 1': '$(grep -A6 'antworten = {' python-docs/Kapitel_1/Kapitel_1_Quiz.md | grep 'Frage 1' | cut -d'\"' -f4)',
-    'Frage 2': '$(grep -A6 'antworten = {' python-docs/Kapitel_1/Kapitel_1_Quiz.md | grep 'Frage 2' | cut -d'\"' -f4)',
-    'Frage 3': '$(grep -A6 'antworten = {' python-docs/Kapitel_1/Kapitel_1_Quiz.md | grep 'Frage 3' | cut -d'\"' -f4)',
-    'Frage 4': '$(grep -A6 'antworten = {' python-docs/Kapitel_1/Kapitel_1_Quiz.md | grep 'Frage 4' | cut -d'\"' -f4)',
-    'Frage 5': '$(grep -A6 'antworten = {' python-docs/Kapitel_1/Kapitel_1_Quiz.md | grep 'Frage 5' | cut -d'\"' -f4)'
-}
-for frage, antwort in antworten.items():
-    print(f'{frage}: {antwort}')
-")
+${Object.entries(mcAnswers).map(([frage, antwort]) => `${frage}: ${antwort}`).join('\n')}
 
 Programmieraufgabe:
-$(sed -n '/^```python$/,/^```$/p' python-docs/Kapitel_1/Kapitel_1_Quiz.md | grep -v '```')
-EOF
-)
+${userCode}
 
-# Erstelle die Anfrage an die Gemini API
-cat << EOF > request.json
-{
-    "contents": [
+Konsolenausgabe:
+${consoleOutput || "(Keine Ausgabe)"}
+`;
+
+  const requestData = {
+    contents: [
       {
-        "role": "user",
-        "parts": [
+        role: "user",
+        parts: [
           {
-            "text": "Bewerte die folgenden Quiz-Antworten für ein Python-Grundlagen-Quiz. Die korrekten Antworten sind: Frage 1: C, Frage 2: C, Frage 3: B, Frage 4: C, Frage 5: C. Für die Programmieraufgabe sollte der Code einen Namen und ein Alter in Variablen speichern, eine formatierte Ausgabe erstellen und berechnen, wie alt die Person in 10 Jahren sein wird. Gib eine detaillierte Bewertung und sage, ob der Benutzer bestanden hat (mindestens 70% korrekt).\n\n$QUIZ_RESULTS"
+            text: `Bewerte die folgenden Quiz-Antworten für ein Python-Grundlagen-Quiz. Die korrekten Antworten sind: Frage 1: C, Frage 2: C, Frage 3: B, Frage 4: C, Frage 5: C. Für die Programmieraufgabe sollte der Code einen Namen und ein Alter in Variablen speichern, eine formatierte Ausgabe erstellen und berechnen, wie alt die Person in 10 Jahren sein wird. Gib eine detaillierte Bewertung und sage, ob der Benutzer bestanden hat (mindestens 70% korrekt).\n\n${quizResults}`
           }
         ]
       }
     ],
-    "generationConfig": {
-      "responseMimeType": "text/plain"
+    generationConfig: {
+      temperature: 0.2,
+      maxOutputTokens: 1024
     }
-}
-EOF
+  };
 
-# Sende die Anfrage an die Gemini API
-curl \
--X POST \
--H "Content-Type: application/json" \
-"https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:${GENERATE_CONTENT_API}?key=${GEMINI_API_KEY}" -d '@request.json'
-```
+  // Zeige Ladeanzeige
+  const resultElement = document.getElementById('evaluation-result');
+  resultElement.style.display = 'block';
+  resultElement.style.backgroundColor = '#f0f0f0';
+  resultElement.innerHTML = '<p>Bewertung wird durchgeführt...</p>';
+
+  try {
+    // Sende die Anfrage an die Gemini API
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`API-Fehler: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const evaluationText = data.candidates[0].content.parts[0].text;
+    
+    // Bestimme, ob der Benutzer bestanden hat
+    const passed = evaluationText.toLowerCase().includes('bestanden');
+    
+    // Zeige das Ergebnis an
+    resultElement.style.backgroundColor = passed ? '#e6ffe6' : '#ffe6e6';
+    resultElement.innerHTML = `
+      <h3>${passed ? 'Quiz bestanden! 🎉' : 'Quiz nicht bestanden'}</h3>
+      <div style="white-space: pre-wrap;">${evaluationText}</div>
+      ${passed ? `<p>Du kannst jetzt zum <a href="../Kapitel_2/Kapitel_2.md">nächsten Kapitel</a> weitergehen.</p>` : ''}
+    `;
+  } catch (error) {
+    console.error("Fehler bei der API-Anfrage:", error);
+    resultElement.style.backgroundColor = '#ffe6e6';
+    resultElement.innerHTML = `
+      <h3>Fehler bei der Bewertung</h3>
+      <p>Es ist ein Fehler aufgetreten: ${error.message}</p>
+      <p>Bitte versuche es später noch einmal oder wende dich an den Support.</p>
+    `;
+  }
+}
+</script>
+
+<style>
+#quiz-evaluation button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#quiz-evaluation button:hover {
+  background-color: #45a049;
+}
+
+#evaluation-result {
+  border-left: 6px solid #2196F3;
+  line-height: 1.5;
+}
+</style>
 
 Nach der Bewertung durch die Gemini API kannst du bei erfolgreicher Bewertung zum [nächsten Kapitel](../Kapitel_2/Kapitel_2.md) weitergehen.
 
