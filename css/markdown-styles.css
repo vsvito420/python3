@@ -440,3 +440,121 @@ code {
     color: var(--dark-text);
     border-left-color: var(--primary-color);
 }
+
+
+/* --- Board Mode Specific Styles --- */
+
+/* Ensure slides take full height and use flex for centering */
+#content.board-mode .board-slide {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Hide overflow initially */
+    position: relative; /* For positioning navigation */
+    box-sizing: border-box;
+    padding: 2rem; /* Add padding around the content */
+}
+
+#content.board-mode .board-slide.active-slide {
+    display: flex; /* Show the active slide */
+}
+
+/* Container for the actual slide content to apply scaling */
+.slide-content-wrapper {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto; /* Adjust based on content */
+    height: auto; /* Adjust based on content */
+    overflow: auto; /* Allow scrolling if content still overflows after scaling */
+    /* Basic scaling attempt - might need JS for precision */
+    transform-origin: center center;
+     /* Initial scale - JS might adjust this */
+    /* transition: transform 0.3s ease; */ /* Optional: Smooth transition */
+}
+
+/* Apply styles within the slide content wrapper */
+.slide-content-wrapper > * {
+    max-width: 100%; /* Ensure elements don't overflow the wrapper */
+}
+
+/* Example: Scale down large images within slides */
+.slide-content-wrapper img {
+    max-width: 100%;
+    max-height: 80vh; /* Limit image height */
+    height: auto;
+    object-fit: contain;
+}
+
+/* Example: Adjust heading sizes for slides */
+.slide-content-wrapper h1 { font-size: 2.5rem; }
+.slide-content-wrapper h2 { font-size: 2rem; }
+.slide-content-wrapper p { font-size: 1.1rem; }
+
+
+/* Board Mode Navigation Buttons */
+.board-nav {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none; /* Hidden by default */
+    gap: 20px;
+    z-index: 10; /* Ensure they are above slide content */
+}
+
+#content.board-mode .board-nav {
+    display: flex; /* Show only in board mode */
+}
+
+.board-nav-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.board-nav-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.board-nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Alternative side navigation buttons */
+.board-nav-side {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 5px;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.board-nav-side:hover {
+     background-color: rgba(0, 0, 0, 0.6);
+}
+.board-nav-side.prev { left: 10px; }
+.board-nav-side.next { right: 10px; }
+
+#content.board-mode .board-nav-side {
+    display: block; /* Show side buttons in board mode */
+}

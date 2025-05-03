@@ -2,6 +2,20 @@
 
 Diese Dokumentation bietet einen Überblick über die Architektur und Funktionsweise der Python-Lernplattform, um die Wartung und Weiterentwicklung zu erleichtern. Die Plattform ermöglicht interaktives Lernen von Python direkt im Browser ohne Installation von Software.
 
+## Projektübersicht
+
+Diese interaktive Lernplattform wurde entwickelt, um Anfängern und Fortgeschrittenen das Erlernen der Programmiersprache Python zu erleichtern. Das Hauptziel ist es, eine zugängliche und benutzerfreundliche Umgebung zu schaffen, in der Benutzer Python-Konzepte direkt im Browser verstehen und anwenden können, ohne lokale Softwareinstallationen vornehmen zu müssen.
+
+**Hauptfunktionen:**
+
+*   **Interaktive Code-Editoren:** Eingebettete Monaco-Editoren ermöglichen das Schreiben und Ausführen von Python-Code direkt in den Lektionen.
+*   **Browserbasierte Ausführung:** Python-Code wird mithilfe von Pyodide im Browser ausgeführt, was eine sofortige Rückmeldung ermöglicht.
+*   **Strukturierte Lernpfade:** Inhalte sind in logische Kapitel (0-8) gegliedert, die von Grundlagen bis zu fortgeschrittenen Themen reichen.
+*   **Markdown-basierte Inhalte:** Lektionen und Erklärungen sind in Markdown verfasst, was die Wartung und Erweiterung erleichtert.
+*   **Fortschrittsverfolgung:** Der Lernfortschritt wird lokal im Browser gespeichert.
+*   **Interaktive Quizze:** Kapitelweise Tests zur Überprüfung des Verständnisses mit automatischem Feedback.
+*   **Responsive Design:** Die Plattform ist für die Nutzung auf verschiedenen Geräten (Desktop, Tablet, Mobil) optimiert.
+*   **Eigenständiger Editor:** Ein separater Vollbild-Editor (`code-editor.html`) für freies Experimentieren.
 ## Starte Hier wenn du Python Lernen willst:
 
 # [**Startseite**](./python-docs/Kapitel_0/Anfang_Lese_Mich.md)

@@ -317,3 +317,51 @@ input:checked + .slider:before {
         page-break-inside: avoid;
     }
 }
+
+/* --- Board Mode Styles --- */
+
+/* Styles for the content area when board mode is active */
+#content.board-mode {
+    padding: 0; /* Remove padding to use full space */
+    overflow: hidden; /* Prevent scrolling of the main container */
+    display: flex; /* Use flexbox for slide alignment */
+    flex-direction: column; /* Stack slides vertically (though only one is visible) */
+    justify-content: center; /* Center slide vertically */
+    align-items: center; /* Center slide horizontally */
+    height: calc(100vh - 50px); /* Full viewport height minus toolbar */
+    position: relative; /* Needed for absolute positioning of potential controls */
+}
+
+/* Styles for individual slides */
+.board-slide {
+    width: 100%;
+    height: 100%;
+    display: none; /* Hidden by default, shown by JS */
+    flex-direction: column;
+    justify-content: center; /* Center content vertically within the slide */
+    align-items: center; /* Center content horizontally */
+    overflow: hidden; /* Prevent scrolling within the slide itself initially */
+    padding: var(--spacing-lg); /* Add some padding around the slide content */
+    box-sizing: border-box;
+    position: relative; /* For potential absolute positioned elements inside */
+    background-color: var(--background-color); /* Ensure background matches theme */
+}
+
+/* Style for the currently active/visible slide */
+#content.board-mode .board-slide.active-slide {
+    display: flex; /* Show the active slide */
+    /* Scaling will be handled by more specific rules, potentially in markdown-styles.css */
+}
+
+/* Style for the board mode toggle button when active */
+.top-toolbar .board-mode-button.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .top-toolbar .board-mode-button.active {
+     background-color: var(--primary-light);
+     color: var(--secondary-dark);
+     border-color: var(--primary-light);
+}
