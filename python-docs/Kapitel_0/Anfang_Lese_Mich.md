@@ -1,6 +1,6 @@
 # Python Lernen Dokumentation
 
-[Über das Projekt](/README.md)  
+[Über das Projekt](https://github.com/vsvito420/python3)  
 [VS Code Erweiterungen für Python-Unterricht](/.vscode/extensions.md)
 
 ## Inhaltsverzeichnis
