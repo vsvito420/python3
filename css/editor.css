@@ -197,3 +197,190 @@
         height: 350px;
     }
 }
+
+/* Styles specifically for code-editor.html */
+.code-editor-page body { /* This selector might be redundant if the class is on body, but good for clarity */
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.code-editor-page .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 0;
+}
+
+.code-editor-page .header {
+    background-color: rgba(44, 62, 80, 0.95);
+    color: var(--light-gray);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Ensure header height is accounted for in editor container height */
+    flex-shrink: 0;
+}
+
+.code-editor-page .header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.code-editor-page .back-button {
+    background-color: rgba(52, 73, 94, 0.8);
+    color: var(--light-gray);
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.code-editor-page .back-button:hover {
+    background-color: rgba(52, 73, 94, 0.9);
+}
+
+.code-editor-page .editor-container {
+    display: flex;
+    flex-direction: column; /* Default: Mobile layout */
+    flex-grow: 1;
+    padding: 1rem;
+    /* Calculate height based on viewport minus header height */
+    height: calc(100vh - 60px); /* Adjust 60px if header height changes */
+    position: relative;
+    overflow: hidden; /* Prevent content overflow issues */
+}
+
+/* Desktop layout adjustments */
+@media (min-width: 992px) {
+    .code-editor-page .editor-container {
+        flex-direction: row;
+    }
+}
+
+/* Resize handle for desktop view */
+.code-editor-page .resize-handle {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 0;
+    left: 50%; /* Initial position */
+    transform: translateX(-50%); /* Center the handle */
+    width: 8px;
+    height: 100%;
+    background-color: var(--border-color);
+    cursor: ew-resize;
+    z-index: 10;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.code-editor-page .resize-handle:hover {
+    opacity: 1;
+    background-color: var(--primary-color);
+}
+
+@media (min-width: 992px) {
+    .code-editor-page .resize-handle {
+        display: block; /* Show only on desktop */
+    }
+}
+
+/* Container for code editor and buttons */
+.code-editor-page .code-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Take available space */
+    min-height: 150px; /* Minimum height for usability */
+    overflow: hidden; /* Prevent editor overflow */
+}
+
+.code-editor-page .code-editor {
+    flex: 1; /* Allow editor to grow */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    /* Remove fixed height */
+}
+
+.code-editor-page .output-container {
+    flex: 1; /* Take available space */
+    background-color: rgba(44, 62, 80, 0.9);
+    color: var(--light-gray);
+    border-radius: var(--border-radius-md);
+    padding: 1rem;
+    margin-top: 1rem; /* Spacing in mobile view */
+    overflow: auto;
+    display: flex; /* Use flexbox for inner content */
+    flex-direction: column;
+    min-height: 150px; /* Minimum height for usability */
+}
+
+/* Desktop layout adjustments */
+@media (min-width: 992px) {
+    .code-editor-page .code-section {
+       /* Adjust flex basis for initial split */
+       flex: 1 1 50%;
+       margin-right: 0.5rem; /* Space before handle */
+       min-height: 0; /* Reset min-height */
+    }
+    
+    .code-editor-page .output-container {
+        /* Adjust flex basis for initial split */
+        flex: 1 1 50%;
+        margin-top: 0;
+        margin-left: 0.5rem; /* Space after handle */
+        min-height: 0; /* Reset min-height */
+    }
+}
+
+.code-editor-page .output-container h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem; /* Add some space below title */
+    flex-shrink: 0; /* Prevent title from shrinking */
+}
+
+.code-editor-page .output-content {
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    flex-grow: 1; /* Allow content to fill space */
+    overflow: auto;
+    /* Remove fixed height */
+}
+
+.code-editor-page .button-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+.code-editor-page .run-button,
+.code-editor-page .reset-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.code-editor-page .run-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.code-editor-page .reset-button {
+    background-color: var(--secondary-color);
+}
+
+.code-editor-page .reset-button:hover {
+    background-color: var(--secondary-hover);
+}
