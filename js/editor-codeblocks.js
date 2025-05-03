@@ -95,14 +95,20 @@ function initializeCodeBlocks() {
             else if (language === 'c' || language === 'cpp' || language === 'c++') editorLanguage = 'cpp';
             else if (language === 'csharp' || language === 'c#') editorLanguage = 'csharp';
             
-            if (!window.editors) {
-                window.editors = {};
+            // Ensure the global object for code block editors exists
+            if (!window.codeBlockEditors) {
+                window.codeBlockEditors = {};
             }
-            
-            window.editors[`${id}-editor`] = monaco.editor.create(document.getElementById(`${id}-editor`), {
+
+            // Get the initial editor theme preference
+            const initialEditorThemeSetting = getCurrentEditorTheme(); // 'light' or 'dark' from theme-switcher.js
+            const editorTheme = initialEditorThemeSetting === 'dark' ? 'vs-dark' : 'vs';
+            console.log(`Initializing code block editor ${id}-editor with theme setting: ${initialEditorThemeSetting} -> ${editorTheme}`);
+
+            window.codeBlockEditors[`${id}-editor`] = monaco.editor.create(document.getElementById(`${id}-editor`), { // Store in window.codeBlockEditors
                 value: code,
                 language: editorLanguage,
-                theme: 'vs-dark',
+                theme: editorTheme, // Use the determined editor theme
                 automaticLayout: true,
                 minimap: {
                     enabled: false
@@ -158,11 +164,12 @@ function resetEditor(editorId) {
     const originalId = editorId.replace('-editor', '');
     const codeBlock = window.codeBlocks.find(block => block.id === originalId);
     
-    if (codeBlock && window.editors && window.editors[editorId]) {
-        window.editors[editorId].setValue(codeBlock.code);
-        
+    // Use window.codeBlockEditors instead of window.editors
+    if (codeBlock && window.codeBlockEditors && window.codeBlockEditors[editorId]) {
+        window.codeBlockEditors[editorId].setValue(codeBlock.code);
+
         // If the language has changed, also update the editor's language
-        const editorModel = window.editors[editorId].getModel();
+        const editorModel = window.codeBlockEditors[editorId].getModel();
         if (editorModel && codeBlock.language) {
             // Map Markdown language designations to Monaco editor language designations
             let editorLanguage = 'plaintext';

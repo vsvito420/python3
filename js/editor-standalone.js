@@ -12,11 +12,16 @@ function initializeStandaloneEditor() {
         return;
     }
 
+    // Get the initial editor theme preference
+    const initialEditorThemeSetting = getCurrentEditorTheme(); // 'light' or 'dark' from theme-switcher.js
+    const editorTheme = initialEditorThemeSetting === 'dark' ? 'vs-dark' : 'vs';
+    console.log(`Initializing standalone editor with theme setting: ${initialEditorThemeSetting} -> ${editorTheme}`);
+
     // Create the editor
-    const standaloneEditor = monaco.editor.create(document.getElementById('standalone-editor'), {
+    window.standaloneEditor = monaco.editor.create(document.getElementById('standalone-editor'), { // Assign to window.standaloneEditor
         value: '# Write your Python code here\n\n# Example:\nprint("Hello, World!")',
         language: 'python',
-        theme: 'vs-dark',
+        theme: editorTheme, // Use the determined editor theme
         automaticLayout: true,
         minimap: { enabled: false },
         scrollBeyondLastLine: false,
@@ -27,15 +32,11 @@ function initializeStandaloneEditor() {
         insertSpaces: true
     });
 
-    // Add the editor to the global editors object
-    if (typeof window.editors === 'undefined') {
-        window.editors = {};
-    }
-    window.editors['standalone-editor'] = standaloneEditor;
+    // The editor instance is now assigned to window.standaloneEditor above.
 
     // Event listener for the Run button
     document.getElementById('standalone-run-button').addEventListener('click', async function() {
-        const code = standaloneEditor.getValue();
+        const code = window.standaloneEditor.getValue(); // Use window.standaloneEditor
         const outputElement = document.querySelector('#standalone-output .output-content');
         
         outputElement.textContent = 'Executing code...';
@@ -73,7 +74,7 @@ function initializeStandaloneEditor() {
 
     // Event listener for the Reset button
     document.getElementById('standalone-reset-button').addEventListener('click', function() {
-        standaloneEditor.setValue('# Write your Python code here\n\n# Example:\nprint("Hello, World!")');
+        window.standaloneEditor.setValue('# Write your Python code here\n\n# Example:\nprint("Hello, World!")'); // Use window.standaloneEditor
         document.querySelector('#standalone-output .output-content').textContent = '';
         
         // Add a short animation
@@ -95,7 +96,7 @@ function initializeStandaloneEditor() {
         // Update editor layout if it's visible
         if (!editorSidebar.classList.contains('collapsed')) {
             setTimeout(() => {
-                standaloneEditor.layout();
+                window.standaloneEditor.layout(); // Use window.standaloneEditor
                 // Restore container padding based on editor height
                 const computedStyle = window.getComputedStyle(editorSidebar);
                 const height = parseInt(computedStyle.height, 10);

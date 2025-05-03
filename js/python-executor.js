@@ -8,13 +8,14 @@
  * @returns {Promise<void>}
  */
 async function runPythonCode(editorId) {
-    if (!window.editors || !window.editors[editorId]) {
-        console.error(`Editor ${editorId} not found`);
+    // Use window.codeBlockEditors for code blocks in index.html
+    if (!window.codeBlockEditors || !window.codeBlockEditors[editorId]) {
+        console.error(`Editor ${editorId} not found in window.codeBlockEditors`);
         return;
     }
 
-    const code = window.editors[editorId].getValue();
-    const outputId = editorId.replace('editor', 'output');
+    const code = window.codeBlockEditors[editorId].getValue(); // Use window.codeBlockEditors
+    const outputId = editorId.replace('-editor', '-output'); // Ensure correct replacement
     const outputElement = document.querySelector(`#${outputId} .output-content`);
 
     if (!outputElement) {

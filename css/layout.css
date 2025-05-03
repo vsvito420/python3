@@ -144,6 +144,34 @@ input:checked + .slider:before {
 [data-theme="dark"] .slider:before {
     background-color: var(--light-gray); /* Slightly darker circle */
 }
+
+/* Styles for the Editor Theme Toggle Button */
+.editor-theme-button {
+    /* Inherit general button styles from .top-toolbar button */
+    padding: var(--spacing-sm); /* Adjust padding if needed */
+    margin-left: var(--spacing-sm); /* Add some space between the two toggles */
+}
+
+.editor-theme-button .editor-theme-icon {
+    font-size: 1rem; /* Adjust icon size if needed */
+    display: inline-block;
+    width: 1.2em; /* Ensure space for icon */
+    text-align: center;
+}
+
+/* Optional: Add specific hover/focus styles if different from general toolbar buttons */
+.editor-theme-button:hover {
+    background-color: var(--secondary-light); /* Consistent hover */
+}
+
+/* Hide editor theme label on small screens, similar to page theme label */
+@media (max-width: 991px) {
+    .editor-theme-button .theme-label {
+        display: none;
+    }
+}
+
+
 .container {
     display: grid;
     grid-template-columns: 250px 1fr;

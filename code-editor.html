@@ -25,8 +25,11 @@
         <header class="header">
             <h1>Python Code-Editor</h1>
             <div class="header-controls"> <!-- Container für Buttons -->
-                <button id="theme-toggle-button" class="theme-toggle-button" aria-label="Toggle theme">
+                <button id="theme-toggle-button" class="theme-toggle-button page-theme-button" aria-label="Toggle page theme">
                     <span class="theme-icon"></span> <!-- Icon wird per CSS/JS gesetzt -->
+                </button>
+                 <button id="editor-theme-toggle-button" class="theme-toggle-button editor-theme-button" aria-label="Toggle editor theme">
+                    <span class="editor-theme-icon"></span> <!-- Icon wird per JS gesetzt -->
                 </button>
                 <a href="index.html" class="back-button">← Zurück zur Lernplattform</a>
             </div>
@@ -144,15 +147,16 @@
         }
         
         function initializeEditor() {
-            // Determine the initial theme based on the body class or localStorage
-            const currentTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('theme') || 'light';
-            const editorTheme = currentTheme === 'dark' ? 'vs-dark' : 'vs';
+            // Get the initial editor theme preference
+            const initialEditorThemeSetting = getCurrentEditorTheme(); // 'light' or 'dark'
+            const editorTheme = initialEditorThemeSetting === 'dark' ? 'vs-dark' : 'vs';
+            console.log(`Initializing editor with theme setting: ${initialEditorThemeSetting} -> ${editorTheme}`);
 
             // Create the editor
             window.editor = monaco.editor.create(document.getElementById('editor'), {
                 value: '# Schreibe deinen Python-Code hier\n\n# Beispiel:\nprint("Hallo, Welt!")',
                 language: 'python',
-                theme: editorTheme, // Set initial theme
+                theme: editorTheme, // Use the determined editor theme
                 automaticLayout: true,
                 minimap: { enabled: false },
                 scrollBeyondLastLine: false,
@@ -212,25 +216,8 @@
                 document.getElementById('run-button').click();
             });
 
-            // Listen for theme changes to update the editor theme
-            const observer = new MutationObserver(mutations => {
-                mutations.forEach(mutation => {
-                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-                        const newTheme = document.documentElement.getAttribute('data-theme');
-                        const newEditorTheme = newTheme === 'dark' ? 'vs-dark' : 'vs';
-                        monaco.editor.setTheme(newEditorTheme);
-                    }
-                });
-            });
-
-            observer.observe(document.documentElement, {
-                attributes: true //configure it to listen to attribute changes
-            });
-
-            // Optional: Clean up the observer when the page unloads
-            window.addEventListener('unload', () => {
-                observer.disconnect();
-            });
+            // The theme-switcher.js now handles applying theme changes via applyEditorTheme()
+            // No need for the MutationObserver here anymore.
         }
     </script>
     <script src="js/theme-switcher.js" defer></script>
