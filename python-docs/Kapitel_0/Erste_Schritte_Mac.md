@@ -1,7 +1,10 @@
 # Erste Schritte mit Python auf Mac
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md) | [Nächstes Kapitel: Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
+[Textausgabe in der Konsole](/Projekte/Kapitel_1/Textausgabe_InDerKonsole.md)
+
+[Windows Anleitung](../Kapitel_0/Erste_Schritte_Win_PC.md)
 
 #### Um auf einem Windows-PC mit Python zu arbeiten installiere: 
 ##### **Python**

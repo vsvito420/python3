@@ -1,10 +1,10 @@
 # Strings in Python
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Vorheriges Kapitel: Operatoren](Operatoren.md)
+[Operatoren](Operatoren.md)
 
-[Nächstes Kapitel: Bedingte Anweisungen](/Projekte/Kapitel_2/Bedingte_Anweisungen.md)
+[Bedingte Anweisungen](/Projekte/Kapitel_2/Bedingte_Anweisungen.md)
 
 In diesem Kapitel entdecken wir die Welt der Strings in Python! Stell dir Strings wie Textbausteine vor, mit denen du Wörter, Sätze oder sogar ganze Geschichten in deinem Programm speichern und bearbeiten kannst.
 

@@ -1,8 +1,8 @@
 # Kapitel 1 - Textausgabe in der Konsole
 
 # Navigation:
-# Zurück zur Hauptseite: /Projekte/Kapitel_0/Anfang_Lese_Mich.md
-# Nächstes Kapitel: /Projekte/Kapitel_1/Variablen_und_Datentypen.md
+# Startseite: /Projekte/Kapitel_0/Anfang_Lese_Mich.md
+# /Projekte/Kapitel_1/Variablen_und_Datentypen.md
 
 # In Python können wir Text in der Konsole ausgeben, indem wir die print()-Funktion verwenden.
 # Die print()-Funktion ist eine der grundlegendsten Funktionen in Python.

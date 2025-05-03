@@ -1,10 +1,10 @@
 # Schleifen in Python
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Vorheriges Kapitel: Bedingte Anweisungen](Bedingte_Anweisungen.md)
+[Bedingte Anweisungen](Bedingte_Anweisungen.md)
 
-[Nächstes Kapitel: Listen](/Projekte/Kapitel_3/Listen.md)
+[Listen](/Projekte/Kapitel_3/Listen.md)
 
 In diesem Kapitel lernst du, wie du mit Schleifen in Python arbeiten kannst. Schleifen ermöglichen es dir, Code mehrmals auszuführen, was besonders nützlich ist, wenn du mit großen Datenmengen arbeitest oder wiederholte Aufgaben automatisieren möchtest.
 

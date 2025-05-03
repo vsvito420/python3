@@ -1,10 +1,10 @@
 # Textausgabe in der Konsole
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Vorheriges Kapitel: Erste Schritte mit Python](/Projekte/Kapitel_0/Erste_Schritte_Win_PC.md)
+[<- Erste Schritte mit Python](/Projekte/Kapitel_0/Erste_Schritte_Win_PC.md)
  
-[Nächstes Kapitel: Variablen und Datentypen](Variablen_und_Datentypen.md)
+[-> Variablen und Datentypen](Variablen_und_Datentypen.md)
 
 In diesem Kapitel lernst du, wie du Text in der Python-Konsole ausgeben kannst. Die Textausgabe ist eine der grundlegendsten Funktionen in Python und wird mit der `print()`-Funktion realisiert.
 

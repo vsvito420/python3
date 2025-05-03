@@ -1,10 +1,10 @@
-# Operatoren in Python [W3Schools Python Operators](https://www.w3schools.com/python/python_operators.asp)
+# Operatoren in Python
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Vorheriges Kapitel: Variablen und Datentypen](Variablen_und_Datentypen.md)
+[Variablen und Datentypen](Variablen_und_Datentypen.md)
 
-[Nächstes Kapitel: Strings](Strings.md)
+[Strings](Strings.md)
 
 In diesem Kapitel lernst du die verschiedenen Operatoren in Python kennen, mit denen du Berechnungen durchführen und Werte vergleichen kannst.
 

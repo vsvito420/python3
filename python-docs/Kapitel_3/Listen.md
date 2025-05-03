@@ -1,10 +1,10 @@
 # Listen in Python
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Vorheriges Kapitel: Schleifen](/Projekte/Kapitel_2/Schleifen.md)
+[Schleifen](/Projekte/Kapitel_2/Schleifen.md)
 
-[Nächstes Kapitel: Tupel](Tupel.md)
+[Tupel](Tupel.md)
 
 In diesem Kapitel lernst du, wie du mit Listen in Python arbeiten kannst. Listen sind eine der wichtigsten Datenstrukturen in Python und ermöglichen es dir, mehrere Werte in einer einzigen Variablen zu speichern und zu verwalten.
 

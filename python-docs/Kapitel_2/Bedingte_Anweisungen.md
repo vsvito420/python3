@@ -1,10 +1,10 @@
 # Bedingte Anweisungen in Python
 
-[Zurück zur Hauptseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
+[Startseite](/Projekte/Kapitel_0/Anfang_Lese_Mich.md)
 
-[Vorheriges Kapitel: Strings](/Projekte/Kapitel_1/Strings.md)
+[Strings](/Projekte/Kapitel_1/Strings.md)
 
-[Nächstes Kapitel: Schleifen](Schleifen.md)
+[Schleifen](Schleifen.md)
 
 In diesem Kapitel lernst du, wie du mit bedingten Anweisungen in Python arbeiten kannst. Bedingte Anweisungen ermöglichen es deinem Programm, Entscheidungen zu treffen und unterschiedliche Aktionen basierend auf verschiedenen Bedingungen auszuführen.
 

@@ -312,7 +312,7 @@ async function loadMarkdownFile(filePath) {
                     <p>Ursprünglicher Pfad: ${filePath}</p>
                 </div>
                 <button onclick="loadMarkdownFile('${DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md')">
-                    Zurück zur Hauptseite
+                    Startseite
                 </button>
             </div>
         `;

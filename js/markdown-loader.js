@@ -172,7 +172,7 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
                         <p>Ursprünglicher Pfad: ${filePath}</p>
                     </div>
                     <a href="?doc=${encodeURIComponent((window.DOCS_BASE_DIR || '.') + '/Kapitel_0/Anfang_Lese_Mich.md')}" onclick="event.preventDefault(); window.loadMarkdownFile && window.loadMarkdownFile('${window.DOCS_BASE_DIR || '.'}/Kapitel_0/Anfang_Lese_Mich.md')">
-                        Zurück zur Hauptseite
+                        Startseite
                     </a>
                 </div>
             `;
