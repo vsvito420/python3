@@ -5,7 +5,7 @@
 
 ## Inhaltsverzeichnis
 
-##### [Kapitel 0: Installation ](Kapitel_0.md)
+##### [Kapitel 0: Installation ](../Kapitel_0/Anfang_Lese_Mich.md)
 ##### [Kapitel 1: Grundlagen](../Kapitel_1/Kapitel_1.md)
 ##### [Kapitel 2: Kontrollstrukturen](../Kapitel_2/Kapitel_2.md)
 ##### [Kapitel 3: Datenstrukturen](../Kapitel_3/Kapitel_3.md)
