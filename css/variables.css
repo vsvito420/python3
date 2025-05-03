@@ -64,3 +64,51 @@
     --text-color-light: #666;
     --background-color-light: #f8f9fa;
 }
+[data-theme="dark"] {
+    /* Dark Mode Color variables */
+    --primary-color: #5a8bcd; /* Helleres Blau für Dark Mode */
+    --primary-dark: #4a6fa5; /* Ursprüngliches Primärblau als dunklere Variante */
+    --secondary-color: #bdc3c7; /* Helleres Grau */
+    --secondary-dark: #95a5a6; /* Mittleres Grau */
+    --secondary-light: #ecf0f1; /* Sehr helles Grau */
+    --secondary-lighter: #ffffff; /* Weiß */
+    --success-color: #2ecc71; /* Helleres Grün */
+    --success-hover: #27ae60; /* Ursprüngliches Erfolgsgrün */
+    --danger-color: #e74c3c; /* Rot bleibt gleich */
+    --danger-hover: #c0392b; /* Dunkleres Rot bleibt gleich */
+    --neutral-color: #7f8c8d; /* Dunkleres Neutral */
+    --neutral-hover: #95a5a6; /* Helleres Neutral */
+    --light-bg: #1a2530; /* Sehr dunkler Hintergrund */
+    --white: #1f2d3a; /* Dunkler "Weiß"-Ersatz */
+    --light-gray: #2c3e50; /* Dunkles Grau */
+    --dark-text: #ecf0f1; /* Heller Text */
+    --border-color: #34495e; /* Dunklere Rahmenfarbe */
+    --tip-bg: #2c3e50; /* Dunkler Tipp-Hintergrund */
+    --link-color: #5a8bcd; /* Helleres Blau für Links */
+    --link-hover: #7aa9e3; /* Noch helleres Blau für Hover */
+    --link-bg: rgba(90, 139, 205, 0.15); /* Angepasster Link-Hintergrund */
+    --link-bg-hover: rgba(90, 139, 205, 0.25); /* Angepasster Link-Hintergrund Hover */
+
+    /* Dark Mode macOS-ähnliche Farben */
+    --macos-bg-gradient-start: #2c3e50; /* Dunkles Grau */
+    --macos-bg-gradient-end: #1a2530; /* Sehr dunkles Grau */
+    --macos-glass-bg: rgba(44, 62, 80, 0.8); /* Dunkler Glas-Effekt */
+    --macos-glass-border: rgba(52, 73, 94, 0.8); /* Dunklerer Glas-Rand */
+    --macos-card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stärkerer Schatten */
+    --macos-glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); /* Stärkerer Glas-Schatten */
+    --macos-blue-glow: 0 0 8px rgba(90, 139, 205, 0.3); /* Angepasster blauer Schein */
+    --macos-light-glow: 0 0 8px rgba(189, 195, 199, 0.2); /* Angepasster heller Schein */
+
+    /* Dark Mode Quiz und Scroll-Navigation Farben */
+    --primary-color-light: rgba(90, 139, 205, 0.15);
+    --primary-color-dark: #4a6fa5;
+    --success-color-light: rgba(46, 204, 113, 0.15);
+    --error-color: #e74c3c;
+    --error-color-light: rgba(231, 76, 60, 0.15);
+    --info-color: #3498db;
+    --info-color-light: rgba(52, 152, 219, 0.15);
+    --hover-color: rgba(255, 255, 255, 0.08);
+    --text-color: #ecf0f1; /* Heller Text */
+    --text-color-light: #bdc3c7; /* Hellerer, heller Text */
+    --background-color-light: #1a2530; /* Sehr dunkler Hintergrund */
+}

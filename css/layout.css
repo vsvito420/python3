@@ -1,6 +1,149 @@
 /* layout.css - Layout-Stile */
 
 /* Layout */
+/* Top Toolbar Styles */
+.top-toolbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--secondary-dark);
+    color: var(--light-gray);
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    z-index: 1001; /* Ensure it's above sidebar */
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--macos-glass-border);
+}
+
+.top-toolbar button,
+.top-toolbar a {
+    background: none;
+    border: 1px solid transparent; /* Add border for consistent height */
+    color: var(--light-gray);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.top-toolbar button:hover,
+.top-toolbar a:hover {
+    background-color: var(--secondary-light);
+    color: var(--white);
+    border-color: var(--secondary-light);
+}
+
+.top-toolbar .code-icon {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Dark Mode Toggle Switch Styles in Toolbar */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Push to the right */
+    gap: var(--spacing-sm);
+}
+
+.theme-label {
+    font-size: 0.9rem;
+    display: none; /* Hide label on small screens */
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px; /* Slightly smaller */
+    height: 22px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px; /* Smaller circle */
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px); /* Adjusted movement */
+}
+
+.slider.round {
+    border-radius: 22px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Dark Mode Styles for Toolbar */
+[data-theme="dark"] .top-toolbar {
+    background-color: var(--secondary-dark);
+    color: var(--light-gray);
+    border-bottom-color: var(--secondary-light);
+}
+
+[data-theme="dark"] .top-toolbar button,
+[data-theme="dark"] .top-toolbar a {
+    color: var(--light-gray);
+}
+
+[data-theme="dark"] .top-toolbar button:hover,
+[data-theme="dark"] .top-toolbar a:hover {
+    background-color: var(--secondary-light);
+    color: var(--white);
+    border-color: var(--secondary-light);
+}
+
+[data-theme="dark"] .slider {
+    background-color: var(--secondary-color); /* Darker inactive background */
+}
+
+[data-theme="dark"] input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+[data-theme="dark"] .slider:before {
+    background-color: var(--light-gray); /* Slightly darker circle */
+}
 .container {
     display: grid;
     grid-template-columns: 250px 1fr;
@@ -66,63 +209,15 @@
 
 /* Responsive Design - Mobile First Approach */
 /* Base mobile styles */
-.sidebar-toggle-container {
-    display: block;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1001;
-}
+/* .sidebar-toggle-container styles removed as buttons are now in .top-toolbar */
 
-#toggle-sidebar-mobile {
-    background-color: rgba(44, 62, 80, 0.8);
-    color: var(--light-gray);
-    border: none;
-    border-radius: var(--border-radius-md);
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: var(--macos-glass-shadow);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid var(--macos-glass-border);
-    margin-right: 8px; /* Abstand zum Code-Editor-Button */
-}
-
-/* Code-Editor-Button neben dem Hamburger-Menü */
-.code-editor-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(44, 62, 80, 0.8);
-    color: var(--light-gray);
-    border: none;
-    border-radius: var(--border-radius-md);
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    box-shadow: var(--macos-glass-shadow);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid var(--macos-glass-border);
-    text-decoration: none;
-}
-
-.code-editor-button:hover {
-    background-color: rgba(52, 73, 94, 0.9);
-    color: white;
-}
-
-.code-icon {
-    font-weight: bold;
-}
+/* Styles for buttons within .top-toolbar handle mobile/desktop toggles */
 
 .container {
     grid-template-columns: 1fr;
     grid-template-areas: "content";
     padding-bottom: 200px;
+    padding-top: 50px; /* Add padding to prevent content from hiding under fixed toolbar */
 }
 
 /* Hide vertical resize handle on mobile */
@@ -152,14 +247,16 @@
 
 /* Desktop styles */
 @media (min-width: 992px) {
-    .sidebar-toggle-container {
-        display: none;
-    }
-    
+    /* .sidebar-toggle-container display: none; removed */
+    #toggle-sidebar-mobile { display: none; } /* Hide mobile toggle on desktop */
+    #toggle-sidebar-desktop { display: inline-flex; } /* Show desktop toggle */
+    .theme-label { display: inline; } /* Show theme label on desktop */
+
     .container {
         grid-template-columns: 250px 1fr;
         grid-template-areas: "sidebar content";
         padding-bottom: 200px;
+        padding-top: 50px; /* Add padding to prevent content from hiding under fixed toolbar */
     }
     
     /* Show vertical resize handle on desktop */

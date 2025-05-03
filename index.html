@@ -8,6 +8,15 @@
     <title>Python Lernplattform</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     
+<script>
+        // Immediately set the theme based on system preference to avoid FOUT
+        (function() {
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialTheme = prefersDark ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', initialTheme);
+            console.log('Initial theme set in head:', initialTheme);
+        })();
+    </script>
     <!-- Preload critical resources -->
     <link rel="preload" href="css/main.css" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css" as="style">
@@ -84,12 +93,23 @@
     </style>
 </head>
 <body>
-    <!-- Mobile sidebar toggle button and code editor button -->
-    <div class="sidebar-toggle-container" aria-hidden="true">
+    <!-- Top Toolbar -->
+    <div class="top-toolbar">
         <button id="toggle-sidebar-mobile" aria-label="Navigationsmenü umschalten">☰</button>
+        <button id="toggle-sidebar-desktop" aria-label="Navigationsmenü umschalten">
+             <span class="toggle-icon-open">←</span>
+             <span class="toggle-icon-closed">☰</span>
+        </button>
         <a href="code-editor.html" class="code-editor-button" aria-label="Code-Editor öffnen">
-            <span class="code-icon">{ }</span>
+            <span class="code-icon">{ }</span> Code Editor
         </a>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox" aria-label="Dark Mode umschalten" />
+                <div class="slider round"></div>
+            </label>
+            <span class="theme-label">Dark Mode</span>
+        </div>
     </div>
 
     <!-- Main container -->
@@ -98,10 +118,7 @@
         <nav id="sidebar" aria-label="Kapitel-Navigation">
             <header class="sidebar-header">
                 <h1>Python Lernen</h1>
-                <button id="toggle-sidebar-desktop" aria-label="Navigationsmenü umschalten">
-                    <span class="toggle-icon-open">←</span>
-                    <span class="toggle-icon-closed">☰</span>
-                </button>
+                <!-- Desktop toggle button moved to top-toolbar -->
             </header>
 
             <!-- Fortschritts-Tracker -->
@@ -201,6 +218,7 @@
     <script src="js/editor-standalone.js"></script>
     <script src="js/editor-resize.js"></script>
     <script src="js/ui-progress.js"></script>
+<script src="js/theme-switcher.js"></script>
     <script src="js/ui-navigation.js"></script>
     <script src="js/ui-scroll-navigation.js"></script>
     <script src="js/markdown-cache.js"></script>

@@ -175,3 +175,90 @@
         width: auto;
     }
 }
+/* Dark Mode Specific Sidebar Styles */
+[data-theme="dark"] #sidebar {
+    background-color: rgba(26, 37, 48, 0.95); /* Dunklerer Sidebar-Hintergrund */
+    color: var(--light-gray);
+    border-right-color: var(--secondary-dark);
+}
+
+[data-theme="dark"] #sidebar:hover {
+    border-right-color: rgba(90, 139, 205, 0.3); /* Hellerer Hover-Rand */
+}
+
+[data-theme="dark"] .sidebar-header {
+    background-color: rgba(10, 15, 20, 0.8); /* Noch dunklerer Header */
+    border-bottom-color: var(--secondary-dark);
+}
+
+[data-theme="dark"] #toggle-sidebar-desktop {
+    color: var(--light-gray);
+}
+
+[data-theme="dark"] .sidebar-menu li {
+    border-bottom-color: rgba(61, 81, 102, 0.5); /* Dunklere Trennlinie */
+}
+
+[data-theme="dark"] .sidebar-menu li:hover {
+    background-color: rgba(52, 73, 94, 0.9); /* Etwas hellerer Hover */
+}
+
+[data-theme="dark"] .sidebar-menu li.active {
+    background-color: rgba(90, 139, 205, 0.7); /* Helleres Blau für aktives Element */
+}
+
+[data-theme="dark"] .sidebar-menu a {
+    color: var(--secondary-lighter); /* Sehr heller Text (weiß im Dark Mode) für bessere Lesbarkeit */
+}
+
+[data-theme="dark"] .sidebar-menu a:hover {
+    color: var(--white); /* Weißer Text bei Hover */
+}
+
+[data-theme="dark"] .sidebar-menu li.menu-home {
+    background-color: rgba(10, 15, 20, 0.7);
+    border-left-color: var(--primary-color);
+}
+
+[data-theme="dark"] .sidebar-menu li.chapter-header {
+    background-color: rgba(61, 81, 102, 0.7); /* Angepasster Header-Hintergrund */
+    border-left-color: var(--success-color);
+    color: var(--light-gray); /* Heller Text für Kapitelüberschriften */
+}
+
+[data-theme="dark"] .sidebar-menu li.chapter-item {
+    background-color: rgba(44, 62, 80, 0.6); /* Angepasster Item-Hintergrund */
+    border-left-color: var(--neutral-color);
+}
+
+[data-theme="dark"] .sidebar-menu li.chapter-item:hover {
+    background-color: rgba(52, 73, 94, 0.8);
+    border-left-color: var(--primary-color);
+}
+
+[data-theme="dark"] .sidebar-menu li.chapter-item.active {
+    background-color: rgba(90, 139, 205, 0.6); /* Helleres Blau für aktives Item */
+    border-left-color: var(--white);
+}
+
+[data-theme="dark"] .sidebar-menu li.chapter-item.completed {
+    border-left-color: var(--success-color);
+}
+
+[data-theme="dark"] .sidebar-menu li.completed a {
+    color: var(--success-color); /* Farbe für abgeschlossene Kapitel beibehalten */
+}
+
+/* Fortschritts-Tracker Dark Mode */
+[data-theme="dark"] #progress-tracker {
+    background-color: var(--secondary-dark);
+}
+[data-theme="dark"] .progress-bar {
+    background-color: var(--secondary-color);
+}
+[data-theme="dark"] .progress-fill {
+    background-color: var(--primary-color);
+}
+[data-theme="dark"] .progress-text {
+    color: var(--light-gray);
+}

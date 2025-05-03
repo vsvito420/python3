@@ -355,3 +355,88 @@ code {
     width: 100%;
     margin: 0;
 }
+/* Dark Mode Specific Styles */
+[data-theme="dark"] .markdown-content pre {
+    background-color: var(--secondary-dark); /* Dunkler Hintergrund für Codeblöcke */
+    border-color: var(--secondary-light);
+    border-left-color: var(--primary-color);
+}
+
+[data-theme="dark"] .markdown-content pre code {
+    color: var(--light-gray); /* Heller Text für Code */
+    background-color: transparent;
+}
+
+/* Spezifische Syntax-Hervorhebung für Dark Mode anpassen (optional, hier als Beispiel) */
+[data-theme="dark"] .markdown-content pre code.language-python {
+    color: #87ceeb; /* Helleres Blau für Python */
+}
+[data-theme="dark"] .markdown-content pre code.language-javascript {
+    color: #f08080; /* Helleres Rot für JS */
+}
+[data-theme="dark"] .markdown-content pre code.language-html {
+    color: #ffcc99; /* Helleres Orange für HTML */
+}
+[data-theme="dark"] .markdown-content pre code.language-css {
+    color: #dda0dd; /* Helleres Lila für CSS */
+}
+
+
+[data-theme="dark"] .markdown-content code { /* Inline code */
+    background-color: var(--secondary-dark);
+    color: var(--secondary-lighter);
+}
+
+[data-theme="dark"] .markdown-content p {
+    background-color: rgba(44, 62, 80, 0.7); /* Dunklerer transparenter Hintergrund */
+    border-color: var(--secondary-dark);
+    color: var(--dark-text); /* Heller Text für Paragraphen */
+}
+
+[data-theme="dark"] .markdown-content ul,
+[data-theme="dark"] .markdown-content ol {
+    background-color: rgba(44, 62, 80, 0.7);
+    border-color: var(--secondary-dark);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .markdown-content ul li:before {
+     color: var(--primary-color); /* Sicherstellen, dass Aufzählungszeichen die richtige Farbe haben */
+}
+
+
+[data-theme="dark"] .markdown-content blockquote {
+    background-color: rgba(44, 62, 80, 0.7);
+    border-color: var(--secondary-dark);
+    border-left-color: var(--primary-color);
+    color: var(--secondary-light);
+}
+
+[data-theme="dark"] .markdown-table th {
+    background-color: var(--secondary-dark);
+    color: var(--light-gray);
+    border-bottom-color: var(--secondary-light);
+}
+
+[data-theme="dark"] .markdown-table td {
+    background-color: var(--white); /* Dunkler "Weiß"-Ersatz */
+    border-bottom-color: var(--secondary-dark);
+    color: var(--dark-text);
+}
+
+[data-theme="dark"] .markdown-table tr:nth-child(even) td {
+    background-color: var(--light-bg); /* Sehr dunkler Hintergrund für jede zweite Zeile */
+}
+
+[data-theme="dark"] .markdown-table tr:hover td {
+    background-color: rgba(90, 139, 205, 0.2); /* Angepasster Hover-Effekt */
+}
+
+[data-theme="dark"] .markdown-content h1,
+[data-theme="dark"] .markdown-content h2,
+[data-theme="dark"] .markdown-content h3,
+[data-theme="dark"] .markdown-heading {
+    background-color: var(--primary-color-light);
+    color: var(--dark-text);
+    border-left-color: var(--primary-color);
+}
