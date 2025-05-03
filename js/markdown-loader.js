@@ -189,6 +189,11 @@ function checkUrlForDocument() {
     const docPath = urlParams.get('doc');
     
     if (docPath) {
+        // Stelle sicher, dass das Sidebar-Menü erstellt wird, bevor das Dokument geladen wird
+        if(window.createSidebarMenu) {
+            window.createSidebarMenu();
+        }
+        
         // Load the document specified in the URL without updating history
         loadMarkdownFile(docPath, false);
         return true;
