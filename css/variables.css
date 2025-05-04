@@ -84,10 +84,11 @@
     --dark-text: #dadce0; /* Angepasster heller Text für besseren Kontrast */
     --border-color: #34495e; /* Dunklere Rahmenfarbe */
     --tip-bg: #2c3e50; /* Dunkler Tipp-Hintergrund */
-    --link-color: #8ab4f8; /* Angepasstes Blau für Links */
-    --link-hover: #a8c7fa; /* Angepasstes helleres Blau für Hover */
-    --link-bg: rgba(90, 139, 205, 0.15); /* Angepasster Link-Hintergrund */
-    --link-bg-hover: rgba(90, 139, 205, 0.25); /* Angepasster Link-Hintergrund Hover */
+    --link-color: #9ecbff; /* Helleres Blau für besseren Kontrast im Dark Mode */
+    --link-hover: #c7e0ff; /* Noch helleres Blau für Hover im Dark Mode */
+    --link-hover-shadow: 0 0 5px var(--link-hover); /* Leichter Neon-Effekt für Hover */
+    --link-bg: rgba(158, 203, 255, 0.15); /* Angepasster Link-Hintergrund */
+    --link-bg-hover: rgba(158, 203, 255, 0.25); /* Angepasster Link-Hintergrund Hover */
 
     /* Dark Mode macOS-ähnliche Farben */
     --macos-bg-gradient-start: #2c3e50; /* Dunkles Grau */

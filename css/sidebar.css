@@ -212,7 +212,9 @@
 }
 
 [data-theme="dark"] .sidebar-menu a:hover {
-    color: var(--secondary-lighter); /* Hellerer Text bei Hover */
+    color: var(--link-hover); /* Verwende die neue Hover-Farbe */
+    text-shadow: var(--link-hover-shadow); /* Füge den Neon-Effekt hinzu */
+    text-decoration: none; /* Entferne Unterstreichung für cleaneren Look */
 }
 
 [data-theme="dark"] .sidebar-menu li.menu-home {
@@ -246,7 +248,7 @@
 }
 
 [data-theme="dark"] .sidebar-menu li.completed a {
-    color: var(--success-color); /* Farbe für abgeschlossene Kapitel beibehalten */
+    color: #76d7c4; /* Hellerer Türkiston für besseren Kontrast bei abgeschlossenen Kapiteln */
 }
 
 /* Fortschritts-Tracker Dark Mode */

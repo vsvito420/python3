@@ -525,7 +525,7 @@
 
 [data-theme="dark"] #content a {
     background-color: var(--secondary-light);
-    color: var(--primary-color-light);
+    color: var(--link-color); /* Korrigierte Link-Farbe für Dark Mode */
     border-color: rgba(100, 100, 100, 0.5);
 }
 
