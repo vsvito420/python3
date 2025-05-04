@@ -81,11 +81,11 @@
     --light-bg: #1a2530; /* Sehr dunkler Hintergrund */
     --white: #1f2d3a; /* Dunkler "Weiß"-Ersatz */
     --light-gray: #2c3e50; /* Dunkles Grau */
-    --dark-text: #ecf0f1; /* Heller Text */
+    --dark-text: #dadce0; /* Angepasster heller Text für besseren Kontrast */
     --border-color: #34495e; /* Dunklere Rahmenfarbe */
     --tip-bg: #2c3e50; /* Dunkler Tipp-Hintergrund */
-    --link-color: #5a8bcd; /* Helleres Blau für Links */
-    --link-hover: #7aa9e3; /* Noch helleres Blau für Hover */
+    --link-color: #8ab4f8; /* Angepasstes Blau für Links */
+    --link-hover: #a8c7fa; /* Angepasstes helleres Blau für Hover */
     --link-bg: rgba(90, 139, 205, 0.15); /* Angepasster Link-Hintergrund */
     --link-bg-hover: rgba(90, 139, 205, 0.25); /* Angepasster Link-Hintergrund Hover */
 
@@ -108,7 +108,7 @@
     --info-color: #3498db;
     --info-color-light: rgba(52, 152, 219, 0.15);
     --hover-color: rgba(255, 255, 255, 0.08);
-    --text-color: #ecf0f1; /* Heller Text */
-    --text-color-light: #bdc3c7; /* Hellerer, heller Text */
+    --text-color: #dadce0; /* Angepasster heller Text für besseren Kontrast */
+    --text-color-light: #a0a0a0; /* Angepasster hellerer, heller Text */
     --background-color-light: #1a2530; /* Sehr dunkler Hintergrund */
 }

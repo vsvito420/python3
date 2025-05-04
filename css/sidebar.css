@@ -178,7 +178,7 @@
 /* Dark Mode Specific Sidebar Styles */
 [data-theme="dark"] #sidebar {
     background-color: rgba(26, 37, 48, 0.95); /* Dunklerer Sidebar-Hintergrund */
-    color: var(--light-gray);
+    color: var(--dark-text); /* Angepasster heller Text für Sidebar */
     border-right-color: var(--secondary-dark);
 }
 
@@ -192,7 +192,7 @@
 }
 
 [data-theme="dark"] #toggle-sidebar-desktop {
-    color: var(--light-gray);
+    color: var(--dark-text); /* Angepasster heller Text für Toggle-Button */
 }
 
 [data-theme="dark"] .sidebar-menu li {
@@ -212,7 +212,7 @@
 }
 
 [data-theme="dark"] .sidebar-menu a:hover {
-    color: var(--white); /* Weißer Text bei Hover */
+    color: var(--secondary-lighter); /* Hellerer Text bei Hover */
 }
 
 [data-theme="dark"] .sidebar-menu li.menu-home {
@@ -223,7 +223,7 @@
 [data-theme="dark"] .sidebar-menu li.chapter-header {
     background-color: rgba(61, 81, 102, 0.7); /* Angepasster Header-Hintergrund */
     border-left-color: var(--success-color);
-    color: var(--light-gray); /* Heller Text für Kapitelüberschriften */
+    color: var(--dark-text); /* Angepasster heller Text für Kapitelüberschriften */
 }
 
 [data-theme="dark"] .sidebar-menu li.chapter-item {
@@ -260,5 +260,5 @@
     background-color: var(--primary-color);
 }
 [data-theme="dark"] .progress-text {
-    color: var(--light-gray);
+    color: var(--dark-text); /* Angepasster heller Text für Fortschrittsanzeige */
 }

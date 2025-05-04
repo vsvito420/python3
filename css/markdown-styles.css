@@ -363,7 +363,7 @@ code {
 }
 
 [data-theme="dark"] .markdown-content pre code {
-    color: var(--light-gray); /* Heller Text für Code */
+    color: var(--dark-text); /* Angepasster heller Text für Code */
     background-color: transparent;
 }
 
@@ -384,7 +384,7 @@ code {
 
 [data-theme="dark"] .markdown-content code { /* Inline code */
     background-color: var(--secondary-dark);
-    color: var(--secondary-lighter);
+    color: var(--dark-text); /* Angepasster heller Text für Inline-Code */
 }
 
 [data-theme="dark"] .markdown-content p {
@@ -409,12 +409,12 @@ code {
     background-color: rgba(44, 62, 80, 0.7);
     border-color: var(--secondary-dark);
     border-left-color: var(--primary-color);
-    color: var(--secondary-light);
+    color: var(--dark-text); /* Angepasster heller Text für Blockquotes */
 }
 
 [data-theme="dark"] .markdown-table th {
     background-color: var(--secondary-dark);
-    color: var(--light-gray);
+    color: var(--dark-text); /* Angepasster heller Text für Tabellenköpfe */
     border-bottom-color: var(--secondary-light);
 }
 
