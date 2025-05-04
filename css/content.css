@@ -466,8 +466,9 @@
 }
 
 [data-theme="dark"] .lesson-container:hover {
-    background-color: rgba(52, 73, 94, 0.9);
-    border-color: var(--primary-color-light);
+    background-color: inherit !important; /* Verhindert das Aufhellen des Hintergrunds */
+    box-shadow: none !important; /* Entfernt Schatten */
+    border: 2px solid #39ff14 !important; /* Fügt einen neonfarbenen Rand hinzu */
 }
 
 [data-theme="dark"] .lesson-container h1,
@@ -484,10 +485,11 @@
      border-color: var(--secondary-light);
 }
 
-[data-theme="dark"] .content-section ul:hover,
-[data-theme="dark"] .content-section ol:hover {
-    background-color: rgba(52, 73, 94, 0.9);
-    border-color: var(--primary-color-light);
+[data-theme="dark"] .markdown-content ul:hover,
+[data-theme="dark"] .markdown-content ol:hover {
+    background-color: inherit !important; /* Verhindert Aufhellen */
+    box-shadow: none !important; /* Entfernt ggf. vorhandenen Schatten */
+    border: 2px solid #39ff14 !important; /* Neon-Rand */
 }
 
 [data-theme="dark"] .content-section ul li:before {
@@ -504,8 +506,9 @@
 }
 
 [data-theme="dark"] .code-editor-container:hover {
-    border-color: var(--primary-color-light); /* Hellerer Rand bei Hover */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Angepasster Schatten */
+    background-color: inherit !important; /* Verhindert Aufhellen */
+    box-shadow: none !important; /* Entfernt Schatten */
+    border: 2px solid #39ff14 !important; /* Neon-Rand */
 }
 
 [data-theme="dark"] .output-container {
@@ -514,7 +517,9 @@
 }
 
 [data-theme="dark"] .output-container:hover {
-     border-color: var(--primary-color-light);
+    background-color: inherit !important; /* Verhindert Aufhellen */
+    box-shadow: none !important; /* Entfernt ggf. vorhandenen Schatten */
+    border: 2px solid #39ff14 !important; /* Neon-Rand */
 }
 
 [data-theme="dark"] .output-content {
