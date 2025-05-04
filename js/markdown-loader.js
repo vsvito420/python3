@@ -119,6 +119,12 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
                 slides.forEach(slide => {
                     // Use 'block' as a sensible default display for divs in normal flow
                     slide.style.display = 'block';
+                    
+                    // Zusätzlich sicherstellen, dass alle Transformationen zurückgesetzt werden
+                    const contentWrapper = slide.querySelector('.slide-content-wrapper');
+                    if (contentWrapper) {
+                        contentWrapper.style.transform = '';
+                    }
                 });
                 console.log("Ensured slides are visible in normal mode.");
             }

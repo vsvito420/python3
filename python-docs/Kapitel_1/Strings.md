@@ -8,19 +8,25 @@
 
 In diesem Kapitel entdecken wir die Welt der Strings in Python! Stell dir Strings wie Textbausteine vor, mit denen du Wörter, Sätze oder sogar ganze Geschichten in deinem Programm speichern und bearbeiten kannst.
 
+---
+
 ## Was sind Strings?
 
-- Strings sind einfach gesagt Text. 
-Sie bestehen aus einer Reihenfolge von Buchstaben, Zahlen oder Symbolen. In Python schreibst du Strings, indem du den Text in einfache Anführungszeichen (`'`) oder doppelte Anführungszeichen (`"`) setzt.
+- **Strings sind einfach gesagt Text**. 
 
-- Ein wichtiger Punkt ist, dass Strings in Python "unveränderlich" sind. 
-Das bedeutet, wenn du einen String einmal erstellt hast, kannst du einzelne Buchstaben darin nicht einfach ändern. Du kannst aber neue Strings erstellen, die auf dem alten basieren.
+    Sie bestehen aus einer Reihenfolge von Buchstaben, Zahlen oder Symbolen. In Python schreibst du Strings, indem du den Text in einfache Anführungszeichen (`'`) oder doppelte Anführungszeichen (`"`) setzt.
+
+- Ein wichtiger Punkt ist, dass Strings in Python "**unveränderlich**" sind. 
+
+    Das bedeutet, wenn du einen String einmal erstellt hast, kannst du einzelne Buchstaben darin nicht einfach ändern. Du kannst aber neue Strings erstellen, die auf dem alten basieren.
 
 ```python
 # Strings erstellen
 name = "Max Mustermann"
 adresse = 'Musterstraße 123'
 ```
+
+---
 
 ## String-Erstellung
 
@@ -48,9 +54,13 @@ adresse = 'Musterstraße 123'
     pfad = "C:\\Ordner\\Datei.txt" # So fügst du einen Backslash ein
     ```
 
+---
+
 ## Was kann man mit Strings machen?
 
 Strings sind nicht nur zum Speichern von Text da, du kannst auch verschiedene Dinge mit ihnen anstellen!
+
+---
 
 ### Strings zusammenfügen (Verketten)
 
@@ -66,6 +76,8 @@ name = "Python"
 begruessung = gruss + " " + name + "!" # Ergibt "Hallo Python!"
 ```
 
+---
+
 ### Strings wiederholen
 
 Manchmal möchtest du denselben Text mehrmals hintereinander schreiben. Dafür gibt es den Stern-Operator (`*`). Du schreibst den String, dann den Stern und dann die Zahl, wie oft der String wiederholt werden soll.
@@ -75,6 +87,8 @@ lachen = "Ha" * 4  # Ergibt "HaHaHaHa"
 linie = "=" * 15 # Ergibt "==============="
 ```
 
+---
+
 ### Wie lang ist ein String?
 
 Um herauszufinden, wie viele Zeichen (Buchstaben, Zahlen, Leerzeichen usw.) in einem String sind, benutzt du die Funktion `len()`. `len` steht für "length", also Länge.
@@ -83,6 +97,8 @@ Um herauszufinden, wie viele Zeichen (Buchstaben, Zahlen, Leerzeichen usw.) in e
 satz = "Das ist ein Satz."
 anzahl_zeichen = len(satz)  # Ergibt 17 (Leerzeichen und Punkt zählen mit!)
 ```
+
+---
 
 ## Einzelne Buchstaben finden
 
@@ -103,6 +119,8 @@ wort = "Zauberhut"
 letzter = wort[-1] # Das ist der letzte Buchstabe, also "t"
 vorletzter = wort[-2] # Das ist der vorletzte Buchstabe, also "u"
 ```
+
+---
 
 ## Teile von Strings ausschneiden (Slicing)
 
@@ -131,6 +149,8 @@ jeder_zweite = satz[0:10:2] # Ergibt "Dsi i" (jeder zweite Buchstabe von 0 bis 9
 umgedreht = satz[::-1] # Ergibt ".ztastseT nie tsi saD"
 ```
 
+---
+
 ## Tricks und Helfer für Strings (String-Methoden)
 
 Python bietet viele nützliche Methoden für die Arbeit mit Strings:
@@ -153,6 +173,8 @@ als_titel = gruss.title() # Ergibt "Hallo Welt"
 erster_gross = gruss.capitalize() # Ergibt "Hallo welt"
 ```
 
+---
+
 ### Wörter finden und ersetzen
 
 Stell dir vor, du hast einen langen Text und möchtest wissen, ob ein bestimmtes Wort darin vorkommt oder wie oft es da ist. Oder du möchtest ein Wort durch ein anderes ersetzen. Auch dafür gibt es Methoden!
@@ -174,6 +196,8 @@ wie_oft_fuchs = satz.count("Fuchs") # Ergibt 2
 # Ersetzen
 neuer_satz = satz.replace("Fuchs", "Hase") # Ergibt "Der schnelle Hase springt über den faulen Hund. Der Hase ist wirklich schnell."
 ```
+
+---
 
 ### Nachschauen, was im String steckt
 
@@ -205,6 +229,8 @@ alles_gross = "HALLO".isupper() # Ergibt True
 alles_klein = "welt".islower() # Ergibt True
 ```
 
+---
+
 ### Leerzeichen am Rand entfernen
 
 Manchmal hat ein String unnötige Leerzeichen am Anfang oder Ende. Das kann passieren, wenn jemand versehentlich die Leertaste drückt. Mit diesen Methoden kannst du sie ganz einfach entfernen:
@@ -220,6 +246,8 @@ links_weg = text_mit_leerzeichen.lstrip() # Ergibt "Viel Platz drumherum   "
 rechts_weg = text_mit_leerzeichen.rstrip() # Ergibt "   Viel Platz drumherum"
 alles_weg = text_mit_leerzeichen.strip() # Ergibt "Viel Platz drumherum"
 ```
+
+---
 
 ### Strings auseinandernehmen und wieder zusammenkleben
 
@@ -243,9 +271,13 @@ neuer_farben_string = "-".join(farben_liste) # Ergibt "rot-grün-blau"
 satz_wieder_zusammen = " ".join(worte_liste) # Ergibt "Das ist ein Satz" (fügt mit Leerzeichen zusammen)
 ```
 
+---
+
 ## Strings schick machen (Formatierung)
 
 Manchmal möchtest du Text und Zahlen oder den Inhalt von Variablen in einem String mischen. Das nennt man String-Formatierung. Es gibt verschiedene Wege, das zu tun.
+
+---
 
 ### 1. Der alte Weg mit %
 
@@ -256,6 +288,8 @@ tier = "Hund"
 anzahl = 2
 satz = "Ich habe %d %s." % (anzahl, tier) # Ergibt "Ich habe 2 Hund."
 ```
+
+---
 
 ### 2. Die format()-Methode
 
@@ -275,6 +309,8 @@ getraenk = "Saft"
 bestellung = "Ich möchte {food} und {drink}.".format(food=essen, drink=getraenk) # Ergibt "Ich möchte Pizza und Saft."
 ```
 
+---
+
 ### 3. f-Strings (ab Python 3.6) - Der moderne Weg!
 
 Das ist die neueste und oft einfachste Methode, um Strings zu formatieren. Du schreibst einfach ein `f` vor die Anführungszeichen des Strings. Dann kannst du Variablen oder sogar kleine Rechnungen direkt in geschweifte Klammern `{}` innerhalb des Strings schreiben. Python ersetzt sie automatisch durch ihre Werte.
@@ -292,6 +328,8 @@ satz = f"{name} ist {alter} Jahre alt und hat einen {haustier}."
 naechstes_jahr = f"Nächstes Jahr wird {name} {alter + 1} Jahre alt."
 # Ergibt "Nächstes Jahr wird Lisa 9 Jahre alt."
 ```
+
+---
 
 ## Was sind Escape-Sequenzen? (Die kleinen Helferlein mit dem Backslash)
 
@@ -317,6 +355,8 @@ print('Hier ist ein Backslash: \\')
 print("Sie sagte: \"Super!\"")
 ```
 
+---
+
 ## Rohe Strings (Raw Strings) - Wenn Backslashes normal sein sollen
 
 Manchmal, besonders bei Dateipfaden unter Windows oder bei bestimmten Mustern (regulären Ausdrücken), möchtest du, dass Backslashes `\` einfach nur Backslashes sind und nicht der Anfang einer Escape-Sequenz.
@@ -336,6 +376,8 @@ print(windows_pfad_raw)    # Gibt auch C:\Benutzer\Dokumente\Datei.txt aus
 # Aber im Code ist der Raw String oft einfacher zu lesen!
 ```
 
+---
+
 ## Übungen
 
 1. Erstelle einen String mit deinem Namen und gib ihn in Großbuchstaben aus.
@@ -343,6 +385,8 @@ print(windows_pfad_raw)    # Gibt auch C:\Benutzer\Dokumente\Datei.txt aus
 3. Zähle, wie oft der Buchstabe "e" im Satz "Entwickeln mit Python macht Spaß" vorkommt.
 4. Erstelle einen formatierten String mit f-Strings, der deinen Namen, dein Alter und deine Lieblingssprache enthält.
 5. Teile den String "Python,Java,C++,JavaScript" an den Kommas und gib die einzelnen Elemente aus.
+
+---
 
 ## Beispielprogramm
 
@@ -377,6 +421,8 @@ print(ausgabe)
 ausgabe = f"Name: {name}, Alter: {alter}"
 print(ausgabe)
 ```
+
+---
 
 ## Zusammenfassung
 

@@ -125,13 +125,21 @@ function toggleBoardMode() {
         removeBoardNavButtons(contentElement); // Remove nav buttons
         console.log("Board mode deactivated");
         document.removeEventListener('keydown', handleBoardModeKeys);
-        // Restore default display for all slides (CSS will handle visibility)
+        
+        // Explizit alle Folien sichtbar machen mit display: block
         window.slides.forEach(slide => {
-            slide.style.display = ''; // Remove inline style, let CSS rule
+            slide.style.display = 'block'; // Explizit auf block setzen statt leeren String
             slide.classList.remove('active-slide'); // Remove active class
         });
+        
         // Ensure the main content area doesn't retain board-mode specific styles if any
         contentElement.style.height = ''; // Reset any potential height overrides
+        
+        // Zusätzlich sicherstellen, dass alle Slide-Inhalte korrekt angezeigt werden
+        const slideContents = document.querySelectorAll('.slide-content-wrapper');
+        slideContents.forEach(content => {
+            content.style.transform = ''; // Entferne mögliche Transformationen
+        });
     }
 }
 

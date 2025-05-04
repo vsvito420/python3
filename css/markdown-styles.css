@@ -444,9 +444,17 @@ code {
 
 /* --- Board Mode Specific Styles --- */
 
+/* Standardverhalten für Slides im normalen Modus */
+.board-slide {
+    display: block; /* Standardmäßig sichtbar im normalen Modus */
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
 /* Ensure slides take full height and use flex for centering */
 #content.board-mode .board-slide {
-    display: none; /* Hidden by default */
+    display: none; /* Hidden by default in board mode */
     flex-direction: column;
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
