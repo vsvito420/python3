@@ -148,6 +148,28 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
             if (window.updateScrollNavigationOnLoad) {
                 window.updateScrollNavigationOnLoad();
             }
+
+            // If board mode is active after loading new content, re-initialize slides
+            if (window.isBoardModeActive) {
+                console.log("Re-initializing slides for board mode after content load.");
+                if (typeof window.initializeSlides === 'function' && typeof window.showSlide === 'function') {
+                    window.initializeSlides(); // Find the new slides in the updated content
+                    window.showSlide(0); // Show the first slide of the new content
+                    // Also recreate nav buttons for the new content context
+                    const contentElement = document.getElementById('content');
+                    if (contentElement && typeof window.createBoardNavButtons === 'function') {
+                         window.createBoardNavButtons(contentElement);
+                         // Update button state for the first slide
+                         if(typeof window.updateBoardNavButtonsState === 'function') {
+                             // Ensure window.slides is populated before accessing length
+                             const totalSlides = window.slides ? window.slides.length : 0;
+                             window.updateBoardNavButtonsState(0, totalSlides);
+                         }
+                    }
+                } else {
+                    console.warn("initializeSlides or showSlide function not found. Board mode might not display correctly after reload.");
+                }
+            }
             
             // Update browser URL using History API
             if (updateHistory) {
