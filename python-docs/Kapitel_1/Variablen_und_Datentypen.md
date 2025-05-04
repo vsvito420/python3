@@ -7,9 +7,13 @@
 
 In diesem Kapitel lernst du, wie du Variablen in Python erstellst und verwendest, sowie die grundlegenden Datentypen kennenlernst.
 
+---
+
 ## Was sind Variablen?
 
 Variablen sind Container, die Werte speichern. In Python musst du Variablen nicht deklarieren oder ihren Typ angeben - du weist ihnen einfach einen Wert zu.
+
+---
 
 ### Variablen erstellen
 
@@ -20,6 +24,8 @@ alter = 30
 groesse = 1.75
 ist_student = True
 ```
+
+---
 
 ### Variablennamen in Python
 
@@ -40,6 +46,8 @@ KONSTANTE = 3.14
 # mein-name = "Max"  # Enthält einen Bindestrich
 # if = 5  # Reserviertes Wort
 ```
+
+---
 
 ## Grundlegende Datentypen
 
@@ -97,6 +105,8 @@ hat_bestanden = False
 ergebnis = None
 ```
 
+---
+
 ## Datentyp einer Variable überprüfen
 
 Mit der Funktion `type()` kannst du den Datentyp einer Variable überprüfen:
@@ -112,6 +122,8 @@ print(type(alter))      # <class 'int'>
 print(type(groesse))    # <class 'float'>
 print(type(ist_student)) # <class 'bool'>
 ```
+
+---
 
 ## Typumwandlung (Type Casting)
 
@@ -135,6 +147,8 @@ wert = 7.8
 wert_int = int(wert)  # 7 als Integer
 ```
 
+---
+
 ## Übungen
 ```python
 # 1. Erstelle Variablen für deinen Namen, dein Alter, deine Körpergröße und ob du Student bist.
@@ -148,6 +162,9 @@ wert_int = int(wert)  # 7 als Integer
 # 5. Erstelle eine Variable mit dem Wert `None` und überprüfe ihren Typ.
 
 ```
+
+---
+
 ## Beispielprogramm
 
 ```python
