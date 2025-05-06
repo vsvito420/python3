@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,10 @@
     <meta name="theme-color" content="#2c3e50">
     <title>Python Lernplattform</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    
-<script>
+
+    <script>
         // Immediately set the theme based on system preference to avoid FOUT
-        (function() {
+        (function () {
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             const initialTheme = prefersDark ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', initialTheme);
@@ -19,12 +20,14 @@
     </script>
     <!-- Preload critical resources -->
     <link rel="preload" href="css/main.css" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css" as="style">
-    
+    <link rel="preload"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css" as="style">
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/markdown-styles.css">
-    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
 
     <!-- Load Pyodide without defer to ensure it's available -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
@@ -32,41 +35,111 @@
 
     <style>
         /* Zusätzliche Styles für Markdown-Inhalte */
-        .markdown-content h1 { margin-bottom: 0.5rem; color: var(--secondary-color); }
-        .markdown-content h2 { margin: 0.8rem 0 0.5rem; color: var(--secondary-color); }
-        .markdown-content h3 { margin: 0.6rem 0 0.4rem; color: var(--secondary-color); }
-        .markdown-content p { margin-bottom: 0.5rem; line-height: 1.4; }
-        .markdown-content ul, .markdown-content ol {
+        .markdown-content h1 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .markdown-content h2 {
+            margin: 0.8rem 0 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .markdown-content h3 {
+            margin: 0.6rem 0 0.4rem;
+            color: var(--secondary-color);
+        }
+
+        .markdown-content p {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
             margin-bottom: 0.5rem;
             margin-left: 0;
             padding: var(--spacing-md);
-            padding-left: calc(var(--spacing-md) + 1.2rem); /* Platz für Aufzählungszeichen */
+            padding-left: calc(var(--spacing-md) + 1.2rem);
+            /* Platz für Aufzählungszeichen */
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: var(--border-radius-md);
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
             transition: box-shadow 0.3s ease, border-color 0.3s ease;
-            list-style-position: inside; /* Aufzählungszeichen innerhalb des Blocks */
+            list-style-position: inside;
+            /* Aufzählungszeichen innerhalb des Blocks */
         }
-        .markdown-content ul:hover, .markdown-content ol:hover {
+
+        .markdown-content ul:hover,
+        .markdown-content ol:hover {
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             border-color: rgba(243, 156, 18, 0.2);
             background-color: rgba(255, 255, 255, 1);
         }
-        .markdown-content li { margin-bottom: 0.3rem; }
-        .markdown-content code { background-color: #f5f5f5; padding: 0.1rem 0.3rem; border-radius: 3px; font-family: 'Courier New', monospace; }
-        .markdown-content hr { margin: 0.8rem 0; border: 0; border-top: 1px solid var(--border-color); }
-        .markdown-content a { color: var(--primary-color); text-decoration: none; }
-        .markdown-content a:hover { text-decoration: underline; }
+
+        .markdown-content li {
+            margin-bottom: 0.3rem;
+        }
+
+        .markdown-content code {
+            background-color: #f5f5f5;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .markdown-content hr {
+            margin: 0.8rem 0;
+            border: 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .markdown-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
 
         /* Fortschritts-Tracker */
-        #progress-tracker { padding: 0.5rem; background-color: var(--light-gray); border-radius: var(--border-radius-sm); margin-bottom: 0.5rem; }
-        .progress-bar { height: 8px; background-color: #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 0.3rem; }
-        .progress-fill { height: 100%; background-color: var(--primary-color); width: 0%; transition: width 0.3s ease; }
-        .progress-text { font-size: 0.8rem; color: var(--secondary-color); text-align: center; }
+        #progress-tracker {
+            padding: 0.5rem;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.3rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
 
         /* Kapitel-Navigation */
-        .chapter-navigation { margin-top: 1rem; display: flex; justify-content: center; }
+        .chapter-navigation {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
         .mark-completed-button {
             background-color: var(--success-color);
             color: white;
@@ -76,11 +149,20 @@
             cursor: pointer;
             font-weight: bold;
         }
-        .mark-completed-button:hover { background-color: var(--success-hover); }
-        .mark-completed-button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+
+        .mark-completed-button:hover {
+            background-color: var(--success-hover);
+        }
+
+        .mark-completed-button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
 
         /* Abgeschlossene Kapitel in der Sidebar */
-        .sidebar-menu li.completed a { color: #2ecc71; }
+        .sidebar-menu li.completed a {
+            color: #2ecc71;
+        }
 
         /* Fehlermeldungen */
         .error-message {
@@ -92,13 +174,14 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Top Toolbar -->
     <div class="top-toolbar">
         <button id="toggle-sidebar-mobile" aria-label="Navigationsmenü umschalten">☰</button>
         <button id="toggle-sidebar-desktop" aria-label="Navigationsmenü umschalten">
-             <span class="toggle-icon-open">←</span>
-             <span class="toggle-icon-closed">☰</span>
+            <span class="toggle-icon-open">←</span>
+            <span class="toggle-icon-closed">☰</span>
         </button>
         <a href="code-editor.html" class="code-editor-button" aria-label="Code-Editor öffnen">
             <span class="code-icon">{ }</span> Code Editor
@@ -111,15 +194,22 @@
             <span class="theme-label">Seite</span> <!-- Label für Seiten-Theme -->
         </div>
         <!-- Neuer Button für Editor-Theme -->
-        <button id="editor-theme-toggle-button" class="theme-toggle-button editor-theme-button" aria-label="Toggle editor theme">
-             <span class="editor-theme-icon"></span> <!-- Icon wird per JS gesetzt -->
-             <span class="theme-label">Editor</span> <!-- Label für Editor-Theme -->
+        <button id="editor-theme-toggle-button" class="theme-toggle-button editor-theme-button"
+            aria-label="Toggle editor theme">
+            <span class="editor-theme-icon"></span> <!-- Icon wird per JS gesetzt -->
+            <span class="theme-label">Editor</span> <!-- Label für Editor-Theme -->
         </button>
         <!-- Neuer Button für Tafel-Modus -->
-        <button id="toggle-board-mode" class="theme-toggle-button board-mode-button" aria-label="Tafel-Modus umschalten">
-             <span class="board-mode-icon">☝️</span> <!-- Board/Chalkboard Icon -->
-             <span class="theme-label">Tafel</span>
+        <button id="toggle-board-mode" class="theme-toggle-button board-mode-button"
+            aria-label="Tafel-Modus umschalten">
+            <span class="board-mode-icon">☝️</span> <!-- Board/Chalkboard Icon -->
+            <span class="theme-label">Tafel</span>
         </button>
+        <!-- Globaler Textgrößen-Slider -->
+        <div class="text-size-slider-wrapper">
+            <label for="global-text-size-slider" class="theme-label">Textgröße:</label>
+            <input type="range" id="global-text-size-slider" min="80" max="150" value="100"> <!-- Werte in Prozent -->
+        </div>
     </div>
 
     <!-- Main container -->
@@ -142,7 +232,9 @@
             <!-- Dynamisch generiertes Menü -->
             <ul class="sidebar-menu" role="menu">
                 <li class="active" role="menuitem">
-                    <a href="?doc=python-docs/Kapitel_0/Anfang_Lese_Mich.md" onclick="event.preventDefault(); loadMarkdownFile('python-docs/Kapitel_0/Anfang_Lese_Mich.md')" aria-current="page">Hauptseite</a>
+                    <a href="?doc=python-docs/Kapitel_0/Anfang_Lese_Mich.md"
+                        onclick="event.preventDefault(); loadMarkdownFile('python-docs/Kapitel_0/Anfang_Lese_Mich.md')"
+                        aria-current="page">Hauptseite</a>
                 </li>
                 <!-- Weitere Menüpunkte werden dynamisch hinzugefügt -->
             </ul>
@@ -217,7 +309,8 @@
         };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.nls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.js"></script>
 
     <!-- Modular JavaScript files -->
@@ -228,7 +321,7 @@
     <script src="js/editor-standalone.js"></script>
     <script src="js/editor-resize.js"></script>
     <script src="js/ui-progress.js"></script>
-<script src="js/theme-switcher.js"></script>
+    <script src="js/theme-switcher.js"></script>
     <script src="js/ui-navigation.js"></script>
     <script src="js/ui-scroll-navigation.js"></script>
     <script src="js/markdown-cache.js"></script>
@@ -239,4 +332,5 @@
 
     <!-- Application is initialized in main.js -->
 </body>
+
 </html>

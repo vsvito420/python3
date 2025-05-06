@@ -21,35 +21,35 @@ window.slides = [];
 /**
  * Initialize the application when the DOM is loaded
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize the application
     if (typeof window.initializeApp === 'function') {
         window.initializeApp();
-        
+
         // Let the initializeApp function handle loading the initial file
     } else {
         console.error('initializeApp function not found. Make sure markdown-loader.js is loaded correctly.');
     }
-    
+
     // Initialize the standalone editor
     window.initializeStandaloneEditor();
-    
+
     // Initialize editor resize functionality
     window.initializeEditorResize();
-    
+
     // Initialize sidebar toggle functionality
     window.initializeSidebarToggle();
-    
+
     // Initialize scroll navigation
     if (typeof window.initializeScrollNavigation === 'function') {
         window.initializeScrollNavigation();
     } else {
         console.warn('initializeScrollNavigation function not found. Scroll navigation will not be available.');
     }
-    
+
     // Check window size and adjust resize handle display
     window.checkWindowSize();
-    
+
     // Standardmäßig den Code-Editor ausblenden
     const editorSidebar = document.getElementById('code-editor-sidebar');
     const container = document.querySelector('.container');
@@ -58,17 +58,17 @@ document.addEventListener('DOMContentLoaded', function() {
         container.classList.add('editor-hidden');
         container.style.paddingBottom = '50px';
     }
-    
+
     // Handle window resize events
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         // Update sidebar state
         window.setInitialSidebarState();
-        
+
         // Check window size for resize handle
         window.checkWindowSize();
-        
+
         // Update editor layouts
-        window.debounce(function() {
+        window.debounce(function () {
             if (window.editors) {
                 Object.values(window.editors).forEach(editor => {
                     if (editor && typeof editor.layout === 'function') {
@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 100)();
     });
-    
+
     // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         // Ctrl+Enter or Cmd+Enter to run code
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             // Find the active editor
@@ -95,10 +95,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
-    // Initialize Board Mode Toggle
-    initializeBoardModeToggle();
 });
+
+// Initialize Board Mode Toggle
+initializeBoardModeToggle();
+
+// Initialize Global Text Size Slider
+initializeGlobalTextSizeSlider();
 
 /**
  * Toggles the board mode on/off
@@ -125,16 +128,16 @@ function toggleBoardMode() {
         removeBoardNavButtons(contentElement); // Remove nav buttons
         console.log("Board mode deactivated");
         document.removeEventListener('keydown', handleBoardModeKeys);
-        
+
         // Explizit alle Folien sichtbar machen mit display: block
         window.slides.forEach(slide => {
             slide.style.display = 'block'; // Explizit auf block setzen statt leeren String
             slide.classList.remove('active-slide'); // Remove active class
         });
-        
+
         // Ensure the main content area doesn't retain board-mode specific styles if any
         contentElement.style.height = ''; // Reset any potential height overrides
-        
+
         // Zusätzlich sicherstellen, dass alle Slide-Inhalte korrekt angezeigt werden
         const slideContents = document.querySelectorAll('.slide-content-wrapper');
         slideContents.forEach(content => {
@@ -275,7 +278,7 @@ function nextSlide() {
  * Navigates to the previous slide
  */
 function previousSlide() {
-     if (window.isBoardModeActive) {
+    if (window.isBoardModeActive) {
         showSlide(window.currentSlideIndex - 1);
     }
 }
@@ -309,6 +312,24 @@ function initializeBoardModeToggle() {
         boardModeButton.addEventListener('click', toggleBoardMode);
     } else {
         console.warn('Board mode toggle button not found.');
+    }
+}
+
+/**
+ * Initializes the global text size slider
+ */
+function initializeGlobalTextSizeSlider() {
+    const slider = document.getElementById('global-text-size-slider');
+    if (slider) {
+        slider.addEventListener('input', function () {
+            const fontSizePercentage = this.value;
+            // Update a CSS variable for global font size control
+            document.documentElement.style.setProperty('--global-font-size', `${fontSizePercentage}%`);
+        });
+        // Set initial font size based on slider value
+        document.documentElement.style.setProperty('--global-font-size', `${slider.value}%`);
+    } else {
+        console.warn('Global text size slider not found.');
     }
 }
 

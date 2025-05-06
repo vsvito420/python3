@@ -10,8 +10,12 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     color: var(--dark-text);
     background: linear-gradient(135deg,
-        var(--macos-bg-gradient-start),
-        var(--macos-bg-gradient-end));
+            var(--macos-bg-gradient-start),
+            var(--macos-bg-gradient-end));
+    font-size: 1rem;
+    /* Default font size */
+    font-size: var(--global-font-size, 100%);
+    /* Use CSS variable for global scaling */
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
@@ -37,7 +41,7 @@ html {
     html {
         scroll-behavior: auto;
     }
-    
+
     * {
         transition: none !important;
         animation: none !important;
