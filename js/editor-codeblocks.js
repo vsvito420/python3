@@ -148,10 +148,18 @@ function initializeCodeBlocks() {
         button.addEventListener('click', function () {
             const editorId = this.getAttribute('data-editor');
             const editor = window.codeBlockEditors[editorId];
-            if (editor) {
-                const currentFontSize = editor.getOption(monaco.editor.EditorOption.fontSize);
-                const newFontSize = this.classList.contains('larger-font') ? currentFontSize + 1 : currentFontSize - 1;
-                editor.updateOptions({ fontSize: newFontSize > 8 ? newFontSize : 8 }); // Ensure minimum font size of 8
+            const outputContainer = document.querySelector(`#${editorId.replace('-editor', '')}-output .output-content`);
+
+            if (editor && outputContainer) {
+                // Update editor font size
+                const currentEditorFontSize = editor.getOption(monaco.editor.EditorOption.fontSize);
+                const newEditorFontSize = this.classList.contains('larger-font') ? currentEditorFontSize + 1 : currentEditorFontSize - 1;
+                editor.updateOptions({ fontSize: newEditorFontSize > 8 ? newEditorFontSize : 8 }); // Ensure minimum font size of 8
+
+                // Update output font size
+                const currentOutputFontSize = parseFloat(outputContainer.style.fontSize) || 0.9; // Default from CSS
+                const newOutputFontSize = this.classList.contains('larger-font') ? currentOutputFontSize + 0.1 : currentOutputFontSize - 0.1;
+                outputContainer.style.fontSize = `${newOutputFontSize > 0.8 ? newOutputFontSize : 0.8}rem`; // Ensure minimum font size
             }
         });
     });
