@@ -1,0 +1,7 @@
+name = "python3-proxy"
+compatibility_date = "2025-04-20"
+main = "worker.js"
+
+[vars]
+# Umgebungsvariablen können hier oder in der Cloudflare Dashboard gesetzt werden
+# GEMINI_API_KEY wird als Secret in der Cloudflare Dashboard konfiguriert
