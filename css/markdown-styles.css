@@ -6,7 +6,8 @@
     margin: 0.8rem 0;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    display: block; /* Verhindert Flex-Verhalten */
+    display: block;
+    /* Verhindert Flex-Verhalten */
     width: 100%;
 }
 
@@ -26,16 +27,20 @@
     margin: 0;
     font-size: 0.95rem;
     overflow: hidden;
-    display: table; /* Erzwingt Tabellen-Layout */
-    table-layout: fixed; /* Verbessert die Darstellung */
+    display: table;
+    /* Erzwingt Tabellen-Layout */
+    table-layout: fixed;
+    /* Verbessert die Darstellung */
 }
 
 .markdown-table thead {
-    display: table-header-group; /* Erzwingt Tabellenkopf-Layout */
+    display: table-header-group;
+    /* Erzwingt Tabellenkopf-Layout */
 }
 
 .markdown-table tbody {
-    display: table-row-group; /* Erzwingt Tabellenkörper-Layout */
+    display: table-row-group;
+    /* Erzwingt Tabellenkörper-Layout */
 }
 
 .markdown-table th {
@@ -45,18 +50,21 @@
     padding: 0.5rem 0.8rem;
     text-align: left;
     border-bottom: 2px solid var(--secondary-dark);
-    display: table-cell; /* Erzwingt Tabellenzellen-Layout */
+    display: table-cell;
+    /* Erzwingt Tabellenzellen-Layout */
 }
 
 .markdown-table td {
     padding: 0.5rem 0.8rem;
     border-bottom: 1px solid #e0e0e0;
     background-color: #f9f9f9;
-    display: table-cell; /* Erzwingt Tabellenzellen-Layout */
+    display: table-cell;
+    /* Erzwingt Tabellenzellen-Layout */
 }
 
 .markdown-table tr {
-    display: table-row; /* Erzwingt Tabellenzeilen-Layout */
+    display: table-row;
+    /* Erzwingt Tabellenzeilen-Layout */
 }
 
 .markdown-table tr:nth-child(even) td {
@@ -128,7 +136,8 @@ code {
     background-color: rgba(255, 255, 255, 0.7);
     width: 100%;
     overflow-x: auto;
-    display: block; /* Verhindert Flex-Verhalten */
+    display: block;
+    /* Verhindert Flex-Verhalten */
 }
 
 /* Headings */
@@ -186,18 +195,18 @@ code {
 }
 
 /* Einrückung für Listen basierend auf vorhergehender Überschrift */
-.markdown-content h2 + ul,
-.markdown-content h2 + ol {
+.markdown-content h2+ul,
+.markdown-content h2+ol {
     margin-left: 20px;
 }
 
-.markdown-content h3 + ul,
-.markdown-content h3 + ol {
+.markdown-content h3+ul,
+.markdown-content h3+ol {
     margin-left: 40px;
 }
 
-.markdown-content h4 + ul,
-.markdown-content h4 + ol {
+.markdown-content h4+ul,
+.markdown-content h4+ol {
     margin-left: 60px;
 }
 
@@ -275,15 +284,15 @@ code {
 }
 
 /* Einrückung für Paragraphen basierend auf vorhergehender Überschrift */
-.markdown-content h2 + p {
+.markdown-content h2+p {
     margin-left: 20px;
 }
 
-.markdown-content h3 + p {
+.markdown-content h3+p {
     margin-left: 40px;
 }
 
-.markdown-content h4 + p {
+.markdown-content h4+p {
     margin-left: 60px;
 }
 
@@ -293,15 +302,15 @@ code {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.markdown-content h2 + pre {
+.markdown-content h2+pre {
     margin-left: 20px;
 }
 
-.markdown-content h3 + pre {
+.markdown-content h3+pre {
     margin-left: 40px;
 }
 
-.markdown-content h4 + pre {
+.markdown-content h4+pre {
     margin-left: 60px;
 }
 
@@ -331,7 +340,8 @@ code {
     display: block;
     width: 100%;
     height: auto;
-    grid-column: 1 / -1; /* Stellt sicher, dass Tabellen nicht im Grid sind */
+    grid-column: 1 / -1;
+    /* Stellt sicher, dass Tabellen nicht im Grid sind */
 }
 
 /* Überschriften sollen immer die volle Breite haben */
@@ -355,42 +365,56 @@ code {
     width: 100%;
     margin: 0;
 }
+
 /* Dark Mode Specific Styles */
 [data-theme="dark"] .markdown-content pre {
-    background-color: var(--secondary-dark); /* Dunkler Hintergrund für Codeblöcke */
+    background-color: var(--secondary-dark);
+    /* Dunkler Hintergrund für Codeblöcke */
     border-color: var(--secondary-light);
     border-left-color: var(--primary-color);
 }
 
 [data-theme="dark"] .markdown-content pre code {
-    color: var(--dark-text); /* Angepasster heller Text für Code */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Code */
     background-color: transparent;
 }
 
 /* Spezifische Syntax-Hervorhebung für Dark Mode anpassen (optional, hier als Beispiel) */
 [data-theme="dark"] .markdown-content pre code.language-python {
-    color: #87ceeb; /* Helleres Blau für Python */
+    color: #87ceeb;
+    /* Helleres Blau für Python */
 }
+
 [data-theme="dark"] .markdown-content pre code.language-javascript {
-    color: #f08080; /* Helleres Rot für JS */
+    color: #f08080;
+    /* Helleres Rot für JS */
 }
+
 [data-theme="dark"] .markdown-content pre code.language-html {
-    color: #ffcc99; /* Helleres Orange für HTML */
+    color: #ffcc99;
+    /* Helleres Orange für HTML */
 }
+
 [data-theme="dark"] .markdown-content pre code.language-css {
-    color: #dda0dd; /* Helleres Lila für CSS */
+    color: #dda0dd;
+    /* Helleres Lila für CSS */
 }
 
 
-[data-theme="dark"] .markdown-content code { /* Inline code */
+[data-theme="dark"] .markdown-content code {
+    /* Inline code */
     background-color: var(--secondary-dark);
-    color: var(--dark-text); /* Angepasster heller Text für Inline-Code */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Inline-Code */
 }
 
 [data-theme="dark"] .markdown-content p {
-    background-color: rgba(44, 62, 80, 0.7); /* Dunklerer transparenter Hintergrund */
+    background-color: rgba(44, 62, 80, 0.7);
+    /* Dunklerer transparenter Hintergrund */
     border-color: var(--secondary-dark);
-    color: var(--dark-text); /* Heller Text für Paragraphen */
+    color: var(--dark-text);
+    /* Heller Text für Paragraphen */
 }
 
 [data-theme="dark"] .markdown-content ul,
@@ -401,7 +425,8 @@ code {
 }
 
 [data-theme="dark"] .markdown-content ul li:before {
-     color: var(--primary-color); /* Sicherstellen, dass Aufzählungszeichen die richtige Farbe haben */
+    color: var(--primary-color);
+    /* Sicherstellen, dass Aufzählungszeichen die richtige Farbe haben */
 }
 
 
@@ -409,27 +434,32 @@ code {
     background-color: rgba(44, 62, 80, 0.7);
     border-color: var(--secondary-dark);
     border-left-color: var(--primary-color);
-    color: var(--dark-text); /* Angepasster heller Text für Blockquotes */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Blockquotes */
 }
 
 [data-theme="dark"] .markdown-table th {
     background-color: var(--secondary-dark);
-    color: var(--dark-text); /* Angepasster heller Text für Tabellenköpfe */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Tabellenköpfe */
     border-bottom-color: var(--secondary-light);
 }
 
 [data-theme="dark"] .markdown-table td {
-    background-color: var(--white); /* Dunkler "Weiß"-Ersatz */
+    background-color: var(--white);
+    /* Dunkler "Weiß"-Ersatz */
     border-bottom-color: var(--secondary-dark);
     color: var(--dark-text);
 }
 
 [data-theme="dark"] .markdown-table tr:nth-child(even) td {
-    background-color: var(--light-bg); /* Sehr dunkler Hintergrund für jede zweite Zeile */
+    background-color: var(--light-bg);
+    /* Sehr dunkler Hintergrund für jede zweite Zeile */
 }
 
 [data-theme="dark"] .markdown-table tr:hover td {
-    background-color: rgba(90, 139, 205, 0.2); /* Angepasster Hover-Effekt */
+    background-color: rgba(90, 139, 205, 0.2);
+    /* Angepasster Hover-Effekt */
 }
 
 [data-theme="dark"] .markdown-content h1,
@@ -446,7 +476,8 @@ code {
 
 /* Standardverhalten für Slides im normalen Modus */
 .board-slide {
-    display: block; /* Standardmäßig sichtbar im normalen Modus */
+    display: block;
+    /* Standardmäßig sichtbar im normalen Modus */
     width: 100%;
     box-sizing: border-box;
     position: relative;
@@ -454,52 +485,73 @@ code {
 
 /* Ensure slides take full height and use flex for centering */
 #content.board-mode .board-slide {
-    display: none; /* Hidden by default in board mode */
+    display: none;
+    /* Hidden by default in board mode */
     flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    justify-content: center;
+    /* Center content vertically */
+    align-items: center;
+    /* Center content horizontally */
     height: 100%;
     width: 100%;
-    overflow: hidden; /* Hide overflow initially */
-    position: relative; /* For positioning navigation */
+    overflow: hidden;
+    /* Hide overflow initially */
+    position: relative;
+    /* For positioning navigation */
     box-sizing: border-box;
-    padding: 2rem; /* Add padding around the content */
+    padding: 2rem;
+    /* Add padding around the content */
 }
 
 #content.board-mode .board-slide.active-slide {
-    display: flex; /* Show the active slide */
+    display: flex;
+    /* Show the active slide */
 }
 
 /* Container for the actual slide content to apply scaling */
 .slide-content-wrapper {
     max-width: 100%;
     max-height: 100%;
-    width: auto; /* Adjust based on content */
-    height: auto; /* Adjust based on content */
-    overflow: auto; /* Allow scrolling if content still overflows after scaling */
+    width: auto;
+    /* Adjust based on content */
+    height: auto;
+    /* Adjust based on content */
+    overflow: auto;
+    /* Allow scrolling if content still overflows after scaling */
     /* Basic scaling attempt - might need JS for precision */
     transform-origin: center center;
-     /* Initial scale - JS might adjust this */
-    /* transition: transform 0.3s ease; */ /* Optional: Smooth transition */
+    /* Initial scale - JS might adjust this */
+    /* transition: transform 0.3s ease; */
+    /* Optional: Smooth transition */
 }
 
 /* Apply styles within the slide content wrapper */
-.slide-content-wrapper > * {
-    max-width: 100%; /* Ensure elements don't overflow the wrapper */
+.slide-content-wrapper>* {
+    max-width: 100%;
+    /* Ensure elements don't overflow the wrapper */
 }
 
 /* Example: Scale down large images within slides */
 .slide-content-wrapper img {
     max-width: 100%;
-    max-height: 80vh; /* Limit image height */
+    max-height: 80vh;
+    /* Limit image height */
     height: auto;
     object-fit: contain;
 }
 
 /* Example: Adjust heading sizes for slides */
-.slide-content-wrapper h1 { font-size: 2.5rem; }
-.slide-content-wrapper h2 { font-size: 2rem; }
-.slide-content-wrapper p { font-size: 1.1rem; }
+.slide-content-wrapper h1 {
+    font-size: 2.5rem;
+}
+
+.slide-content-wrapper h2 {
+    font-size: 2rem;
+}
+
+.slide-content-wrapper p {
+    font-size: 1.1rem;
+}
 
 
 /* Board Mode Navigation Buttons */
@@ -508,13 +560,16 @@ code {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     gap: 20px;
-    z-index: 10; /* Ensure they are above slide content */
+    z-index: 10;
+    /* Ensure they are above slide content */
 }
 
 #content.board-mode .board-nav {
-    display: flex; /* Show only in board mode */
+    display: flex;
+    /* Show only in board mode */
 }
 
 .board-nav-button {
@@ -557,12 +612,42 @@ code {
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .board-nav-side:hover {
-     background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.6);
 }
-.board-nav-side.prev { left: 10px; }
-.board-nav-side.next { right: 10px; }
+
+.board-nav-side.prev {
+    left: 10px;
+}
+
+.board-nav-side.next {
+    right: 10px;
+}
 
 #content.board-mode .board-nav-side {
-    display: block; /* Show side buttons in board mode */
+    display: block;
+    /* Show side buttons in board mode */
+}
+
+/* Styles for font size buttons in code blocks */
+.editor-buttons .font-size-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-left: 5px;
+    /* Abstand zwischen den Buttons */
+}
+
+.editor-buttons .font-size-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.editor-buttons .font-size-button:active {
+    background-color: rgba(0, 0, 0, 1);
 }

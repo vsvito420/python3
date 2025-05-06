@@ -10,12 +10,12 @@ function initializeCodeBlocks() {
     if (!window.codeBlocks) {
         window.codeBlocks = [];
     }
-    
+
     if (!Array.isArray(window.codeBlocks) || window.codeBlocks.length === 0) {
         console.error('codeBlocks array empty or not an array');
         return;
     }
-    
+
     console.log(`Initializing ${window.codeBlocks.length} code blocks`);
 
     window.codeBlocks.forEach(({ id, code, language }) => {
@@ -24,12 +24,12 @@ function initializeCodeBlocks() {
             console.error(`Container for code block ${id} not found`);
             return;
         }
-        
+
         console.log(`Initializing code block ${id} with language ${language}`);
-        
+
         // Show the language of the code block
         const languageDisplay = language ? `<div class="language-tag">${language}</div>` : '';
-        
+
         // Create editor container with customized buttons based on language
         let editorButtons = '';
         if (language === 'python') {
@@ -37,16 +37,20 @@ function initializeCodeBlocks() {
                 <div class="editor-buttons">
                     <button class="run-button" data-editor="${id}-editor">Code ausführen</button>
                     <button class="reset-button" data-editor="${id}-editor">Zurücksetzen</button>
+                    <button class="font-size-button smaller-font" data-editor="${id}-editor">-A</button>
+                    <button class="font-size-button larger-font" data-editor="${id}-editor">+A</button>
                 </div>
             `;
         } else {
             editorButtons = `
                 <div class="editor-buttons">
                     <button class="reset-button" data-editor="${id}-editor">Zurücksetzen</button>
+                    <button class="font-size-button smaller-font" data-editor="${id}-editor">-A</button>
+                    <button class="font-size-button larger-font" data-editor="${id}-editor">+A</button>
                 </div>
             `;
         }
-        
+
         // Create different output containers based on language
         let outputContainer = '';
         if (language === 'python') {
@@ -63,7 +67,7 @@ function initializeCodeBlocks() {
                 </div>
             `;
         }
-        
+
         // Set the HTML content of the container
         container.innerHTML = `
             ${languageDisplay}
@@ -73,13 +77,13 @@ function initializeCodeBlocks() {
             </div>
             ${outputContainer}
         `;
-        
+
         // Initialize Monaco Editor
-        require(['vs/editor/editor.main'], function() {
+        require(['vs/editor/editor.main'], function () {
             // Determine the language for the editor
             const codeBlock = window.codeBlocks.find(block => block.id === id);
             const language = codeBlock && codeBlock.language ? codeBlock.language : 'python';
-            
+
             // Map Markdown language designations to Monaco editor language designations
             let editorLanguage = 'plaintext';
             if (language === 'python') editorLanguage = 'python';
@@ -94,7 +98,7 @@ function initializeCodeBlocks() {
             else if (language === 'java') editorLanguage = 'java';
             else if (language === 'c' || language === 'cpp' || language === 'c++') editorLanguage = 'cpp';
             else if (language === 'csharp' || language === 'c#') editorLanguage = 'csharp';
-            
+
             // Ensure the global object for code block editors exists
             if (!window.codeBlockEditors) {
                 window.codeBlockEditors = {};
@@ -123,31 +127,44 @@ function initializeCodeBlocks() {
             });
         });
     });
-    
+
     // Add event listeners for buttons
     document.querySelectorAll('.run-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const editorId = this.getAttribute('data-editor');
             window.runPythonCode(editorId);
         });
     });
-    
+
     document.querySelectorAll('.reset-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const editorId = this.getAttribute('data-editor');
             resetEditor(editorId);
         });
     });
-    
+
+    // Add event listeners for font size buttons
+    document.querySelectorAll('.font-size-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const editorId = this.getAttribute('data-editor');
+            const editor = window.codeBlockEditors[editorId];
+            if (editor) {
+                const currentFontSize = editor.getOption(monaco.editor.EditorOption.fontSize);
+                const newFontSize = this.classList.contains('larger-font') ? currentFontSize + 1 : currentFontSize - 1;
+                editor.updateOptions({ fontSize: newFontSize > 8 ? newFontSize : 8 }); // Ensure minimum font size of 8
+            }
+        });
+    });
+
     // Add event listener for "Mark chapter as completed"
     const markCompletedButton = document.getElementById('mark-completed');
     if (markCompletedButton) {
-        markCompletedButton.addEventListener('click', function() {
+        markCompletedButton.addEventListener('click', function () {
             window.markChapterAsCompleted(window.currentChapter);
             this.disabled = true;
             this.textContent = 'Kapitel abgeschlossen ✓';
         });
-        
+
         // Check if the chapter is already completed
         if (window.progress && window.progress[window.currentChapter] && window.progress[window.currentChapter].completed) {
             markCompletedButton.disabled = true;
@@ -163,7 +180,7 @@ function initializeCodeBlocks() {
 function resetEditor(editorId) {
     const originalId = editorId.replace('-editor', '');
     const codeBlock = window.codeBlocks.find(block => block.id === originalId);
-    
+
     // Use window.codeBlockEditors instead of window.editors
     if (codeBlock && window.codeBlockEditors && window.codeBlockEditors[editorId]) {
         window.codeBlockEditors[editorId].setValue(codeBlock.code);
@@ -185,7 +202,7 @@ function resetEditor(editorId) {
             else if (codeBlock.language === 'java') editorLanguage = 'java';
             else if (codeBlock.language === 'c' || codeBlock.language === 'cpp' || codeBlock.language === 'c++') editorLanguage = 'cpp';
             else if (codeBlock.language === 'csharp' || codeBlock.language === 'c#') editorLanguage = 'csharp';
-            
+
             monaco.editor.setModelLanguage(editorModel, editorLanguage);
         }
     }
