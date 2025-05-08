@@ -13,17 +13,17 @@ Hier findest du eine Übersicht über die Themen, die wir in diesem Kapitel beha
 
 2.  **Entscheidungen treffen mit bedingten Anweisungen**
     *   [Bedingte Anweisungen](Bedingte_Anweisungen.md) – Lerne, wie dein Programm auf verschiedene Situationen reagieren kann.
-        *   `if`-Anweisungen: Wenn eine Bedingung wahr ist, tue dies.
-        *   `else`-Anweisungen: Sonst (wenn die Bedingung nicht wahr ist), tue das.
-        *   `elif`-Anweisungen: Wenn die erste Bedingung nicht wahr ist, prüfe eine andere Bedingung.
-        *   Vergleichsoperatoren (z.B. `==`, `>`, `<`): Wie man Bedingungen formuliert.
-        *   Logische Operatoren (`and`, `or`, `not`): Wie man mehrere Bedingungen verknüpft.
+      *   `if`-Anweisungen: Wenn eine Bedingung wahr ist, tue dies.
+      *   `else`-Anweisungen: Sonst (wenn die Bedingung nicht wahr ist), tue das.
+      *   `elif`-Anweisungen: Wenn die erste Bedingung nicht wahr ist, prüfe eine andere Bedingung.
+      *   Vergleichsoperatoren (z.B. `==`, `>`, `<`): Wie man Bedingungen formuliert.
+      *   Logische Operatoren (`and`, `or`, `not`): Wie man mehrere Bedingungen verknüpft.
 
 3.  **Aktionen wiederholen mit Schleifen**
     *   [Schleifen](Schleifen.md) – Entdecke, wie du Codeblöcke mehrmals ausführen lassen kannst, ohne sie immer wieder neu schreiben zu müssen.
-        *   `for`-Schleifen: Ideal, um über eine Sequenz von Elementen (z.B. Zahlen oder Einträge in einer Liste) zu gehen.
-        *   `while`-Schleifen: Führen einen Codeblock aus, solange eine Bedingung wahr ist.
-        *   Schleifenkontrolle mit `break` und `continue`: Wie man Schleifen vorzeitig beendet oder zum nächsten Durchlauf springt.
+      *   `for`-Schleifen: Ideal, um über eine Sequenz von Elementen (z.B. Zahlen oder Einträge in einer Liste) zu gehen.
+      *   `while`-Schleifen: Führen einen Codeblock aus, solange eine Bedingung wahr ist.
+      *   Schleifenkontrolle mit `break` und `continue`: Wie man Schleifen vorzeitig beendet oder zum nächsten Durchlauf springt.
 
 ## Praxisbeispiele
 
