@@ -87,7 +87,7 @@ function parseMarkdown(markdown) {
         // 3. Parse Tables
         const tableRegex = /^\s*\|(.+)\|\s*$\n^\s*\|(?:\s*[-:]+[-\s|:]*)+\|\s*$\n((?:^\s*\|.+\|\s*$\n?)+)/gm;
         processedMarkdown = processedMarkdown.replace(tableRegex, (match) => {
-             try { // Keep existing table parsing logic
+            try { // Keep existing table parsing logic
                 const lines = match.trim().split('\n');
                 if (lines.length < 3) return match;
                 const headerLine = lines[0].trim();
@@ -153,53 +153,169 @@ function parseMarkdown(markdown) {
             }
             return `<a href="${url}" target="_blank">${text}</a>`;
         });
-        // Lists
-        processedMarkdown = processedMarkdown.replace(/^\s*-\s+(.*$)/gm, '<li class="ul-item">$1</li>'); // Added space after -
-        processedMarkdown = processedMarkdown.replace(/^\s*\d+\.\s+(.*$)/gm, '<li class="ol-item">$1</li>'); // Added space after .
-        // Wrap consecutive list items (handle potential empty lines between items)
-        processedMarkdown = processedMarkdown.replace(/(?:<li class="ul-item">.*?<\/li>\s*)+/g, (match) => `<ul>${match.replace(/\s*$/, '')}</ul>`);
-        processedMarkdown = processedMarkdown.replace(/(?:<li class="ol-item">.*?<\/li>\s*)+/g, (match) => `<ol>${match.replace(/\s*$/, '')}</ol>`);
-        processedMarkdown = processedMarkdown.replace(/class="ul-item"/g, '');
-        processedMarkdown = processedMarkdown.replace(/class="ol-item"/g, '');
-        // Emphasis
+        // Emphasis (moved before list processing for simplicity, can be refined if needed)
         processedMarkdown = processedMarkdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         processedMarkdown = processedMarkdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-        // 5. Replace Code Block Placeholders
+        // 5. Advanced List Processing
+        function processListSegment(segment) {
+            const lines = segment.split('\n');
+            let html = '';
+            const listStack = []; // { type: 'ul' | 'ol', indent: number }
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+                if (trimmedLine === '') { // Preserve intentional empty lines within list processing logic
+                    if (listStack.length > 0) html += '\n'; // Could be between items or part of multi-line item
+                    continue;
+                }
+
+                const itemRegex = /^(\s*)([-*+]|\d+\.)\s+(.*)/;
+                const match = line.match(itemRegex); // Match on original line to get correct indentation
+
+                if (match) {
+                    const indentLength = match[1].length;
+                    const bulletOrOrder = match[2];
+                    let itemContent = match[3]; // This is the rest of the line
+
+                    const listType = isNaN(parseInt(bulletOrOrder, 10)) ? 'ul' : 'ol';
+
+                    // Close nested lists if current indent is less
+                    while (listStack.length > 0 && indentLength < listStack[listStack.length - 1].indent) {
+                        html += `</${listStack.pop().type}>\n</li>\n`;
+                    }
+
+                    // Start a new list or a nested list
+                    if (listStack.length === 0 || listType !== listStack[listStack.length - 1].type || indentLength > listStack[listStack.length - 1].indent) {
+                        if (listStack.length > 0 && listType === listStack[listStack.length - 1].type && indentLength < listStack[listStack.length - 1].indent) {
+                            //This case should be handled by the while loop above, but as a safeguard:
+                            html += `</${listStack.pop().type}>\n</li>\n`;
+                        }
+                        if (listStack.length > 0 && indentLength === listStack[listStack.length - 1].indent && listType !== listStack[listStack.length - 1].type) {
+                            // Different list type at same indent level, close previous
+                            html += `</${listStack.pop().type}>\n</li>\n`;
+                        }
+
+                        html += (listStack.length > 0 ? '' : '') + `<${listType}>\n`;
+                        listStack.push({ type: listType, indent: indentLength });
+                    } else if (indentLength < listStack[listStack.length - 1].indent) {
+                        // This case should be handled by the while loop above.
+                        // It implies de-indenting to a previous list level of the same type.
+                    }
+
+
+                    html += `<li>${itemContent}`;
+                    // Subsequent lines that are more indented are part of this list item
+                    // This simple parser doesn't handle complex multi-line items elegantly without further lookahead or state.
+                    // For now, we assume a list item ends at a newline unless the next line is also a list item.
+                    // The paragraph logic later will handle non-list text.
+                    html += `</li>\n`; // Close li immediately for this simplified model
+
+                } else {
+                    // Not a list item, close all open lists
+                    while (listStack.length > 0) {
+                        html += `</${listStack.pop().type}>\n` + (listStack.length > 0 ? '</li>\n' : '');
+                    }
+                    // This line will be handled by paragraph logic if it's not empty
+                    // We need to ensure this non-list content is preserved.
+                    // The current logic processes the *whole* markdown for lists at once.
+                    // It might be better to split by non-list blocks first.
+                    // For now, we output the non-list line to be handled later.
+                    html += line + '\n'; // Add non-list line back
+                }
+            }
+
+            // Close any remaining open lists
+            while (listStack.length > 0) {
+                html += `</${listStack.pop().type}>\n` + (listStack.length > 0 ? '</li>\n' : '');
+            }
+            return html.trim();
+        }
+
+
+        // We need to split the markdown by sections that are definitively NOT lists,
+        // like headings, code blocks, tables, hr, etc., and then process potential list segments.
+        // This is a more complex tokenization problem.
+        // A simpler, yet potentially flawed approach for now:
+        // Let the paragraph logic run, and then try to fix lists. This is what was failing.
+
+        // New Strategy: Process lists on lines that look like list items,
+        // and then ensure paragraph logic doesn't mess them up.
+
+        let listLines = [];
+        let nonListAccumulator = [];
+        const lines = processedMarkdown.split('\n');
+        let finalProcessedLines = [];
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (/^\s*([-*+]|\d+\.)\s+/.test(line)) {
+                if (nonListAccumulator.length > 0) {
+                    finalProcessedLines.push(nonListAccumulator.join('\n'));
+                    nonListAccumulator = [];
+                }
+                listLines.push(line);
+            } else {
+                if (listLines.length > 0) {
+                    finalProcessedLines.push(processListSegment(listLines.join('\n')));
+                    listLines = [];
+                }
+                nonListAccumulator.push(line);
+            }
+        }
+        if (listLines.length > 0) {
+            finalProcessedLines.push(processListSegment(listLines.join('\n')));
+        }
+        if (nonListAccumulator.length > 0) {
+            finalProcessedLines.push(nonListAccumulator.join('\n'));
+        }
+        processedMarkdown = finalProcessedLines.join('\n');
+
+
+        // 6. Replace Code Block Placeholders
         codePlaceholders.forEach((placeholder, index) => {
             const placeholderString = `__CODE_BLOCK_${index}__`;
             if (placeholder.type === 'code') { // Interactive Python
                 const id = `code-block-${window.codeBlocks.length}`; // Use global counter
-                const language = placeholder.language; // Should be 'python'
+                const language = placeholder.language;
                 console.log(`Creating interactive code block ID ${id} for slide ${slideIndex + 1}`);
                 window.codeBlocks.push({ id, code: placeholder.code, language: language });
-                // Ensure the placeholder is replaced even if surrounded by <p> tags initially
                 processedMarkdown = processedMarkdown.replace(new RegExp(`<p>\\s*${placeholderString}\\s*<\\/p>|${placeholderString}`),
-                                                               `<div id="${id}" class="code-editor-container" data-language="${language}"></div>`);
+                    `<div id="${id}" class="code-editor-container" data-language="${language}"></div>`);
             } else { // Non-interactive pre/code
                 const language = placeholder.language;
                 const languageClass = language ? ` class="language-${language}"` : '';
-                const escapedCode = placeholder.code.replace(/</g, '<').replace(/>/g, '>');
-                 // Ensure the placeholder is replaced even if surrounded by <p> tags initially
+                const escapedCode = placeholder.code.replace(/</g, '<').replace(/>/g, '>'); // Corrected escaping
                 processedMarkdown = processedMarkdown.replace(new RegExp(`<p>\\s*${placeholderString}\\s*<\\/p>|${placeholderString}`),
-                                                               `<pre><code${languageClass}>${escapedCode}</code></pre>`);
+                    `<pre><code${languageClass}>${escapedCode}</code></pre>`);
             }
         });
 
-        // 6. Paragraphs (apply last, carefully)
+        // 7. Paragraphs (apply last, carefully)
         processedMarkdown = processedMarkdown.split('\n').map(line => {
             const trimmedLine = line.trim();
-            // Wrap line in <p> only if it's not empty, not already a tag, and not just whitespace
-            if (trimmedLine && !trimmedLine.startsWith('<') && !trimmedLine.endsWith('>')) {
-                 return `<p>${trimmedLine}</p>`;
+            if (trimmedLine === '') {
+                return ''; // Preserve or remove empty lines based on desired behavior.
             }
-            return line; // Keep lines that are empty or already tags
-        }).join('\n');
-        // Clean up paragraphs around block elements more aggressively
-        processedMarkdown = processedMarkdown.replace(/<p>\s*(<(?:ul|ol|h[1-6]|div|pre|table)[^>]*>[\s\S]*?<\/(?:ul|ol|h[1-6]|div|pre|table)>)\s*<\/p>/g, '$1');
-        processedMarkdown = processedMarkdown.replace(/<p>\s*<\/p>/g, ''); // Remove empty paragraphs
+            // Check if the line is already part of a known block structure or is a block tag itself
+            const isBlockTag = /^\s*<(ul|ol|li|h[1-6]|table|thead|tbody|tr|th|td|pre|div|figure|figcaption|blockquote|hr|p)(\s|>)/i.test(trimmedLine);
+            const isClosingBlockTag = /^\s*<\/(ul|ol|li|h[1-6]|table|thead|tbody|tr|th|td|pre|div|figure|figcaption|blockquote|hr|p)>/i.test(trimmedLine);
 
-        // 7. Wrap slide content with the necessary wrapper and add to final HTML
+            if (trimmedLine && !isBlockTag && !isClosingBlockTag) {
+                // Further check: if it's inside a list item, don't wrap. This is hard without full context.
+                // The list processing should ideally handle multi-line list items internally.
+                return `<p>${trimmedLine}</p>`;
+            }
+            return line; // Keep lines that are empty, already tags, or part of block elements
+        }).join('\n');
+
+        // Cleanup: Remove <p> tags that might have been wrongly inserted around block elements or are empty.
+        processedMarkdown = processedMarkdown.replace(/<p>\s*(<(ul|ol|h[1-6]|div|pre|table|blockquote|hr)(?:[^>]*>[\s\S]*?<\/\2>)?)\s*<\/p>/gi, '$1');
+        // Remove <p> tags around list items if the list processing didn't prevent it.
+        processedMarkdown = processedMarkdown.replace(/<p>\s*(<li(?:[^>]*)?>[\s\S]*?<\/li>)\s*<\/p>/gi, '$1');
+        processedMarkdown = processedMarkdown.replace(/<p>\s*<\/p>/gi, ''); // Remove empty p tags
+
+        // 8. Wrap slide content
         // Add data-index for potential JS targeting
         const slideContent = processedMarkdown.trim();
         finalHtml += `<div class="board-slide" data-index="${slideIndex}">

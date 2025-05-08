@@ -185,29 +185,42 @@ code {
 /* Lists mit hierarchischer Einrückung und rundem Block-Stil */
 .markdown-content ul,
 .markdown-content ol {
-    padding: var(--spacing-md);
+    /* padding: var(--spacing-md); */
+    /* Entfernt für präzisere padding-left Steuerung */
+    padding-left: 2em;
+    /* Basiseinrückung für Listen, Platz für Marker + Text */
     margin: 0;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: var(--border-radius-md);
     border: 1px solid var(--border-color);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     overflow: hidden;
+    /* Beibehalten, falls Inhalt doch mal überläuft */
+    list-style-position: outside;
+    /* Sicherstellen, dass Marker außerhalb des Textflusses sind */
 }
 
 /* Einrückung für Listen basierend auf vorhergehender Überschrift */
+/* Einrückung für Listen basierend auf vorhergehender Überschrift */
+/* Ziel: Liste (Außenkante) beginnt bündig mit der Überschrift (Außenkante) */
+.markdown-content h1+ul,
+.markdown-content h1+ol,
 .markdown-content h2+ul,
-.markdown-content h2+ol {
-    margin-left: 20px;
-}
-
+.markdown-content h2+ol,
 .markdown-content h3+ul,
-.markdown-content h3+ol {
-    margin-left: 40px;
-}
-
+.markdown-content h3+ol,
 .markdown-content h4+ul,
-.markdown-content h4+ol {
-    margin-left: 60px;
+.markdown-content h4+ol,
+.markdown-content h5+ul,
+.markdown-content h5+ol,
+.markdown-content h6+ul,
+.markdown-content h6+ol {
+    margin-left: 0;
+    /* Liste bündig mit dem Überschriftenblock */
+    margin-top: var(--spacing-sm);
+    /* Etwas Abstand zur Überschrift oben */
+    margin-bottom: var(--spacing-sm);
+    /* Etwas Abstand zum nächsten Element unten */
 }
 
 /* Verschachtelte Listen sollten zusätzliche Einrückung haben */
@@ -216,6 +229,9 @@ code {
 .markdown-content ul ol,
 .markdown-content ol ul {
     margin-left: 20px;
+    /* Einrückung für verschachtelte Listen */
+    padding-left: 0;
+    /* Reset padding-left, da margin-left die Einrückung steuert und die Elternliste bereits padding hat */
     border-left: 2px solid var(--primary-color-light);
     border-radius: var(--border-radius-sm);
     margin-top: var(--spacing-sm);
@@ -227,6 +243,9 @@ code {
 .markdown-content ol li {
     margin-bottom: var(--spacing-sm);
     position: relative;
+    /* Wichtig für die absolute Positionierung von :before */
+    padding-left: 0;
+    /* Standard-Padding für li zurücksetzen, Einrückung kommt von ul/ol und spezifischem ul li */
 }
 
 .markdown-content ul li:last-child,
@@ -237,20 +256,38 @@ code {
 /* Spezielle Stile für ungeordnete Listen */
 .markdown-content ul {
     list-style-type: none;
+    /* Benutzerdefinierte Marker über :before */
+}
+
+.markdown-content ul li {
+    padding-left: 0;
+    /* Text beginnt bündig mit ol li Text (nach ul Padding) */
+    /* Platz für das :before Element und Textabstand wird durch ::before Positionierung gehandhabt */
 }
 
 .markdown-content ul li:before {
     content: "•";
     color: var(--primary-color);
     font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+    position: absolute;
+    left: -1.2em;
+    /* Zieht den Marker links vom Textanfang in den ul-Padding-Bereich */
+    /* Positioniert den Marker am Anfang des li (vor dem padding-left des li-Textes) */
+    top: 0.05em;
+    /* Feinanpassung für vertikale Ausrichtung, abhängig von Schriftart/line-height */
+    /* width: 1em; */
+    /* Breite kann oft weggelassen werden, wenn Marker ein einzelnes Zeichen ist */
 }
 
-.markdown-content li {
-    margin-bottom: 0.2rem;
+/* Für ol Listen wird die Standardnummerierung verwendet, `list-style-position: outside` und `padding-left` auf `ol` kümmern sich darum. */
+.markdown-content ol {
+    list-style-type: decimal;
+    /* Oder andere gewünschte Nummerierung */
 }
+
+/* Die generische .markdown-content li Regel (Zeile 253 im Original) wird entfernt,
+   da sie mit der spezifischeren .markdown-content ul li, .markdown-content ol li Regel für margin-bottom kollidiert.
+   Die spezifischeren Regeln mit var(--spacing-sm) sind konsistenter. */
 
 /* Blockquotes */
 .markdown-content blockquote {
