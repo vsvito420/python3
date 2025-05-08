@@ -13,12 +13,16 @@ body {
             var(--macos-bg-gradient-start),
             var(--macos-bg-gradient-end));
     font-size: 1rem;
+    /* Beibehaltung des Basis-Resets */
     /* Default font size */
-    font-size: var(--global-font-size, 100%);
+    font-size: var(--global-font-size, 106.25%);
+    /* Erhöhung der globalen Schriftgröße (entspricht ca. 17px bei 16px Basis) */
     /* Use CSS variable for global scaling */
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
+    padding: var(--spacing-lg);
+    /* Globaler Padding für den Body für mehr Luft */
 }
 
 body::before {

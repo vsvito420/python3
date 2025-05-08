@@ -22,27 +22,32 @@
     border-radius: var(--border-radius-sm);
     overflow-x: auto;
     font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
 .lesson-container {
-    background-color: rgba(255, 255, 255, 0.95); /* Increased opacity for better performance */
+    background-color: rgba(255, 255, 255, 0.95);
+    /* Increased opacity for better performance */
     border-radius: var(--border-radius-md);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Simplified shadow for better performance */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    /* Simplified shadow for better performance */
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
     /* Removed backdrop-filter for better performance */
     border: 1px solid var(--macos-glass-border);
     position: relative;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* More specific transitions */
-    will-change: transform; /* Hint for GPU acceleration */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    /* More specific transitions */
+    will-change: transform;
+    /* Hint for GPU acceleration */
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0; /* Entfernt den Abstand zwischen den Elementen */
+    gap: 0;
+    /* Entfernt den Abstand zwischen den Elementen */
 }
 
 /* Grid-Layout für Lesson-Container */
-.lesson-container > * {
+.lesson-container>* {
     margin: 0;
     padding: var(--spacing-sm);
     background-color: rgba(255, 255, 255, 0.7);
@@ -52,13 +57,13 @@
 }
 
 /* Erstes Element im Container */
-.lesson-container > *:first-child {
+.lesson-container>*:first-child {
     border-top-left-radius: var(--border-radius-md);
     border-top-right-radius: var(--border-radius-md);
 }
 
 /* Letztes Element im Container */
-.lesson-container > *:last-child {
+.lesson-container>*:last-child {
     border-bottom-left-radius: var(--border-radius-md);
     border-bottom-right-radius: var(--border-radius-md);
     border-bottom: none;
@@ -72,38 +77,39 @@
 }
 
 .content-section h3 {
-    margin-left: 20px;
+    margin-left: var(--spacing-lg);
 }
 
 .content-section h4 {
-    margin-left: 40px;
+    margin-left: calc(var(--spacing-lg) * 2);
 }
 
-.content-section h5, .content-section h6 {
-    margin-left: 60px;
+.content-section h5,
+.content-section h6 {
+    margin-left: calc(var(--spacing-lg) * 3);
 }
 
 /* Einrückung für Listen und Paragraphen unter Überschriften */
-.content-section h2 + p,
-.content-section h2 + ul,
-.content-section h2 + ol {
-    margin-left: 20px;
+.content-section h2+p,
+.content-section h2+ul,
+.content-section h2+ol {
+    margin-left: var(--spacing-lg);
     margin-top: 0;
     border-top: none;
 }
 
-.content-section h3 + p,
-.content-section h3 + ul,
-.content-section h3 + ol {
-    margin-left: 40px;
+.content-section h3+p,
+.content-section h3+ul,
+.content-section h3+ol {
+    margin-left: calc(var(--spacing-lg) * 2);
     margin-top: 0;
     border-top: none;
 }
 
-.content-section h4 + p,
-.content-section h4 + ul,
-.content-section h4 + ol {
-    margin-left: 60px;
+.content-section h4+p,
+.content-section h4+ul,
+.content-section h4+ol {
+    margin-left: calc(var(--spacing-lg) * 3);
     margin-top: 0;
     border-top: none;
 }
@@ -114,14 +120,17 @@
     border-radius: var(--border-radius-md);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     overflow: visible;
-    padding: var(--spacing-md);
-    padding-left: calc(var(--spacing-md) + 1.2rem); /* Platz für Aufzählungszeichen */
-    margin-bottom: var(--spacing-md);
-    margin-left: 0; /* Keine zusätzliche Einrückung */
+    padding: var(--spacing-lg);
+    padding-left: var(--spacing-xl);
+    /* Platz für Aufzählungszeichen */
+    margin-bottom: var(--spacing-lg);
+    margin-left: 0;
+    /* Keine zusätzliche Einrückung */
     border: 1px solid var(--macos-glass-border);
     background-color: rgba(255, 255, 255, 0.95);
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    list-style-position: inside; /* Aufzählungszeichen innerhalb des Blocks */
+    list-style-position: inside;
+    /* Aufzählungszeichen innerhalb des Blocks */
 }
 
 /* Hover-Effekt für Listen */
@@ -139,8 +148,8 @@
 
 .content-section ul li {
     position: relative;
-    padding-left: 1.5em;
-    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .content-section ul li:before {
@@ -157,7 +166,7 @@
 }
 
 /* Entfernt Abstände zwischen aufeinanderfolgenden Elementen */
-.content-section > div {
+.content-section>div {
     margin-bottom: 0;
 }
 
@@ -173,9 +182,11 @@
     width: 100%;
     overflow-x: auto;
     margin-bottom: var(--spacing-md);
-    display: block; /* Verhindert Flex-Verhalten */
+    display: block;
+    /* Verhindert Flex-Verhalten */
     height: auto;
-    grid-column: 1 / -1; /* Stellt sicher, dass Tabellen nicht im Grid sind */
+    grid-column: 1 / -1;
+    /* Stellt sicher, dass Tabellen nicht im Grid sind */
 }
 
 /* Verstecke leere Paragraphen in Tabellen-Containern */
@@ -245,37 +256,39 @@
 }
 
 .lesson-container h2 {
-    margin-left: 15px;
+    margin-left: var(--spacing-md);
     border-left-width: 3px;
 }
 
 .lesson-container h3 {
-    margin-left: 30px;
+    margin-left: calc(var(--spacing-md) * 2);
     border-left-width: 2px;
 }
 
 /* Einrückung für Code-Blöcke basierend auf Hierarchieebene */
-.lesson-container h2 + pre,
-.content-section h2 + pre {
-    margin-left: 20px;
+.lesson-container h2+pre,
+.content-section h2+pre {
+    margin-left: var(--spacing-lg);
 }
 
-.lesson-container h3 + pre,
-.content-section h3 + pre {
-    margin-left: 40px;
+.lesson-container h3+pre,
+.content-section h3+pre {
+    margin-left: calc(var(--spacing-lg) * 2);
 }
 
 .lesson-container:hover {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Simplified shadow for better performance */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* Simplified shadow for better performance */
     border-color: rgba(243, 156, 18, 0.2);
-    background-color: rgba(255, 255, 255, 1); /* Full opacity on hover */
+    background-color: rgba(255, 255, 255, 1);
+    /* Full opacity on hover */
 }
 
 .lesson-container h2 {
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
     color: var(--secondary-color);
     border-bottom: 2px solid var(--primary-color);
-    padding-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-md);
 }
 
 .lesson-container a {
@@ -311,7 +324,8 @@
     height: 200px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
-    overflow: hidden; /* Prevent Monaco editor overflow issues */
+    overflow: hidden;
+    /* Prevent Monaco editor overflow issues */
     box-shadow: var(--shadow-sm);
 }
 
@@ -323,14 +337,17 @@
 
 .output-container {
     margin-top: 0;
-    background-color: rgba(255, 255, 255, 0.95); /* Increased opacity for better performance */
+    background-color: rgba(255, 255, 255, 0.95);
+    /* Increased opacity for better performance */
     border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
     box-shadow: none;
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
     border-top: none;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* More specific transitions */
-    display: none; /* Initially hidden */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    /* More specific transitions */
+    display: none;
+    /* Initially hidden */
 }
 
 .output-container:hover {
@@ -341,17 +358,19 @@
 .output-container h3 {
     margin-bottom: var(--spacing-md);
     color: var(--secondary-color);
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
 }
 
 .output-content {
     font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
     white-space: pre-wrap;
     min-height: 50px;
     max-height: 200px;
     overflow-y: auto;
-    background-color: rgba(44, 62, 80, 0.95); /* Increased opacity */
+    background-color: rgba(44, 62, 80, 0.95);
+    /* Increased opacity */
     color: var(--light-gray);
     padding: var(--spacing-md);
     border-radius: var(--border-radius-md);
@@ -400,7 +419,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    background-color: rgba(74, 111, 165, 0.8); /* Dezentes Blau statt Orange */
+    background-color: rgba(74, 111, 165, 0.8);
+    /* Dezentes Blau statt Orange */
     color: white;
     padding: 2px 8px;
     font-size: 12px;
@@ -410,11 +430,12 @@
 
 /* Highlight current section in content */
 .current-section {
-    background-color: rgba(74, 111, 165, 0.1); /* Dezentes Blau statt Gelb */
+    background-color: rgba(74, 111, 165, 0.1);
+    /* Dezentes Blau statt Gelb */
     border-left: 3px solid var(--primary-color);
-    padding-left: 10px;
-    margin-left: -13px;
-    transition: background-color 0.5s ease;
+    /* padding-left: 10px; -- Removed to prevent layout shift */
+    /* margin-left: -13px; -- Removed to prevent layout shift */
+    transition: background-color 0.5s ease, border-left-color 0.5s ease;
 }
 
 /* Allgemeine Regel für alle Links im Content-Bereich */
@@ -438,7 +459,8 @@
 }
 
 /* Mobile Styles */
-.editor-buttons, .navigation-buttons {
+.editor-buttons,
+.navigation-buttons {
     flex-direction: column;
     gap: var(--spacing-xs);
 }
@@ -449,7 +471,9 @@
 
 /* Tablet styles */
 @media (min-width: 768px) {
-    .editor-buttons, .navigation-buttons {
+
+    .editor-buttons,
+    .navigation-buttons {
         flex-direction: row;
         gap: var(--spacing-md);
     }
@@ -461,14 +485,19 @@
 
 /* Dark Mode Styles for Content */
 [data-theme="dark"] .lesson-container {
-    background-color: rgba(44, 62, 80, 0.85); /* Dunklerer Hintergrund */
-    border-color: var(--secondary-light);
+    background-color: rgba(44, 62, 80, 0.85);
+    /* Dunklerer Hintergrund */
+    border: 2px solid var(--secondary-light);
+    /* Ensures 2px border in normal state */
 }
 
 [data-theme="dark"] .lesson-container:hover {
-    background-color: inherit !important; /* Verhindert das Aufhellen des Hintergrunds */
-    box-shadow: none !important; /* Entfernt Schatten */
-    border: 2px solid #39ff14 !important; /* Fügt einen neonfarbenen Rand hinzu */
+    background-color: inherit !important;
+    /* Verhindert das Aufhellen des Hintergrunds */
+    box-shadow: none !important;
+    /* Entfernt Schatten */
+    border-color: #39ff14 !important;
+    /* Only change color on hover */
 }
 
 [data-theme="dark"] .lesson-container h1,
@@ -481,15 +510,19 @@
 
 [data-theme="dark"] .content-section ul,
 [data-theme="dark"] .content-section ol {
-     background-color: rgba(44, 62, 80, 0.8);
-     border-color: var(--secondary-light);
+    background-color: rgba(44, 62, 80, 0.8);
+    border: 2px solid var(--secondary-light);
+    /* Ensures 2px border in normal state */
 }
 
 [data-theme="dark"] .markdown-content ul:hover,
 [data-theme="dark"] .markdown-content ol:hover {
-    background-color: inherit !important; /* Verhindert Aufhellen */
-    box-shadow: none !important; /* Entfernt ggf. vorhandenen Schatten */
-    border: 2px solid #39ff14 !important; /* Neon-Rand */
+    background-color: inherit !important;
+    /* Verhindert Aufhellen */
+    box-shadow: none !important;
+    /* Entfernt ggf. vorhandenen Schatten */
+    border-color: #39ff14 !important;
+    /* Only change color on hover */
 }
 
 [data-theme="dark"] .content-section ul li:before {
@@ -497,40 +530,56 @@
 }
 
 [data-theme="dark"] .code-editor-container {
-    background-color: var(--secondary-dark); /* Dunkler Hintergrund für Container */
-    border-color: var(--secondary-light); /* Dunklerer Rand */
+    background-color: var(--secondary-dark);
+    /* Dunkler Hintergrund für Container */
+    border: 2px solid var(--secondary-light);
+    /* Ensures 2px border in normal state */
+    border-bottom: none;
+    /* Bottom border handled by last-of-type */
 }
 
 [data-theme="dark"] .content-section .code-editor-container:last-of-type {
-     border-bottom-color: var(--secondary-light); /* Dunklerer unterer Rand */
+    border-bottom: 2px solid var(--secondary-light);
+    /* Ensures 2px bottom border */
 }
 
 [data-theme="dark"] .code-editor-container:hover {
-    background-color: inherit !important; /* Verhindert Aufhellen */
-    box-shadow: none !important; /* Entfernt Schatten */
-    border: 2px solid #39ff14 !important; /* Neon-Rand */
+    background-color: inherit !important;
+    /* Verhindert Aufhellen */
+    box-shadow: none !important;
+    /* Entfernt Schatten */
+    border-color: #39ff14 !important;
+    /* Only change color on hover */
 }
 
 [data-theme="dark"] .output-container {
-    background-color: rgba(44, 62, 80, 0.8); /* Dunklerer Hintergrund für Ausgabe */
-    border-color: var(--secondary-light);
+    background-color: rgba(44, 62, 80, 0.8);
+    /* Dunklerer Hintergrund für Ausgabe */
+    border: 2px solid var(--secondary-light);
+    /* Ensures 2px border in normal state */
 }
 
 [data-theme="dark"] .output-container:hover {
-    background-color: inherit !important; /* Verhindert Aufhellen */
-    box-shadow: none !important; /* Entfernt ggf. vorhandenen Schatten */
-    border: 2px solid #39ff14 !important; /* Neon-Rand */
+    background-color: inherit !important;
+    /* Verhindert Aufhellen */
+    box-shadow: none !important;
+    /* Entfernt ggf. vorhandenen Schatten */
+    border-color: #39ff14 !important;
+    /* Only change color on hover */
 }
 
 [data-theme="dark"] .output-content {
-    background-color: rgba(30, 40, 50, 0.95); /* Noch dunklerer Hintergrund für Text */
-    color: #e0e0e0; /* Hellerer Text */
+    background-color: rgba(30, 40, 50, 0.95);
+    /* Noch dunklerer Hintergrund für Text */
+    color: #e0e0e0;
+    /* Hellerer Text */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="dark"] #content a {
     background-color: var(--secondary-light);
-    color: var(--link-color); /* Korrigierte Link-Farbe für Dark Mode */
+    color: var(--link-color);
+    /* Korrigierte Link-Farbe für Dark Mode */
     border-color: rgba(100, 100, 100, 0.5);
 }
 
@@ -540,7 +589,8 @@
 }
 
 [data-theme="dark"] .current-section {
-    background-color: rgba(52, 73, 94, 0.5); /* Dunklerer Highlight-Hintergrund */
+    background-color: rgba(52, 73, 94, 0.5);
+    /* Dunklerer Highlight-Hintergrund */
     border-left-color: var(--primary-color-light);
 }
 
