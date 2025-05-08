@@ -86,20 +86,21 @@
 pre {
     background-color: #f5f5f5;
     border-radius: var(--border-radius-sm);
-    padding: var(--spacing-xl);
-    /* Größeres Padding für Code-Blöcke */
+    padding: var(--spacing-lg);
+    /* Angepasstes Padding für Code-Blöcke */
     overflow-x: auto;
-    margin: var(--spacing-md) 0;
-    /* Oben/Unten Margin für Code-Blöcke */
+    margin: var(--spacing-lg) 0;
+    /* Erhöhter Oben/Unten Margin für Code-Blöcke */
     border-left: 4px solid var(--primary-color);
     border: 1px solid var(--border-color);
 }
 
 pre code {
     font-family: 'Courier New', monospace;
-    font-size: 1rem;
-    /* Leicht erhöhte Schriftgröße für Code in `pre` */
-    line-height: 1.5;
+    font-size: 0.95rem;
+    /* Leicht angepasste Schriftgröße für Code in `pre` */
+    line-height: 1.6;
+    /* Erhöhte Zeilenhöhe für bessere Lesbarkeit */
     color: #333;
     background-color: transparent;
     padding: 0;
@@ -126,11 +127,12 @@ pre code.language-css {
 /* Inline code */
 code {
     background-color: #f0f0f0;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: 0.2em 0.4em;
+    /* Präzisere Padding-Anpassung für Inline-Code */
     border-radius: 3px;
     font-family: 'Courier New', monospace;
-    font-size: 1em;
-    /* Leicht erhöhte Schriftgröße für Inline-Code */
+    font-size: 0.9em;
+    /* Angepasste Schriftgröße für Inline-Code, relativ zum umgebenden Text */
     color: var(--primary-dark);
 }
 
@@ -151,52 +153,62 @@ code {
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6,
 .markdown-heading {
-    margin: var(--spacing-md) 0 var(--spacing-lg) 0;
-    /* Mehr unterer Margin für Überschriften */
-    color: var(--secondary-color);
+    /* .markdown-heading für Konsistenz hinzugefügt, falls es als generische Klasse genutzt wird */
+    margin-top: var(--spacing-xl);
+    /* Vereinheitlichter oberer Margin */
+    margin-bottom: var(--spacing-lg);
+    /* Vereinheitlichter unterer Margin */
+    color: var(--heading-color, var(--secondary-color));
+    /* Verwendung der globalen Variable oder Fallback */
     background-color: var(--primary-color-light);
     padding: var(--spacing-lg) var(--spacing-xl);
-    /* Größeres Padding für Überschriften */
     border-left: 4px solid var(--primary-color);
     border-radius: var(--border-radius-sm);
+    /* Font-sizes werden von base.css geerbt, hier keine spezifischen font-size Definitionen mehr */
 }
 
+/* Spezifische Padding-Anpassungen, falls für bestimmte Level nötig, sonst global von oben */
 .markdown-content h1,
 .markdown-h1 {
-    font-size: 2.2rem;
-    /* Größere H1 */
-    border-bottom: none;
+    /* font-size wird von base.css geerbt */
     padding: var(--spacing-xl);
-    /* Größeres Padding für H1 */
+    /* Großzügiges Padding für H1 */
+    border-bottom: none;
 }
 
 .markdown-content h2,
 .markdown-h2 {
-    font-size: 1.8rem;
-    /* Größere H2 */
-    border-bottom: none;
+    /* font-size wird von base.css geerbt */
     padding: var(--spacing-lg) var(--spacing-xl);
-    /* Größeres Padding für H2 */
+    border-bottom: none;
 }
 
 .markdown-content h3,
 .markdown-h3 {
-    font-size: 1.6rem;
-    /* Größere H3 */
+    /* font-size wird von base.css geerbt */
     padding: var(--spacing-md) var(--spacing-lg);
-    /* Größeres Padding für H3 */
 }
 
+.markdown-content h4,
+/* .markdown-h4 beibehalten, falls es als separate Klasse existiert */
 .markdown-h4 {
-    font-size: 1.4rem;
-    /* Größere H4 */
+    /* font-size wird von base.css geerbt */
+    /* Margin wird von der allgemeinen .markdown-content hX Regel oben geerbt */
+    padding: var(--spacing-sm) var(--spacing-md);
 }
 
+.markdown-content h5,
+/* .markdown-h5/.markdown-h6 beibehalten */
 .markdown-h5,
+.markdown-content h6,
 .markdown-h6 {
-    font-size: 1.2rem;
-    /* Größere H5/H6 */
+    /* font-size wird von base.css geerbt */
+    /* Margin wird von der allgemeinen .markdown-content hX Regel oben geerbt */
+    padding: var(--spacing-xs) var(--spacing-sm);
 }
 
 /* Lists mit hierarchischer Einrückung und rundem Block-Stil */
@@ -205,10 +217,14 @@ code {
     /* padding: var(--spacing-md); */
     /* Entfernt für präzisere padding-left Steuerung */
     padding-left: var(--spacing-xl);
-    /* Beibehaltung, aber konsistent mit Variablen */
+    /* Beibehaltung der Basiseinrückung für den Inhalt */
     /* Basiseinrückung für Listen, Platz für Marker + Text */
-    margin: 0 0 var(--spacing-lg) 0;
-    /* Mehr unterer Margin für Listen */
+    margin-top: var(--spacing-lg);
+    /* Erhöhter oberer Margin */
+    margin-bottom: var(--spacing-xl);
+    /* Erhöhter unterer Margin */
+    margin-left: 0;
+    /* Stellt sicher, dass die Liste selbst nicht zusätzlich eingerückt ist, Einrückung über padding-left */
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: var(--border-radius-md);
     border: 1px solid var(--border-color);
@@ -235,13 +251,13 @@ code {
 .markdown-content h6+ul,
 .markdown-content h6+ol {
     margin-left: 0;
-    /* Liste bündig mit dem Überschriftenblock */
+    /* Liste bündig mit dem Überschriftenblock außen */
+    padding-left: var(--spacing-xl);
+    /* Innen-Padding für den Listeninhalt beibehalten/anpassen */
     margin-top: var(--spacing-lg);
-    /* Mehr Abstand nach oben zur Überschrift */
-    /* Etwas Abstand zur Überschrift oben */
-    margin-bottom: var(--spacing-lg);
-    /* Mehr Abstand nach unten */
-    /* Etwas Abstand zum nächsten Element unten */
+    /* Ausreichend Abstand nach oben zur Überschrift */
+    margin-bottom: var(--spacing-xl);
+    /* Ausreichend Abstand nach unten zum nächsten Element */
 }
 
 /* Verschachtelte Listen sollten zusätzliche Einrückung haben */
@@ -249,23 +265,24 @@ code {
 .markdown-content ol ol,
 .markdown-content ul ol,
 .markdown-content ol ul {
-    margin-left: var(--spacing-xl);
-    /* Größere Einrückung für verschachtelte Listen */
+    margin-left: var(--spacing-lg);
+    /* Angepasste Einrückung für verschachtelte Listen */
     /* Einrückung für verschachtelte Listen */
-    padding-left: 0;
-    /* Reset padding-left, da margin-left die Einrückung steuert und die Elternliste bereits padding hat */
+    padding-left: var(--spacing-md);
+    /* Etwas Padding für den Inhalt verschachtelter Listen */
     border-left: 2px solid var(--primary-color-light);
     border-radius: var(--border-radius-sm);
-    margin-top: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
-    /* Etwas mehr Abstand für verschachtelte Listen */
+    margin-top: var(--spacing-md);
+    /* Erhöhter oberer Margin */
+    margin-bottom: var(--spacing-md);
+    /* Erhöhter unterer Margin */
 }
 
 /* Listenpunkte stylen */
 .markdown-content ul li,
 .markdown-content ol li {
     margin-bottom: var(--spacing-sm);
-    /* Etwas mehr Abstand zwischen Listenelementen */
+    /* Konsistenter Abstand zwischen Listenelementen */
     position: relative;
     /* Wichtig für die absolute Positionierung von :before für ul, für ol derzeit nicht aktiv genutzt */
     /* padding-left wird unten spezifischer gehandhabt */
@@ -303,13 +320,10 @@ code {
     color: var(--primary-color);
     font-weight: bold;
     position: absolute;
-    left: -1.5em;
-    /* Zieht den Marker links vom Textanfang in den ul-Padding-Bereich */
-    /* Positioniert den Marker am Anfang des li (vor dem padding-left des li-Textes) */
-    top: 0.05em;
-    /* Feinanpassung für vertikale Ausrichtung, abhängig von Schriftart/line-height */
-    /* width: 1em; */
-    /* Breite kann oft weggelassen werden, wenn Marker ein einzelnes Zeichen ist */
+    left: calc(var(--spacing-md) * -1);
+    /* Marker relativ zum li-Padding positionieren */
+    top: 0.1em;
+    /* Vertikale Anpassung */
 }
 
 /* Für ol Listen wird die Standardnummerierung verwendet, `list-style-position: outside` und `padding-left` auf `ol` kümmern sich darum. */
@@ -326,10 +340,14 @@ code {
 .markdown-content blockquote {
     border-left: 4px solid var(--primary-color);
     color: var(--secondary-light);
-    padding: var(--spacing-xl);
-    /* Größeres Padding für Blockquotes */
-    margin: var(--spacing-md) 0 var(--spacing-lg) 0;
-    /* Mehr unterer Margin für Blockquotes */
+    padding: var(--spacing-lg);
+    /* Beibehalten, da gut */
+    margin-top: var(--spacing-xl);
+    /* Erhöhter oberer Margin */
+    margin-bottom: var(--spacing-xl);
+    /* Erhöhter unterer Margin */
+    margin-left: 0;
+    /* Kein horizontaler Margin für das Blockquote selbst */
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: var(--border-radius-sm);
     border: 1px solid var(--border-color);
@@ -339,8 +357,8 @@ code {
 .markdown-content hr {
     height: 0.25rem;
     padding: 0;
-    margin: var(--spacing-xl) 0;
-    /* Größerer Margin für HR */
+    margin: var(--spacing-xxl) 0;
+    /* Stark erhöhter Margin für HR für klare Trennung */
     background-color: var(--primary-color-light);
     border: 0;
     border-radius: var(--border-radius-sm);
@@ -348,10 +366,16 @@ code {
 
 /* Paragraphen im Grid-Layout mit hierarchischer Einrückung */
 .markdown-content p {
-    margin: 0 0 var(--spacing-lg) 0;
-    /* Mehr unterer Margin für Paragraphen */
+    margin-top: 0;
+    /* Kein oberer Margin, wenn direkt nach Überschrift (wird durch Überschrift gesteuert) */
+    margin-bottom: var(--spacing-lg);
+    /* Unterer Margin beibehalten/leicht angepasst */
+    margin-left: 0;
+    /* Standard-Margin links, Einrückung wird spezifisch gesteuert */
     padding: var(--spacing-md) var(--spacing-lg);
-    /* Mehr Padding für Paragraphen */
+    /* Beibehaltung des Paddings, da bereits gut */
+    line-height: 1.7;
+    /* Erhöhte Zeilenhöhe für bessere Lesbarkeit von Paragraphen */
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: var(--border-radius-md);
     border: 1px solid var(--border-color);
@@ -517,21 +541,21 @@ code {
 
 [data-theme="dark"] .markdown-table th {
     background-color: var(--secondary-dark);
-    color: var(--dark-text);
-    /* Angepasster heller Text für Tabellenköpfe */
+    color: var(--dark-text-strong);
+    /* Stärkerer Kontrast für Lesbarkeit */
     border-bottom-color: var(--secondary-light);
 }
 
 [data-theme="dark"] .markdown-table td {
-    background-color: var(--white);
-    /* Dunkler "Weiß"-Ersatz */
+    background-color: var(--dark-card-bg);
+    /* Konsistenter dunkler Hintergrund für Zellen */
     border-bottom-color: var(--secondary-dark);
     color: var(--dark-text);
 }
 
 [data-theme="dark"] .markdown-table tr:nth-child(even) td {
-    background-color: var(--light-bg);
-    /* Sehr dunkler Hintergrund für jede zweite Zeile */
+    background-color: var(--dark-card-bg-lighter);
+    /* Leicht hellerer Hintergrund für gestreifte Zeilen */
 }
 
 [data-theme="dark"] .markdown-table tr:hover td {
@@ -543,11 +567,12 @@ code {
 [data-theme="dark"] .markdown-content h2,
 [data-theme="dark"] .markdown-content h3,
 [data-theme="dark"] .markdown-heading {
-    background-color: var(--primary-color-light);
-    color: var(--dark-text);
+    background-color: var(--primary-color-very-light);
+    /* Noch hellere Variante für Dark Mode */
+    color: var(--dark-text-strong);
+    /* Stärkerer Kontrast für Lesbarkeit */
     border-left-color: var(--primary-color);
 }
-
 
 /* --- Board Mode Specific Styles --- */
 

@@ -28,13 +28,18 @@
 .lesson-container {
     background-color: rgba(255, 255, 255, 0.95);
     /* Increased opacity for better performance */
-    border-radius: var(--border-radius-md);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border-radius: var(--border-radius-lg);
+    /* Etwas größere Rundung für den Hauptcontainer */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    /* Leicht angepasster Schatten */
     /* Simplified shadow for better performance */
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-lg);
+    /* Mehr Padding für den Gesamtcontainer */
+    margin-bottom: var(--spacing-xl);
+    /* Größerer Abstand zur nächsten Lektion */
     /* Removed backdrop-filter for better performance */
-    border: 1px solid var(--macos-glass-border);
+    border: 1px solid var(--border-color-light);
+    /* Konsistente Border-Farbe */
     position: relative;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     /* More specific transitions */
@@ -49,10 +54,14 @@
 /* Grid-Layout für Lesson-Container */
 .lesson-container>* {
     margin: 0;
-    padding: var(--spacing-sm);
-    background-color: rgba(255, 255, 255, 0.7);
+    /* Kein äußerer Margin für innere Elemente */
+    padding: var(--spacing-md);
+    /* Mehr Padding innerhalb der Grid-Zellen */
+    background-color: rgba(255, 255, 255, 0.75);
+    /* Etwas weniger transparent */
     border: none;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color-lighter);
+    /* Hellere Trennlinie */
     box-shadow: none;
 }
 
@@ -120,13 +129,16 @@
     border-radius: var(--border-radius-md);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     overflow: visible;
-    padding: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
     padding-left: var(--spacing-xl);
-    /* Platz für Aufzählungszeichen */
-    margin-bottom: var(--spacing-lg);
+    /* Beibehaltung für Aufzählungszeichen */
+    margin-bottom: var(--spacing-xl);
+    /* Mehr Abstand nach unten */
     margin-left: 0;
     /* Keine zusätzliche Einrückung */
-    border: 1px solid var(--macos-glass-border);
+    border: 1px solid var(--border-color-light);
     background-color: rgba(255, 255, 255, 0.95);
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
     list-style-position: inside;
@@ -149,7 +161,9 @@
 .content-section ul li {
     position: relative;
     padding-left: var(--spacing-sm);
-    margin-bottom: var(--spacing-xs);
+    /* Beibehalten oder leicht anpassen falls nötig */
+    margin-bottom: var(--spacing-sm);
+    /* Mehr Abstand zwischen Listenelementen */
 }
 
 .content-section ul li:before {
@@ -244,10 +258,14 @@
 .lesson-container h2,
 .lesson-container h3 {
     background-color: var(--primary-color-light);
-    color: var(--secondary-color);
-    padding: var(--spacing-md);
+    color: var(--heading-color, var(--secondary-color));
+    /* Globale Variable oder Fallback */
+    padding: var(--spacing-lg);
+    /* Mehr Padding */
     border-left: 4px solid var(--primary-color);
-    margin-bottom: 0;
+    margin-bottom: var(--spacing-sm);
+    /* Etwas Abstand nach unten, bevor der Inhalt der Zelle beginnt */
+    /* Font-size wird von base.css geerbt */
 }
 
 /* Hierarchische Einrückung für Überschriften im Lesson-Container */
@@ -285,10 +303,14 @@
 }
 
 .lesson-container h2 {
-    margin-bottom: var(--spacing-md);
-    color: var(--secondary-color);
+    margin-bottom: var(--spacing-lg);
+    /* Mehr Abstand */
+    color: var(--heading-color, var(--secondary-color));
+    /* Globale Variable oder Fallback */
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: var(--spacing-md);
+    /* Beibehalten */
+    /* Font-size wird von base.css geerbt */
 }
 
 .lesson-container a {
@@ -339,10 +361,13 @@
     margin-top: 0;
     background-color: rgba(255, 255, 255, 0.95);
     /* Increased opacity for better performance */
-    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+    border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+    /* Passend zum lesson-container */
     box-shadow: none;
-    padding: var(--spacing-md);
-    border: 1px solid var(--border-color);
+    padding: var(--spacing-lg);
+    /* Mehr Padding */
+    border: 1px solid var(--border-color-light);
+    /* Konsistente Border-Farbe */
     border-top: none;
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
     /* More specific transitions */
@@ -356,9 +381,13 @@
 }
 
 .output-container h3 {
+    margin-top: 0;
+    /* Kein oberer Margin, da im Container */
     margin-bottom: var(--spacing-md);
-    color: var(--secondary-color);
-    font-size: 1rem;
+    color: var(--heading-color, var(--secondary-color));
+    /* Globale Variable oder Fallback */
+    /* font-size wird von base.css geerbt, oder hier spezifisch wenn nötig, z.B. 1.1rem für kleine Titel */
+    font-size: 1.1rem;
     font-weight: 600;
 }
 
@@ -372,7 +401,8 @@
     background-color: rgba(44, 62, 80, 0.95);
     /* Increased opacity */
     color: var(--light-gray);
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
+    /* Mehr Padding für den Inhalt */
     border-radius: var(--border-radius-md);
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
@@ -485,10 +515,10 @@
 
 /* Dark Mode Styles for Content */
 [data-theme="dark"] .lesson-container {
-    background-color: rgba(44, 62, 80, 0.85);
-    /* Dunklerer Hintergrund */
-    border: 2px solid var(--secondary-light);
-    /* Ensures 2px border in normal state */
+    background-color: var(--dark-bg-glass-medium);
+    /* Konsistente Variable für dunklen Glaseffekt */
+    border: 1px solid var(--dark-border-color);
+    /* Konsistente Border im Dark Mode */
 }
 
 [data-theme="dark"] .lesson-container:hover {
@@ -496,23 +526,25 @@
     /* Verhindert das Aufhellen des Hintergrunds */
     box-shadow: none !important;
     /* Entfernt Schatten */
-    border-color: #39ff14 !important;
-    /* Only change color on hover */
+    border-color: var(--primary-color-glow) !important;
+    /* Variable für Hover-Effekt */
 }
 
 [data-theme="dark"] .lesson-container h1,
 [data-theme="dark"] .lesson-container h2,
 [data-theme="dark"] .lesson-container h3 {
-    background-color: rgba(52, 73, 94, 0.7);
-    color: var(--light-gray);
+    background-color: var(--dark-heading-bg);
+    /* Variable für Überschriften-Hintergrund */
+    color: var(--dark-text-strong);
+    /* Stärkerer Kontrast */
     border-left-color: var(--primary-color);
 }
 
 [data-theme="dark"] .content-section ul,
 [data-theme="dark"] .content-section ol {
-    background-color: rgba(44, 62, 80, 0.8);
-    border: 2px solid var(--secondary-light);
-    /* Ensures 2px border in normal state */
+    background-color: var(--dark-bg-glass-light);
+    /* Etwas hellerer Glaseffekt für Listen */
+    border: 1px solid var(--dark-border-color);
 }
 
 [data-theme="dark"] .markdown-content ul:hover,
@@ -521,8 +553,8 @@
     /* Verhindert Aufhellen */
     box-shadow: none !important;
     /* Entfernt ggf. vorhandenen Schatten */
-    border-color: #39ff14 !important;
-    /* Only change color on hover */
+    border-color: var(--primary-color-glow) !important;
+    /* Variable für Hover-Effekt */
 }
 
 [data-theme="dark"] .content-section ul li:before {
@@ -530,17 +562,15 @@
 }
 
 [data-theme="dark"] .code-editor-container {
-    background-color: var(--secondary-dark);
-    /* Dunkler Hintergrund für Container */
-    border: 2px solid var(--secondary-light);
-    /* Ensures 2px border in normal state */
+    background-color: var(--dark-card-bg);
+    /* Konsistenter Hintergrund für Code-Editoren */
+    border: 1px solid var(--dark-border-color);
     border-bottom: none;
-    /* Bottom border handled by last-of-type */
 }
 
 [data-theme="dark"] .content-section .code-editor-container:last-of-type {
-    border-bottom: 2px solid var(--secondary-light);
-    /* Ensures 2px bottom border */
+    border-bottom: 1px solid var(--dark-border-color);
+    /* Konsistente Border */
 }
 
 [data-theme="dark"] .code-editor-container:hover {
@@ -548,15 +578,14 @@
     /* Verhindert Aufhellen */
     box-shadow: none !important;
     /* Entfernt Schatten */
-    border-color: #39ff14 !important;
-    /* Only change color on hover */
+    border-color: var(--primary-color-glow) !important;
+    /* Variable für Hover-Effekt */
 }
 
 [data-theme="dark"] .output-container {
-    background-color: rgba(44, 62, 80, 0.8);
-    /* Dunklerer Hintergrund für Ausgabe */
-    border: 2px solid var(--secondary-light);
-    /* Ensures 2px border in normal state */
+    background-color: var(--dark-bg-glass-light);
+    /* Konsistenter Hintergrund für Output */
+    border: 1px solid var(--dark-border-color);
 }
 
 [data-theme="dark"] .output-container:hover {
@@ -564,8 +593,8 @@
     /* Verhindert Aufhellen */
     box-shadow: none !important;
     /* Entfernt ggf. vorhandenen Schatten */
-    border-color: #39ff14 !important;
-    /* Only change color on hover */
+    border-color: var(--primary-color-glow) !important;
+    /* Variable für Hover-Effekt */
 }
 
 [data-theme="dark"] .output-content {

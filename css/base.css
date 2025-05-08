@@ -15,14 +15,16 @@ body {
     font-size: 1rem;
     /* Beibehaltung des Basis-Resets */
     /* Default font size */
-    font-size: var(--global-font-size, 106.25%);
-    /* Erhöhung der globalen Schriftgröße (entspricht ca. 17px bei 16px Basis) */
+    font-size: var(--global-font-size, 110%);
+    /* Erhöhung der globalen Schriftgröße (entspricht ca. 17.6px bei 16px Basis) */
     /* Use CSS variable for global scaling */
+    line-height: 1.65;
+    /* Erhöhung der globalen Zeilenhöhe für bessere Lesbarkeit */
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
-    padding: var(--spacing-lg);
-    /* Globaler Padding für den Body für mehr Luft */
+    padding: var(--spacing-xl);
+    /* Erhöhter globaler Padding für den Body für mehr Luft */
 }
 
 body::before {
@@ -76,4 +78,64 @@ html {
     background: rgba(52, 73, 94, 0.8);
     border: 2px solid transparent;
     background-clip: content-box;
+}
+
+/* Globale Überschriften-Stile */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    font-weight: bold;
+    color: var(--heading-color, var(--primary-dark));
+    /* Fallback auf --primary-dark falls --heading-color nicht definiert */
+}
+
+h1 {
+    font-size: 2.8rem;
+    /* leicht größer als vorher in markdown-styles */
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 2.2rem;
+    /* leicht größer */
+    line-height: 1.25;
+}
+
+h3 {
+    font-size: 1.8rem;
+    /* leicht größer */
+    line-height: 1.3;
+}
+
+h4 {
+    font-size: 1.5rem;
+    /* wie vorher in markdown-styles, jetzt global */
+    line-height: 1.35;
+}
+
+h5 {
+    font-size: 1.25rem;
+    /* leicht größer */
+    line-height: 1.4;
+}
+
+h6 {
+    font-size: 1.1rem;
+    /* leicht größer */
+    line-height: 1.45;
+}
+
+/* Zusätzlicher Abstand für den ersten Absatz nach einer Überschrift für bessere Trennung */
+h1+p,
+h2+p,
+h3+p,
+h4+p,
+h5+p,
+h6+p {
+    margin-top: var(--spacing-md);
 }
