@@ -119,7 +119,7 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
                 slides.forEach(slide => {
                     // Use 'block' as a sensible default display for divs in normal flow
                     slide.style.display = 'block';
-                    
+
                     // Zusätzlich sicherstellen, dass alle Transformationen zurückgesetzt werden
                     const contentWrapper = slide.querySelector('.slide-content-wrapper');
                     if (contentWrapper) {
@@ -164,28 +164,28 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
                     // Also recreate nav buttons for the new content context
                     const contentElement = document.getElementById('content');
                     if (contentElement && typeof window.createBoardNavButtons === 'function') {
-                         window.createBoardNavButtons(contentElement);
-                         // Update button state for the first slide
-                         if(typeof window.updateBoardNavButtonsState === 'function') {
-                             // Ensure window.slides is populated before accessing length
-                             const totalSlides = window.slides ? window.slides.length : 0;
-                             window.updateBoardNavButtonsState(0, totalSlides);
-                         }
+                        window.createBoardNavButtons(contentElement);
+                        // Update button state for the first slide
+                        if (typeof window.updateBoardNavButtonsState === 'function') {
+                            // Ensure window.slides is populated before accessing length
+                            const totalSlides = window.slides ? window.slides.length : 0;
+                            window.updateBoardNavButtonsState(0, totalSlides);
+                        }
                     }
                 } else {
                     console.warn("initializeSlides or showSlide function not found. Board mode might not display correctly after reload.");
                 }
             }
-            
+
             // Update browser URL using History API
             if (updateHistory) {
                 const relativePath = foundPath.replace(/^\.\//, ''); // Remove leading ./ if present
                 const fileName = relativePath.split('/').pop();
                 const chapterName = fileName.replace('.md', '');
-                
+
                 // Create a clean URL path
                 const urlPath = `?doc=${encodeURIComponent(relativePath)}`;
-                
+
                 // Update browser history without reloading the page
                 const pageTitle = `Python Lernplattform - ${chapterName}`;
                 window.history.pushState({ path: relativePath }, pageTitle, urlPath);
@@ -209,7 +209,7 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
                         <p>Versuchter Pfad: ${window.correctPath ? window.correctPath(filePath) : filePath}</p>
                         <p>Ursprünglicher Pfad: ${filePath}</p>
                     </div>
-                    <a href="?doc=${encodeURIComponent((window.DOCS_BASE_DIR || '.') + '/Kapitel_0/Anfang_Lese_Mich.md')}" onclick="event.preventDefault(); window.loadMarkdownFile && window.loadMarkdownFile('${window.DOCS_BASE_DIR || '.'}/Kapitel_0/Anfang_Lese_Mich.md')">
+                    <a href="?doc=${encodeURIComponent((window.DOCS_BASE_DIR || '.') + '/index.md')}" onclick="event.preventDefault(); window.loadMarkdownFile && window.loadMarkdownFile('${window.DOCS_BASE_DIR || '.'}/index.md')">
                         Startseite
                     </a>
                 </div>
@@ -225,13 +225,13 @@ async function loadMarkdownFile(filePath, updateHistory = true) {
 function checkUrlForDocument() {
     const urlParams = new URLSearchParams(window.location.search);
     const docPath = urlParams.get('doc');
-    
+
     if (docPath) {
         // Stelle sicher, dass das Sidebar-Menü erstellt wird, bevor das Dokument geladen wird
-        if(window.createSidebarMenu) {
+        if (window.createSidebarMenu) {
             window.createSidebarMenu();
         }
-        
+
         // Load the document specified in the URL without updating history
         loadMarkdownFile(docPath, false);
         return true;
@@ -250,7 +250,7 @@ async function initializeApp() {
     }
 
     // Load saved progress (ensure loadProgress exists)
-    if(window.loadProgress) {
+    if (window.loadProgress) {
         window.loadProgress();
     }
 
@@ -281,11 +281,11 @@ async function initializeApp() {
 
     // Check if there's a document specified in the URL
     const documentInUrl = checkUrlForDocument();
-    
+
     // If no document is specified in the URL, load the main page
     if (!documentInUrl) {
         try {
-            const mainPagePath = `${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`;
+            const mainPagePath = `${window.DOCS_BASE_DIR}/index.md`;
             console.log(`Loading main page from: ${mainPagePath}`);
 
             const success = await loadMarkdownFile(mainPagePath);
@@ -293,7 +293,7 @@ async function initializeApp() {
             if (success) {
                 console.log("Main page successfully loaded, creating sidebar menu...");
                 // Extract links from the table of contents and create sidebar menu (ensure createSidebarMenu exists)
-                if(window.createSidebarMenu) {
+                if (window.createSidebarMenu) {
                     window.createSidebarMenu();
                 } else {
                     console.warn("window.createSidebarMenu not found. Cannot create sidebar.");
@@ -343,7 +343,7 @@ if (!window.correctPath) {
     window.correctPath = (path) => path; // Simple pass-through
 }
 if (!window.findFileInChapters) {
-     console.warn("Defining stub for window.findFileInChapters");
+    console.warn("Defining stub for window.findFileInChapters");
     window.findFileInChapters = async (fileName) => null; // Default: not found
 }
 if (!window.initializeMarkdownCache) {
@@ -352,7 +352,7 @@ if (!window.initializeMarkdownCache) {
 }
 if (!window.initializeCodeBlocks) {
     console.warn("Defining stub for window.initializeCodeBlocks");
-    window.initializeCodeBlocks = () => {};
+    window.initializeCodeBlocks = () => { };
 }
 if (!window.codeBlocks) {
     console.warn("Defining stub for window.codeBlocks");
@@ -360,19 +360,19 @@ if (!window.codeBlocks) {
 }
 if (!window.updateActiveMenuItem) {
     console.warn("Defining stub for window.updateActiveMenuItem");
-    window.updateActiveMenuItem = (path) => {};
+    window.updateActiveMenuItem = (path) => { };
 }
 if (!window.updateProgressUI) {
-     console.warn("Defining stub for window.updateProgressUI");
-    window.updateProgressUI = () => {};
+    console.warn("Defining stub for window.updateProgressUI");
+    window.updateProgressUI = () => { };
 }
 if (!window.loadProgress) {
     console.warn("Defining stub for window.loadProgress");
-    window.loadProgress = () => {};
+    window.loadProgress = () => { };
 }
 if (!window.createSidebarMenu) {
     console.warn("Defining stub for window.createSidebarMenu");
-    window.createSidebarMenu = () => {};
+    window.createSidebarMenu = () => { };
 }
 
 
@@ -386,12 +386,12 @@ if (document.readyState === 'loading') {
 }
 
 // Handle browser back/forward navigation
-window.addEventListener('popstate', function(event) {
+window.addEventListener('popstate', function (event) {
     if (event.state && event.state.path) {
         // Load the document without updating history again
         loadMarkdownFile(event.state.path, false);
     } else {
         // If no state, load the main page
-        loadMarkdownFile(`${window.DOCS_BASE_DIR}/Kapitel_0/Anfang_Lese_Mich.md`, false);
+        loadMarkdownFile(`${window.DOCS_BASE_DIR}/index.md`, false);
     }
 });
