@@ -6,7 +6,10 @@
     position: sticky;
     top: 0;
     left: 0;
+    right: 0;
+    /* Hinzugefügt, um die volle Breite sicherzustellen */
     width: 100%;
+    /* Beibehalten oder ggf. auf 'auto' setzen, wenn left/right 0 sind */
     background-color: var(--secondary-dark);
     color: var(--light-gray);
     padding: var(--spacing-sm) var(--spacing-md);
@@ -21,6 +24,8 @@
     /* Verhindert den Umbruch von Elementen */
     overflow-x: auto;
     /* Ermöglicht horizontales Scrollen, falls der Inhalt zu breit wird */
+    box-sizing: border-box;
+    /* Sicherstellen, dass Padding in die Breite einberechnet wird */
 }
 
 .top-toolbar button,

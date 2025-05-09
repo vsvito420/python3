@@ -169,28 +169,51 @@
 #sidebar {
     position: fixed;
     transform: translateX(-100%);
+    /* Standardmäßig aus dem Bildschirm geschoben */
     z-index: 1000;
     height: 100vh;
     width: 250px;
-    display: none;
-    /* Standardmäßig ausblenden auf Mobilgeräten */
+    /* display: block; entfernt, wird jetzt in Media Queries spezifischer gehandhabt */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+    opacity: 0;
+    /* Initial unsichtbar und ausgeblendet */
+    visibility: hidden;
 }
 
-#sidebar.active {
-    transform: translateX(0);
-    display: block;
-    /* Einblenden, wenn aktiv */
+@media (max-width: 991.98px) {
+
+    /* Für mobile Geräte ist die Sidebar standardmäßig komplett versteckt. */
+    /* Die transform-Eigenschaft wird vom Basis-Stylesheet #sidebar geerbt. */
+    #sidebar {
+        display: none;
+    }
+
+    #sidebar.active {
+        display: block;
+        /* Nur anzeigen, wenn .active durch JS gesetzt wird */
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
 }
 
 /* Desktop Sidebar Styles */
 @media (min-width: 992px) {
     #sidebar {
+        /* Standard Desktop-Anzeige */
         position: sticky;
-        transform: translateX(0);
-        width: auto;
         display: block;
-        /* Sicherstellen, dass sie auf Desktop sichtbar ist */
+        /* Immer block auf Desktop */
+        transform: translateX(0);
+        /* Immer sichtbar */
+        width: auto;
+        opacity: 1;
+        visibility: visible;
     }
+
+    /* Die .active Klasse hat auf Desktop keine andere Auswirkung auf die Sichtbarkeit, */
+    /* da sie hier bereits standardmäßig sichtbar ist. JS fügt .active hinzu (setInitialSidebarState), */
+    /* aber das CSS für #sidebar auf Desktop sorgt bereits für Sichtbarkeit. */
 }
 
 /* Dark Mode Specific Sidebar Styles */
