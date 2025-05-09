@@ -6,10 +6,13 @@
 /* Sidebar Styles */
 #sidebar {
     grid-area: sidebar;
-    background-color: rgba(44, 62, 80, 0.95); /* Higher opacity for better performance */
+    background-color: rgba(44, 62, 80, 0.95);
+    /* Higher opacity for better performance */
     color: var(--light-gray);
-    transition: border-color 0.3s ease-out; /* More specific transition for better performance */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Simplified shadow */
+    transition: border-color 0.3s ease-out;
+    /* More specific transition for better performance */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    /* Simplified shadow */
     overflow-y: auto;
     height: 100vh;
     position: sticky;
@@ -19,17 +22,20 @@
     border-right: 1px solid var(--macos-glass-border);
     border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
     margin-right: var(--spacing-md);
-    will-change: transform; /* Hint for GPU acceleration */
+    will-change: transform;
+    /* Hint for GPU acceleration */
 }
 
 #sidebar:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); /* Simplified shadow */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    /* Simplified shadow */
     border-right-color: rgba(230, 126, 34, 0.2);
 }
 
 .sidebar-header {
     padding: var(--spacing-xl);
-    background-color: rgba(26, 37, 48, 0.8); /* Semi-transparent version of secondary-dark */
+    background-color: rgba(26, 37, 48, 0.8);
+    /* Semi-transparent version of secondary-dark */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +53,8 @@
     position: relative;
 }
 
-.toggle-icon-open, .toggle-icon-closed {
+.toggle-icon-open,
+.toggle-icon-closed {
     display: inline-block;
     transition: opacity 0.3s ease;
 }
@@ -73,7 +80,8 @@
 .sidebar-menu li {
     padding: var(--spacing-md) var(--spacing-xl);
     border-bottom: 1px solid rgba(61, 81, 102, 0.3);
-    transition: all 0.2s ease; /* Faster transition for better performance */
+    transition: all 0.2s ease;
+    /* Faster transition for better performance */
     margin: 2px var(--spacing-sm);
     border-radius: var(--border-radius-sm);
 }
@@ -83,12 +91,14 @@
 }
 
 .sidebar-menu li.active {
-    background-color: rgba(74, 111, 165, 0.7); /* Dezentes Blau statt Gelb */
+    background-color: rgba(74, 111, 165, 0.7);
+    /* Dezentes Blau statt Gelb */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-menu a {
-    color: white; /* Weiß für bessere Lesbarkeit */
+    color: white;
+    /* Weiß für bessere Lesbarkeit */
     text-decoration: none;
     display: block;
     font-weight: 600;
@@ -144,7 +154,8 @@
 }
 
 .sidebar-menu li.chapter-item.active {
-    background-color: rgba(74, 111, 165, 0.6); /* Dezentes Blau statt Gelb */
+    background-color: rgba(74, 111, 165, 0.6);
+    /* Dezentes Blau statt Gelb */
     border-left: 2px solid var(--white);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
@@ -161,10 +172,14 @@
     z-index: 1000;
     height: 100vh;
     width: 250px;
+    display: none;
+    /* Standardmäßig ausblenden auf Mobilgeräten */
 }
 
 #sidebar.active {
     transform: translateX(0);
+    display: block;
+    /* Einblenden, wenn aktiv */
 }
 
 /* Desktop Sidebar Styles */
@@ -173,48 +188,63 @@
         position: sticky;
         transform: translateX(0);
         width: auto;
+        display: block;
+        /* Sicherstellen, dass sie auf Desktop sichtbar ist */
     }
 }
+
 /* Dark Mode Specific Sidebar Styles */
 [data-theme="dark"] #sidebar {
-    background-color: rgba(26, 37, 48, 0.95); /* Dunklerer Sidebar-Hintergrund */
-    color: var(--dark-text); /* Angepasster heller Text für Sidebar */
+    background-color: rgba(26, 37, 48, 0.95);
+    /* Dunklerer Sidebar-Hintergrund */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Sidebar */
     border-right-color: var(--secondary-dark);
 }
 
 [data-theme="dark"] #sidebar:hover {
-    border-right-color: rgba(90, 139, 205, 0.3); /* Hellerer Hover-Rand */
+    border-right-color: rgba(90, 139, 205, 0.3);
+    /* Hellerer Hover-Rand */
 }
 
 [data-theme="dark"] .sidebar-header {
-    background-color: rgba(10, 15, 20, 0.8); /* Noch dunklerer Header */
+    background-color: rgba(10, 15, 20, 0.8);
+    /* Noch dunklerer Header */
     border-bottom-color: var(--secondary-dark);
 }
 
 [data-theme="dark"] #toggle-sidebar-desktop {
-    color: var(--dark-text); /* Angepasster heller Text für Toggle-Button */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Toggle-Button */
 }
 
 [data-theme="dark"] .sidebar-menu li {
-    border-bottom-color: rgba(61, 81, 102, 0.5); /* Dunklere Trennlinie */
+    border-bottom-color: rgba(61, 81, 102, 0.5);
+    /* Dunklere Trennlinie */
 }
 
 [data-theme="dark"] .sidebar-menu li:hover {
-    background-color: rgba(52, 73, 94, 0.9); /* Etwas hellerer Hover */
+    background-color: rgba(52, 73, 94, 0.9);
+    /* Etwas hellerer Hover */
 }
 
 [data-theme="dark"] .sidebar-menu li.active {
-    background-color: rgba(90, 139, 205, 0.7); /* Helleres Blau für aktives Element */
+    background-color: rgba(90, 139, 205, 0.7);
+    /* Helleres Blau für aktives Element */
 }
 
 [data-theme="dark"] .sidebar-menu a {
-    color: var(--secondary-lighter); /* Sehr heller Text (weiß im Dark Mode) für bessere Lesbarkeit */
+    color: var(--secondary-lighter);
+    /* Sehr heller Text (weiß im Dark Mode) für bessere Lesbarkeit */
 }
 
 [data-theme="dark"] .sidebar-menu a:hover {
-    color: var(--link-hover); /* Verwende die neue Hover-Farbe */
-    text-shadow: var(--link-hover-shadow); /* Füge den Neon-Effekt hinzu */
-    text-decoration: none; /* Entferne Unterstreichung für cleaneren Look */
+    color: var(--link-hover);
+    /* Verwende die neue Hover-Farbe */
+    text-shadow: var(--link-hover-shadow);
+    /* Füge den Neon-Effekt hinzu */
+    text-decoration: none;
+    /* Entferne Unterstreichung für cleaneren Look */
 }
 
 [data-theme="dark"] .sidebar-menu li.menu-home {
@@ -223,13 +253,16 @@
 }
 
 [data-theme="dark"] .sidebar-menu li.chapter-header {
-    background-color: rgba(61, 81, 102, 0.7); /* Angepasster Header-Hintergrund */
+    background-color: rgba(61, 81, 102, 0.7);
+    /* Angepasster Header-Hintergrund */
     border-left-color: var(--success-color);
-    color: var(--dark-text); /* Angepasster heller Text für Kapitelüberschriften */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Kapitelüberschriften */
 }
 
 [data-theme="dark"] .sidebar-menu li.chapter-item {
-    background-color: rgba(44, 62, 80, 0.6); /* Angepasster Item-Hintergrund */
+    background-color: rgba(44, 62, 80, 0.6);
+    /* Angepasster Item-Hintergrund */
     border-left-color: var(--neutral-color);
 }
 
@@ -239,7 +272,8 @@
 }
 
 [data-theme="dark"] .sidebar-menu li.chapter-item.active {
-    background-color: rgba(90, 139, 205, 0.6); /* Helleres Blau für aktives Item */
+    background-color: rgba(90, 139, 205, 0.6);
+    /* Helleres Blau für aktives Item */
     border-left-color: var(--white);
 }
 
@@ -248,19 +282,24 @@
 }
 
 [data-theme="dark"] .sidebar-menu li.completed a {
-    color: #76d7c4; /* Hellerer Türkiston für besseren Kontrast bei abgeschlossenen Kapiteln */
+    color: #76d7c4;
+    /* Hellerer Türkiston für besseren Kontrast bei abgeschlossenen Kapiteln */
 }
 
 /* Fortschritts-Tracker Dark Mode */
 [data-theme="dark"] #progress-tracker {
     background-color: var(--secondary-dark);
 }
+
 [data-theme="dark"] .progress-bar {
     background-color: var(--secondary-color);
 }
+
 [data-theme="dark"] .progress-fill {
     background-color: var(--primary-color);
 }
+
 [data-theme="dark"] .progress-text {
-    color: var(--dark-text); /* Angepasster heller Text für Fortschrittsanzeige */
+    color: var(--dark-text);
+    /* Angepasster heller Text für Fortschrittsanzeige */
 }

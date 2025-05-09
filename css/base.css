@@ -23,7 +23,8 @@ body {
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
-    padding: var(--spacing-xl);
+    /* padding: var(--spacing-xl); */
+    /* Entfernt für volle Breite der Toolbar */
     /* Erhöhter globaler Padding für den Body für mehr Luft */
 }
 
