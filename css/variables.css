@@ -45,7 +45,8 @@
     --macos-light-glow: 0 0 8px rgba(233, 236, 239, 0.3);
 
     /* Global font size */
-    --global-font-size: 18px;
+    --global-font-size: 100%;
+    /* Standardwert, wird durch JS überschrieben */
 
     /* Spacing variables */
     --spacing-xs: 5px;

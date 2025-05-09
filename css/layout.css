@@ -13,15 +13,21 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    z-index: 1001; /* Ensure it's above sidebar */
+    z-index: 1001;
+    /* Ensure it's above sidebar */
     box-shadow: var(--shadow-sm);
     border-bottom: 1px solid var(--macos-glass-border);
+    white-space: nowrap;
+    /* Verhindert den Umbruch von Elementen */
+    overflow-x: auto;
+    /* Ermöglicht horizontales Scrollen, falls der Inhalt zu breit wird */
 }
 
 .top-toolbar button,
 .top-toolbar a {
     background: none;
-    border: 1px solid transparent; /* Add border for consistent height */
+    border: 1px solid transparent;
+    /* Add border for consistent height */
     color: var(--light-gray);
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-sm);
@@ -50,19 +56,22 @@
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Push to the right */
+    margin-left: auto;
+    /* Push to the right */
     gap: var(--spacing-sm);
 }
 
 .theme-label {
     font-size: 0.9rem;
-    display: none; /* Hide label on small screens */
+    display: none;
+    /* Hide label on small screens */
 }
 
 .theme-switch {
     position: relative;
     display: inline-block;
-    width: 44px; /* Slightly smaller */
+    width: 44px;
+    /* Slightly smaller */
     height: 22px;
 }
 
@@ -86,7 +95,8 @@
 .slider:before {
     position: absolute;
     content: "";
-    height: 16px; /* Smaller circle */
+    height: 16px;
+    /* Smaller circle */
     width: 16px;
     left: 3px;
     bottom: 3px;
@@ -94,16 +104,17 @@
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: var(--primary-color);
 }
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px var(--primary-color);
 }
 
-input:checked + .slider:before {
-    transform: translateX(22px); /* Adjusted movement */
+input:checked+.slider:before {
+    transform: translateX(22px);
+    /* Adjusted movement */
 }
 
 .slider.round {
@@ -134,34 +145,41 @@ input:checked + .slider:before {
 }
 
 [data-theme="dark"] .slider {
-    background-color: var(--secondary-color); /* Darker inactive background */
+    background-color: var(--secondary-color);
+    /* Darker inactive background */
 }
 
-[data-theme="dark"] input:checked + .slider {
+[data-theme="dark"] input:checked+.slider {
     background-color: var(--primary-color);
 }
 
 [data-theme="dark"] .slider:before {
-    background-color: var(--light-gray); /* Slightly darker circle */
+    background-color: var(--light-gray);
+    /* Slightly darker circle */
 }
 
 /* Styles for the Editor Theme Toggle Button */
 .editor-theme-button {
     /* Inherit general button styles from .top-toolbar button */
-    padding: var(--spacing-sm); /* Adjust padding if needed */
-    margin-left: var(--spacing-sm); /* Add some space between the two toggles */
+    padding: var(--spacing-sm);
+    /* Adjust padding if needed */
+    margin-left: var(--spacing-sm);
+    /* Add some space between the two toggles */
 }
 
 .editor-theme-button .editor-theme-icon {
-    font-size: 1rem; /* Adjust icon size if needed */
+    font-size: 1rem;
+    /* Adjust icon size if needed */
     display: inline-block;
-    width: 1.2em; /* Ensure space for icon */
+    width: 1.2em;
+    /* Ensure space for icon */
     text-align: center;
 }
 
 /* Optional: Add specific hover/focus styles if different from general toolbar buttons */
 .editor-theme-button:hover {
-    background-color: var(--secondary-light); /* Consistent hover */
+    background-color: var(--secondary-light);
+    /* Consistent hover */
 }
 
 /* Hide editor theme label on small screens, similar to page theme label */
@@ -178,8 +196,10 @@ input:checked + .slider:before {
     grid-template-areas: "sidebar content";
     min-height: 100vh;
     max-width: 100%;
-    padding-bottom: 200px; /* Reduzierter Platz für den Editor unten */
-    transition: padding-bottom 0.3s ease, grid-template-columns 0.3s ease; /* Smooth transition for padding and column changes */
+    padding-bottom: 200px;
+    /* Reduzierter Platz für den Editor unten */
+    transition: padding-bottom 0.3s ease, grid-template-columns 0.3s ease;
+    /* Smooth transition for padding and column changes */
 }
 
 /* Horizontal resize handle between editor and content */
@@ -213,7 +233,8 @@ input:checked + .slider:before {
     z-index: 15;
     opacity: 0.5;
     transition: opacity 0.2s ease;
-    display: none; /* Hidden by default, shown on desktop */
+    display: none;
+    /* Hidden by default, shown on desktop */
 }
 
 .horizontal-resize-handle:hover {
@@ -225,11 +246,14 @@ input:checked + .slider:before {
 #content {
     grid-area: content;
     padding: var(--spacing-md);
-    padding-left: 25px; /* Mehr Abstand links */
-    padding-right: 40px; /* Noch mehr Abstand rechts für besseres Scrollen */
+    padding-left: 25px;
+    /* Mehr Abstand links */
+    padding-right: 40px;
+    /* Noch mehr Abstand rechts für besseres Scrollen */
     overflow-y: auto;
     position: relative;
-    margin-bottom: 0; /* No margin needed since we have padding on container */
+    margin-bottom: 0;
+    /* No margin needed since we have padding on container */
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
@@ -243,9 +267,15 @@ input:checked + .slider:before {
 
 .container {
     grid-template-columns: 1fr;
+    /* Standard für Mobile: Nur Inhaltsbereich */
     grid-template-areas: "content";
     padding-bottom: 200px;
-    padding-top: 50px; /* Add padding to prevent content from hiding under fixed toolbar */
+    /* Platz für den Editor oder Footer */
+    padding-top: 75px;
+    /* Erhöhter Abstand für die Toolbar */
+    /* Angepasster oberer Abstand für die fixe Toolbar, etwas mehr Puffer */
+    transition: padding-top 0.3s ease, grid-template-columns 0.3s ease;
+    /* padding-top auch animieren */
 }
 
 /* Hide vertical resize handle on mobile */
@@ -255,19 +285,71 @@ input:checked + .slider:before {
 
 /* Angepasste Abstände für mobile Geräte */
 @media (max-width: 767px) {
+    .top-toolbar {
+        padding: var(--spacing-sm) var(--spacing-s);
+        /* Weniger Padding in der Toolbar */
+        gap: var(--spacing-s);
+        /* Weniger Abstand zwischen Elementen */
+    }
+
+    .top-toolbar button,
+    .top-toolbar a {
+        padding: var(--spacing-xs) var(--spacing-s);
+        /* Kleinere Buttons */
+        font-size: 0.9rem;
+        /* Kleinere Schrift in Buttons */
+    }
+
+    .theme-label {
+        display: none;
+        /* Theme-Label immer ausblenden auf Mobilgeräten */
+    }
+
     #content {
-        padding-left: 15px; /* Reduzierter Abstand links für mobile Geräte */
-        padding-right: 20px; /* Reduzierter Abstand rechts für mobile Geräte, aber immer noch mehr als links */
+        padding: var(--spacing-s);
+        /* Reduziertes Padding für bessere Raumnutzung */
+        overflow-wrap: break-word;
+        /* Stellt sicher, dass lange Wörter umgebrochen werden */
+        word-wrap: break-word;
+        /* Zusätzliche Absicherung für ältere Browser */
+    }
+}
+
+/* Speziellere Anpassungen für sehr kleine Bildschirme */
+@media (max-width: 480px) {
+    .top-toolbar {
+        /* flex-wrap: wrap; Auskommentiert, um Einzeiligkeit zu gewährleisten */
+        justify-content: space-between;
+        /* Bessere Verteilung bei Umbruch */
+    }
+
+    .top-toolbar .theme-switch-wrapper {
+        width: 100%;
+        /* Theme Switch auf volle Breite, falls umgebrochen */
+        justify-content: flex-end;
+        /* Rechts ausrichten */
+        padding-top: var(--spacing-s);
+    }
+
+    #content {
+        padding: var(--spacing-xs);
+        /* Weiter reduziertes Padding für sehr kleine Bildschirme */
+        overflow-wrap: break-word;
+        /* Stellt sicher, dass lange Wörter umgebrochen werden */
+        word-wrap: break-word;
+        /* Zusätzliche Absicherung für ältere Browser */
     }
 }
 
 /* Tablet styles */
 @media (min-width: 768px) {
-    .editor-buttons, .navigation-buttons {
+
+    .editor-buttons,
+    .navigation-buttons {
         flex-direction: row;
         gap: var(--spacing-md);
     }
-    
+
     .navigation-buttons button {
         width: auto;
     }
@@ -275,18 +357,33 @@ input:checked + .slider:before {
 
 /* Desktop styles */
 @media (min-width: 992px) {
+
     /* .sidebar-toggle-container display: none; removed */
-    #toggle-sidebar-mobile { display: none; } /* Hide mobile toggle on desktop */
-    #toggle-sidebar-desktop { display: inline-flex; } /* Show desktop toggle */
-    .theme-label { display: inline; } /* Show theme label on desktop */
+    #toggle-sidebar-mobile {
+        display: none;
+    }
+
+    /* Hide mobile toggle on desktop */
+    #toggle-sidebar-desktop {
+        display: inline-flex;
+    }
+
+    /* Show desktop toggle */
+    .theme-label {
+        display: inline;
+    }
+
+    /* Show theme label on desktop */
 
     .container {
         grid-template-columns: 250px 1fr;
         grid-template-areas: "sidebar content";
         padding-bottom: 200px;
-        padding-top: 50px; /* Add padding to prevent content from hiding under fixed toolbar */
+        padding-top: 75px;
+        /* Erhöhter Abstand für die Toolbar */
+        /* Add padding to prevent content from hiding under fixed toolbar */
     }
-    
+
     /* Show vertical resize handle on desktop */
     .vertical-resize-handle {
         display: block;
@@ -303,14 +400,19 @@ input:checked + .slider:before {
 
 /* Print styles */
 @media print {
-    .sidebar-toggle-container, #sidebar, #code-editor-sidebar, .editor-buttons, .navigation-buttons {
+
+    .sidebar-toggle-container,
+    #sidebar,
+    #code-editor-sidebar,
+    .editor-buttons,
+    .navigation-buttons {
         display: none !important;
     }
-    
+
     .container {
         display: block;
     }
-    
+
     .lesson-container {
         box-shadow: none;
         border: 1px solid var(--border-color);
@@ -322,34 +424,50 @@ input:checked + .slider:before {
 
 /* Styles for the content area when board mode is active */
 #content.board-mode {
-    padding: 0; /* Remove padding to use full space */
-    overflow: hidden; /* Prevent scrolling of the main container */
-    display: flex; /* Use flexbox for slide alignment */
-    flex-direction: column; /* Stack slides vertically (though only one is visible) */
-    justify-content: center; /* Center slide vertically */
-    align-items: center; /* Center slide horizontally */
-    height: calc(100vh - 50px); /* Full viewport height minus toolbar */
-    position: relative; /* Needed for absolute positioning of potential controls */
+    padding: 0;
+    /* Remove padding to use full space */
+    overflow: hidden;
+    /* Prevent scrolling of the main container */
+    display: flex;
+    /* Use flexbox for slide alignment */
+    flex-direction: column;
+    /* Stack slides vertically (though only one is visible) */
+    justify-content: center;
+    /* Center slide vertically */
+    align-items: center;
+    /* Center slide horizontally */
+    height: calc(100vh - 50px);
+    /* Full viewport height minus toolbar */
+    position: relative;
+    /* Needed for absolute positioning of potential controls */
 }
 
 /* Styles for individual slides */
 .board-slide {
     width: 100%;
     height: 100%;
-    display: none; /* Hidden by default, shown by JS */
+    display: none;
+    /* Hidden by default, shown by JS */
     flex-direction: column;
-    justify-content: center; /* Center content vertically within the slide */
-    align-items: center; /* Center content horizontally */
-    overflow: hidden; /* Prevent scrolling within the slide itself initially */
-    padding: var(--spacing-lg); /* Add some padding around the slide content */
+    justify-content: center;
+    /* Center content vertically within the slide */
+    align-items: center;
+    /* Center content horizontally */
+    overflow: hidden;
+    /* Prevent scrolling within the slide itself initially */
+    padding: var(--spacing-lg);
+    /* Add some padding around the slide content */
     box-sizing: border-box;
-    position: relative; /* For potential absolute positioned elements inside */
-    background-color: var(--background-color); /* Ensure background matches theme */
+    position: relative;
+    /* For potential absolute positioned elements inside */
+    background-color: var(--background-color);
+    /* Ensure background matches theme */
 }
 
 /* Style for the currently active/visible slide */
 #content.board-mode .board-slide.active-slide {
-    display: flex; /* Show the active slide */
+    display: flex;
+    /* Show the active slide */
     /* Scaling will be handled by more specific rules, potentially in markdown-styles.css */
 }
 
@@ -361,7 +479,7 @@ input:checked + .slider:before {
 }
 
 [data-theme="dark"] .top-toolbar .board-mode-button.active {
-     background-color: var(--primary-light);
-     color: var(--secondary-dark);
-     border-color: var(--primary-light);
+    background-color: var(--primary-light);
+    color: var(--secondary-dark);
+    border-color: var(--primary-light);
 }

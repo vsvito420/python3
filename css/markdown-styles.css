@@ -25,7 +25,7 @@
     border-collapse: collapse;
     width: 100%;
     margin: 0;
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * (var(--global-font-size, 100%) / 100));
     /* Erhöhte Schriftgröße für Tabellen */
     overflow: hidden;
     display: table;
@@ -97,7 +97,7 @@ pre {
 
 pre code {
     font-family: 'Courier New', monospace;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * (var(--global-font-size, 100%) / 100));
     /* Leicht angepasste Schriftgröße für Code in `pre` */
     line-height: 1.6;
     /* Erhöhte Zeilenhöhe für bessere Lesbarkeit */
@@ -131,7 +131,7 @@ code {
     /* Präzisere Padding-Anpassung für Inline-Code */
     border-radius: 3px;
     font-family: 'Courier New', monospace;
-    font-size: 0.9em;
+    font-size: calc(0.9em * (var(--global-font-size, 100%) / 100));
     /* Angepasste Schriftgröße für Inline-Code, relativ zum umgebenden Text */
     color: var(--primary-dark);
 }
@@ -644,17 +644,17 @@ code {
 
 /* Example: Adjust heading sizes for slides */
 .slide-content-wrapper h1 {
-    font-size: 2.8rem;
+    font-size: calc(2.8rem * (var(--global-font-size, 100%) / 100));
     /* Größere H1 im Board-Modus */
 }
 
 .slide-content-wrapper h2 {
-    font-size: 2.3rem;
+    font-size: calc(2.3rem * (var(--global-font-size, 100%) / 100));
     /* Größere H2 im Board-Modus */
 }
 
 .slide-content-wrapper p {
-    font-size: 1.25rem;
+    font-size: calc(1.25rem * (var(--global-font-size, 100%) / 100));
     /* Größere Paragraphen im Board-Modus */
 }
 
@@ -684,7 +684,7 @@ code {
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    font-size: 1.5rem;
+    font-size: calc(1.5rem * (var(--global-font-size, 100%) / 100));
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -713,7 +713,7 @@ code {
     border: none;
     border-radius: 5px;
     padding: 10px 5px;
-    font-size: 2rem;
+    font-size: calc(2rem * (var(--global-font-size, 100%) / 100));
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -742,7 +742,7 @@ code {
     border: none;
     border-radius: 4px;
     padding: 5px 10px;
-    font-size: 0.9rem;
+    font-size: calc(0.9rem * (var(--global-font-size, 100%) / 100));
     cursor: pointer;
     transition: background-color 0.2s ease;
     margin-left: 5px;
@@ -755,4 +755,65 @@ code {
 
 .editor-buttons .font-size-button:active {
     background-color: rgba(0, 0, 0, 1);
+}
+
+/* Responsive Table Styles */
+@media screen and (max-width: 768px) {
+    .markdown-table {
+        font-size: calc(0.9rem * (var(--global-font-size, 100%) / 100));
+        /* Kleinere Schriftgröße für mobile Tabellen */
+    }
+
+    .markdown-table th,
+    .markdown-table td {
+        padding: var(--spacing-sm) var(--spacing-md);
+        /* Reduziertes Padding für Zellen */
+    }
+
+    /* Optionale aggressivere Methode: Zellen untereinander anzeigen */
+    /*
+    .markdown-table,
+    .markdown-table thead,
+    .markdown-table tbody,
+    .markdown-table th,
+    .markdown-table td,
+    .markdown-table tr {
+        display: block;
+    }
+
+    .markdown-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .markdown-table tr {
+        border: 1px solid #ccc;
+        margin-bottom: .625em;
+    }
+
+    .markdown-table td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+    }
+
+    .markdown-table td:before {
+        position: absolute;
+        top: .375em; // 6px / 16px
+        left: .375em;
+        width: 45%;
+        padding-right: .625em; // 10px / 16px
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    // Dynamische Labels via JS oder manuell im HTML nötig (data-label="Spaltenname")
+    // .markdown-table td:nth-of-type(1):before { content: "Spalte 1 Name"; }
+    // .markdown-table td:nth-of-type(2):before { content: "Spalte 2 Name"; }
+    // ...
+    */
 }
