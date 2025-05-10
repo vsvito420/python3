@@ -74,6 +74,7 @@ Listen sind überall! Hier ein paar Beispiele, wo sie in echten Programmen zum E
 Für eine detaillierte Erklärung, wie man Listen in Python erstellt, wie man auf ihre Elemente zugreift und welche Operationen es genau gibt, schau dir unbedingt die nächste Seite an:
 *   **[Mehr über Listen erfahren](./Listen.md)**
 
+*   **[🐢 Turtle Graphics: Zeichnen mit Python!](./Turtle_Graphics.md)** - Lerne, wie du mit Listen und einer kleinen Schildkröte coole Bilder malen kannst!
 ## 🔮 Ein Blick in die Zukunft: Weitere Datenstrukturen
 
 Listen sind fantastisch, aber Python hat noch mehr coole Datenstrukturen im Angebot, die für unterschiedliche Zwecke optimiert sind. Wir werden sie in späteren Kapiteln vielleicht noch genauer kennenlernen:

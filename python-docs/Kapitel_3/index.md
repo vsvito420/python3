@@ -17,6 +17,10 @@ Stell dir vor, du hast ganz viele Spielzeugautos oder eine riesige Sammlung von 
     - Werte in Listen hinzufügen, ändern oder löschen
     - Coole Tricks mit Listen: Sortieren, umdrehen und vieles mehr!
     - Listen in Listen (verschachtelte Listen)
+- [🐢 Turtle Graphics: Zeichnen mit Python!](Turtle_Graphics.md)
+    - Einführung und erste Schritte mit der Turtle
+    - Zeichnen mit Koordinaten und Farben aus Listen
+    - Coole Muster mit Schleifen und Listen erstellen
 
 ## Was du in diesem Kapitel lernst
 
